@@ -12,7 +12,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
     gemspec.name = "let-it-be"
-    gemspec.summary = "an implementation of .let for controllers"
+    gemspec.summary = "A helper for creating declarative interfaces in controllers"
     gemspec.description = %Q{
       LetItBe helps you program to an interface, rather than an implementation
       in your Rails controllers.  The fact of the matter is that sharing state
