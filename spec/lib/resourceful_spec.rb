@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'helper')
 
 class Quacker
-  extend Resourceful
+  extend LetItBe
   def self.helper_method(*args); end
   def self.hide_action(*args); end
   def self.find(*args); end
@@ -11,8 +11,8 @@ class Quacker
   let(:quack){ memoizable('quack!') }
 end
 
-describe Resourceful do
-  context "classes extending Resourceful" do
+describe LetItBe do
+  context "classes extending LetItBe" do
     it "respond to :let" do
       Quacker.respond_to?(:let).should be_true
     end
@@ -52,10 +52,10 @@ describe Resourceful do
 
     context "when no block is given" do
       before do
-        instance.stubs(:class_for).returns(Quacker)
+        instance.stubs(:__class_for__).returns(Quacker)
       end
       it "attempts to guess the class of the resource to let" do
-        instance.expects(:class_for).with(:proxy).returns(Quacker)
+        instance.expects(:__class_for__).with(:proxy).returns(Quacker)
         instance.proxy
       end
       it "calls find with {resource}_id on the resources class" do
@@ -76,7 +76,7 @@ describe Resourceful do
     end
   end
 
-  describe '#class_for' do
+  describe '#__class_for__' do
     let(:name){ 'quacker' }
     let(:classified_name){ 'Quacker' }
     before do
@@ -85,11 +85,11 @@ describe Resourceful do
     end
     it 'retrieves a string representation of the class name' do
       name.expects(:classify).returns(classified_name)
-      Quacker.class_for(name)
+      Quacker.send(:__class_for__,name)
     end
     it 'returns the string representation of the name as a constant' do
       classified_name.expects(:constantize)
-      Quacker.class_for(name)
+      Quacker.send(:__class_for__,name)
     end
   end
 end
