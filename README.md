@@ -79,6 +79,5 @@ moreover to provide a standard implementation for an emerging best practice.
 Documentation TODO
 ------------------
 
-* Add an open-source license
 * walk-through explanation of the actual implementation (using an existing,
 popular OSS Rails app as an example for the refactor).
