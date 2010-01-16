@@ -23,6 +23,8 @@ made unroutable as an action with `hide_action`.
 Examples
 --------
 
+### In your controllers
+
 When no block is given, `let` attempts to intuit which resource you want to
 acquire:
 
@@ -50,6 +52,19 @@ appropriate to extract into a model method), use the `do...end` style of block:
         present(associated_products, :with => AssociatedProductPresenter)
       end
     end
+
+### In your views
+
+Use the product of those assignments like you would an instance variable or any
+other method you might normally have access to:
+
+    = render bread_crumbs_for(category)
+    %h3#product_title= product.title
+    = render product
+    %h3 Associated Products
+    %ul
+      - associated_products.each do |associated_product|
+      %li= link_to(associated_product.title,product_path(associated_product))
 
 Beware
 ------
