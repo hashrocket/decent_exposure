@@ -22,12 +22,12 @@ describe LetItBe do
     let(:instance){ Quacker.new }
 
     it "creates a method with the given name" do
-      instance.methods.should include('quack')
+      Quacker.new.methods.map{|m| m.to_s}.should include('quack')
     end
 
     it "prevents the method from being a callable action" do
       Quacker.expects(:hide_action).with(:blerg)
-      class Quacker
+      Quacker.class_eval do
         let(:blerg){ 'ehm' }
       end
     end
@@ -35,7 +35,7 @@ describe LetItBe do
     it "declares the method as a helper method" do
       Quacker.stubs(:hide_action)
       Quacker.expects(:helper_method).with(:blarg)
-      class Quacker
+      Quacker.class_eval do
         let(:blarg){ 'uhm' }
       end
     end
@@ -64,7 +64,7 @@ describe LetItBe do
       end
       context "and there is no {resource}_id" do
         before do
-          class Quacker
+          Quacker.class_eval do
             def params; {'id' => 24}; end
           end
         end
