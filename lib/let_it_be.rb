@@ -1,5 +1,4 @@
 module LetItBe
-  extend self
   def let(name, &block)
     define_method name do
       @__resources__       ||= {}
