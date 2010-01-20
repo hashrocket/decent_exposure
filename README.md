@@ -7,10 +7,30 @@ LetItBe helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
 The fact of the matter is that sharing state via instance variables in
-controllers promotes close coupling with views. LetItBe gives you a
-declarative manner of exposing an interface to the state that controllers
-contain and thereby decreasing coupling and improving your testability and
-overall design.
+controllers promotes close coupling with views. LetItBe gives you a declarative
+manner of exposing an interface to the state that controllers contain, thereby
+decreasing coupling and improving your testability and overall design.
+
+Installation
+------------
+
+    gem install let-it-be
+
+Configure your application to use it:
+
+In `config/environment.rb`:
+
+    config.gem 'let-it-be', :lib => 'let_it_be'
+
+In controllers which wish to take advantage of `LetItBe`:
+
+    class CandidateController < Application
+      extend LetItBe
+      ...
+    end
+
+If you want to have access to `let` everywhere, `extend LetItBe` in your
+`ApplicationController`.
 
 The Particulars
 ---------------
