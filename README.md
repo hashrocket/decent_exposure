@@ -96,8 +96,21 @@ Skinny Controller). In itself, it won't heal a bad design. It is meant only to
 be a tool to use in improving the overall design of a Ruby on Rails system and
 moreover to provide a standard implementation for an emerging best practice.
 
-Documentation TODO
-------------------
+Development
+-----------
+
+### Running specs
+
+`LetItBe` has been developed with the philosophy that Ruby developers shouldn't
+force their choice in RubyGems package managers on people consuming their code.
+As a side effect of that, if you attempt to run the specs on this application,
+you might get `no such file to load` errors.  The short answer is that you can
+`export RUBYOPT='rubygems'` and be on about your way (for the long answer, see
+Ryan Tomayko's [excellent
+treatise](http://tomayko.com/writings/require-rubygems-antipattern) on the
+subject).
+
+### Documentation TODO
 
 * walk-through explanation of the actual implementation (using an existing,
 popular OSS Rails app as an example for the refactor).
