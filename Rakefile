@@ -25,7 +25,7 @@ begin
     gemspec.homepage = "http://github.com/voxdolo/let-it-be"
     gemspec.authors = ["Stephen Caudill", "Jon Larkowski"]
     gemspec.add_development_dependency "rspec", ">= 1.2.9"
-    gemspec.files = FileList["{bin,lib}/**/*"]
+    gemspec.files = FileList[*%w(lib/**/* VERSION COPYING README.md rails/init.rb)]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

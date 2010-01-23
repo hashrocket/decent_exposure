@@ -6,10 +6,10 @@ _Copying over instance variables is bad, mmm-kay?_
 LetItBe helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
-The fact of the matter is that sharing state via instance variables in
-controllers promotes close coupling with views. LetItBe gives you a declarative
-manner of exposing an interface to the state that controllers contain, thereby
-decreasing coupling and improving your testability and overall design.
+Sharing state via instance variables in controllers promotes close coupling with
+views. LetItBe gives you a declarative manner of exposing an interface to the
+state that controllers contain, thereby decreasing coupling and improving your
+testability and overall design.
 
 Installation
 ------------
@@ -22,23 +22,13 @@ In `config/environment.rb`:
 
     config.gem 'let-it-be', :lib => 'let_it_be'
 
-In controllers which wish to take advantage of `LetItBe`:
-
-    class CandidateController < Application
-      extend LetItBe
-      ...
-    end
-
-If you want to have access to `let` everywhere, `extend LetItBe` in your
-`ApplicationController`.
-
 The Particulars
 ---------------
 
 `let` creates a method with the given name, evaluates the provided block (or
 intuits a value when no block is passed) and memoizes the result. This method is
 then declared as a `helper_method` so that views may have access to it and is
-made unroutable as an action with `hide_action`.
+made unroutable as an action.
 
 Examples
 --------
@@ -112,5 +102,5 @@ subject).
 
 ### Documentation TODO
 
-* walk-through explanation of the actual implementation (using an existing,
-popular OSS Rails app as an example for the refactor).
+* walk-through of an actual implementation (using an existing, popular OSS Rails
+app as an example refactor).

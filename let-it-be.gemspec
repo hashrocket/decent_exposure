@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{let-it-be}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stephen Caudill", "Jon Larkowski"]
-  s.date = %q{2010-01-12}
+  s.date = %q{2010-01-23}
   s.description = %q{
       LetItBe helps you program to an interface, rather than an implementation
       in your Rails controllers.  The fact of the matter is that sharing state
@@ -19,14 +19,21 @@ Gem::Specification.new do |s|
       improving your testability and overall design.
     }
   s.email = %q{scaudill@gmail.com}
+  s.extra_rdoc_files = [
+    "README.md"
+  ]
   s.files = [
-    "lib/let_it_be.rb"
+    "COPYING",
+     "README.md",
+     "VERSION",
+     "lib/let_it_be.rb",
+     "rails/init.rb"
   ]
   s.homepage = %q{http://github.com/voxdolo/let-it-be}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
-  s.summary = %q{an implementation of .let for controllers}
+  s.summary = %q{A helper for creating declarative interfaces in controllers}
   s.test_files = [
     "spec/helper.rb",
      "spec/lib/let_it_be_spec.rb"
