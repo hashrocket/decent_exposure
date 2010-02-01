@@ -7,18 +7,18 @@ class Quacker
   def self.find(*args); end
   def memoizable(*args); args; end
   def params; {'proxy_id' => 42}; end
-  let(:proxy)
-  let(:quack){ memoizable('quack!') }
+  expose(:proxy)
+  expose(:quack){ memoizable('quack!') }
 end
 
 describe DecentExposure do
   context "classes extending DecentExposure" do
-    it "respond to :let" do
-      Quacker.respond_to?(:let).should be_true
+    it "respond to :expose" do
+      Quacker.respond_to?(:expose).should be_true
     end
   end
 
-  context "#let" do
+  context "#expose" do
     let(:instance){ Quacker.new }
 
     it "creates a method with the given name" do
@@ -28,7 +28,7 @@ describe DecentExposure do
     it "prevents the method from being a callable action" do
       Quacker.expects(:hide_action).with(:blerg)
       Quacker.class_eval do
-        let(:blerg){ 'ehm' }
+        expose(:blerg){ 'ehm' }
       end
     end
 
@@ -36,7 +36,7 @@ describe DecentExposure do
       Quacker.stubs(:hide_action)
       Quacker.expects(:helper_method).with(:blarg)
       Quacker.class_eval do
-        let(:blarg){ 'uhm' }
+        expose(:blarg){ 'uhm' }
       end
     end
 
@@ -54,7 +54,7 @@ describe DecentExposure do
       before do
         instance.stubs(:__class_for__).returns(Quacker)
       end
-      it "attempts to guess the class of the resource to let" do
+      it "attempts to guess the class of the resource to expose" do
         instance.expects(:__class_for__).with(:proxy).returns(Quacker)
         instance.proxy
       end

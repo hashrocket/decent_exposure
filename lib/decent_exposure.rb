@@ -1,5 +1,5 @@
 module DecentExposure
-  def let(name, &block)
+  def expose(name, &block)
     define_method name do
       @__resources__       ||= {}
       @__resources__[name] ||= if block_given?
@@ -11,6 +11,8 @@ module DecentExposure
     helper_method name
     hide_action name
   end
+
+  alias let expose
 
   private
   def __class_for__(name)
