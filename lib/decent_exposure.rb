@@ -1,4 +1,4 @@
-module LetItBe
+module DecentExposure
   def let(name, &block)
     define_method name do
       @__resources__       ||= {}

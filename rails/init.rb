@@ -1,7 +1,7 @@
 begin
-  require File.join(File.dirname(__FILE__), 'lib', 'let_it_be') # From here
+  require File.join(File.dirname(__FILE__), 'lib', 'decent_exposure') # From here
 rescue LoadError
-  require 'let_it_be' # From gem
+  require 'decent_exposure' # From gem
 end
 
-ActionController::Base.extend(LetItBe)
+ActionController::Base.extend(DecentExposure)

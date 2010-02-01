@@ -4,17 +4,17 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{let-it-be}
+  s.name = %q{decent_exposure}
   s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stephen Caudill", "Jon Larkowski"]
-  s.date = %q{2010-01-23}
+  s.date = %q{2010-01-31}
   s.description = %q{
-      LetItBe helps you program to an interface, rather than an implementation
+      DecentExposure helps you program to an interface, rather than an implementation
       in your Rails controllers.  The fact of the matter is that sharing state
       via instance variables in controllers promotes close coupling with views.
-      LetItBe gives you a declarative manner of exposing an interface to the
+      DecentExposure gives you a declarative manner of exposing an interface to the
       state that controllers contain and thereby decreasing coupling and
       improving your testability and overall design.
     }
@@ -26,17 +26,17 @@ Gem::Specification.new do |s|
     "COPYING",
      "README.md",
      "VERSION",
-     "lib/let_it_be.rb",
+     "lib/decent_exposure.rb",
      "rails/init.rb"
   ]
-  s.homepage = %q{http://github.com/voxdolo/let-it-be}
+  s.homepage = %q{http://github.com/voxdolo/decent_exposure}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.5}
   s.summary = %q{A helper for creating declarative interfaces in controllers}
   s.test_files = [
     "spec/helper.rb",
-     "spec/lib/let_it_be_spec.rb"
+     "spec/lib/decent_exposure_spec.rb"
   ]
 
   if s.respond_to? :specification_version then

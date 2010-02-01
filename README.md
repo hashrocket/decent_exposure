@@ -1,26 +1,26 @@
-LetItBe
-=======
+DecentExposure
+==============
 
 _Copying over instance variables is bad, mmm-kay?_
 
-LetItBe helps you program to an interface, rather than an implementation in
+DecentExposure helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
 Sharing state via instance variables in controllers promotes close coupling with
-views. LetItBe gives you a declarative manner of exposing an interface to the
+views. DecentExposure gives you a declarative manner of exposing an interface to the
 state that controllers contain, thereby decreasing coupling and improving your
 testability and overall design.
 
 Installation
 ------------
 
-    gem install let-it-be
+    gem install decent_exposure
 
 Configure your application to use it:
 
 In `config/environment.rb`:
 
-    config.gem 'let-it-be', :lib => 'let_it_be'
+    config.gem 'decent_exposure'
 
 The Particulars
 ---------------
@@ -91,7 +91,7 @@ Development
 
 ### Running specs
 
-`LetItBe` has been developed with the philosophy that Ruby developers shouldn't
+`DecentExposure` has been developed with the philosophy that Ruby developers shouldn't
 force their choice in RubyGems package managers on people consuming their code.
 As a side effect of that, if you attempt to run the specs on this application,
 you might get `no such file to load` errors.  The short answer is that you can

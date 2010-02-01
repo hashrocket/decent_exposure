@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'helper')
 
 class Quacker
-  extend LetItBe
+  extend DecentExposure
   def self.helper_method(*args); end
   def self.hide_action(*args); end
   def self.find(*args); end
@@ -11,8 +11,8 @@ class Quacker
   let(:quack){ memoizable('quack!') }
 end
 
-describe LetItBe do
-  context "classes extending LetItBe" do
+describe DecentExposure do
+  context "classes extending DecentExposure" do
     it "respond to :let" do
       Quacker.respond_to?(:let).should be_true
     end
