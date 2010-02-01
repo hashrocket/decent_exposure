@@ -25,7 +25,7 @@ In `config/environment.rb`:
 The Particulars
 ---------------
 
-`let` creates a method with the given name, evaluates the provided block (or
+`expose` creates a method with the given name, evaluates the provided block (or
 intuits a value when no block is passed) and memoizes the result. This method is
 then declared as a `helper_method` so that views may have access to it and is
 made unroutable as an action.
@@ -35,11 +35,11 @@ Examples
 
 ### In your controllers
 
-When no block is given, `let` attempts to intuit which resource you want to
+When no block is given, `expose` attempts to intuit which resource you want to
 acquire:
 
     # Category.find(params[:category_id] || params[:id])
-    let(:category)
+    expose(:category)
 
 As the example shows, the symbol passed is used to guess the class name of the
 object you want an instance of. Almost every controller has one of these. In the
@@ -49,7 +49,7 @@ or `#destroy`.
 In the slightly more complicated scenario, you need to find an instance of an
 object which doesn't map cleanly to `Object#find`:
 
-    let(:product){ category.products.find(params[:id]) }
+    expose(:product){ category.products.find(params[:id]) }
 
 In the RESTful controller paradigm, you'll again find yourself using this in
 `#show`, `#edit`, `#update` or `#destroy`.
@@ -57,7 +57,7 @@ In the RESTful controller paradigm, you'll again find yourself using this in
 When the code has become complex enough to surpass a single line (and is not
 appropriate to extract into a model method), use the `do...end` style of block:
 
-    let(:associated_products) do
+    expose(:associated_products) do
       product.associated.tap do |associated_products|
         present(associated_products, :with => AssociatedProductPresenter)
       end
