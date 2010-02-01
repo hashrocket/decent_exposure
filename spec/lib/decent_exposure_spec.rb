@@ -52,10 +52,10 @@ describe DecentExposure do
 
     context "when no block is given" do
       before do
-        instance.stubs(:__class_for__).returns(Quacker)
+        instance.stubs(:_class_for).returns(Quacker)
       end
       it "attempts to guess the class of the resource to expose" do
-        instance.expects(:__class_for__).with(:proxy).returns(Quacker)
+        instance.expects(:_class_for).with(:proxy).returns(Quacker)
         instance.proxy
       end
       it "calls find with {resource}_id on the resources class" do
@@ -76,7 +76,7 @@ describe DecentExposure do
     end
   end
 
-  describe '#__class_for__' do
+  describe '#_class_for' do
     let(:name){ 'quacker' }
     let(:classified_name){ 'Quacker' }
     before do
@@ -85,11 +85,11 @@ describe DecentExposure do
     end
     it 'retrieves a string representation of the class name' do
       name.expects(:classify).returns(classified_name)
-      Quacker.send(:__class_for__,name)
+      Quacker.send(:_class_for,name)
     end
     it 'returns the string representation of the name as a constant' do
       classified_name.expects(:constantize)
-      Quacker.send(:__class_for__,name)
+      Quacker.send(:_class_for,name)
     end
   end
 end
