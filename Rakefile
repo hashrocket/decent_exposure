@@ -25,6 +25,7 @@ begin
     gemspec.homepage = "http://github.com/voxdolo/decent_exposure"
     gemspec.authors = ["Stephen Caudill", "Jon Larkowski"]
     gemspec.add_development_dependency "rspec", ">= 1.2.9"
+    gemspec.add_development_dependency "mocha", ">= 0.9.8"
     gemspec.files = FileList[*%w(lib/**/* VERSION COPYING README.md rails/init.rb)]
   end
   Jeweler::GemcutterTasks.new
