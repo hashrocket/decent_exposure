@@ -76,6 +76,30 @@ other method you might normally have access to:
       - associated_products.each do |associated_product|
       %li= link_to(associated_product.title,product_path(associated_product))
 
+### Custom defaults
+
+DecentExposure provides opinionated default logic when `expose` is invoked without
+a block. It's possible, however, to override this with your own custom default
+logic by passing a block accepting a single argument to the `default_exposure`
+method inside of a controller. The argument will be the string or symbol passed
+in to the `expose` call.
+
+    class MyController < ApplicationController
+      default_exposure do |name|
+        ObjectCache.load(name.to_s)
+      end
+    end
+
+The given block will be invoked in the context of a controller instance. It is
+possible to provide a custom default for a descendant class without disturbing
+its ancestor classes in an inheritance heirachy.
+
+**Caveat**: Note that the simplest way to provide custom default `expose` logic
+for all of your controllers is to invoke `default_exposure` inside of
+`ApplicationController`. Due to the order of Rails' initialization logic,
+attempts to invoke it in `ActionController::Base` will have no affect. Use an
+initializer if you need this behavior.
+
 Beware
 ------
 

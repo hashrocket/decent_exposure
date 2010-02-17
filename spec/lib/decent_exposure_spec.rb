@@ -4,11 +4,28 @@ class Quacker
   extend DecentExposure
   def self.helper_method(*args); end
   def self.hide_action(*args); end
-  def self.find(*args); end
   def memoizable(*args); args; end
-  def params; {'proxy_id' => 42}; end
   expose(:proxy)
-  expose(:quack){ memoizable('quack!') }
+end
+
+module ActionController
+  class Base
+    def self.helper_method(*args); end
+    def self.hide_action(*args); end
+    def params; {'resource_id' => 42}; end
+  end
+end
+require File.join(File.dirname(__FILE__), '..', '..', 'rails', 'init.rb')
+
+class MyController < ActionController::Base
+end
+
+class Resource
+  def self.find(*args); end
+end
+
+class Widget
+  def self.find(*args); end
 end
 
 describe DecentExposure do
@@ -22,7 +39,7 @@ describe DecentExposure do
     let(:instance){ Quacker.new }
 
     it "creates a method with the given name" do
-      Quacker.new.methods.map{|m| m.to_s}.should include('quack')
+      Quacker.new.methods.map{|m| m.to_s}.should include('proxy')
     end
 
     it "prevents the method from being a callable action" do
@@ -40,7 +57,12 @@ describe DecentExposure do
       end
     end
 
-    it "returns the value of the method" do
+    it "returns the result of the exposed block from the method" do
+      Quacker.stubs(:hide_action)
+      Quacker.stubs(:helper_method)
+      Quacker.class_eval do
+        expose(:quack){ memoizable('quack!') }
+      end
       instance.quack.should == %w(quack!)
     end
 
@@ -50,46 +72,103 @@ describe DecentExposure do
       instance.quack
     end
 
-    context "when no block is given" do
-      before do
-        instance.stubs(:_class_for).returns(Quacker)
-      end
-      it "attempts to guess the class of the resource to expose" do
-        instance.expects(:_class_for).with(:proxy).returns(Quacker)
-        instance.proxy
-      end
-      it "calls find with {resource}_id on the resources class" do
-        Quacker.expects(:find).with(42)
-        instance.proxy
-      end
-      context "and there is no {resource}_id" do
-        before do
-          Quacker.class_eval do
-            def params; {'id' => 24}; end
-          end
+    context "when specifying custom default behavior" do
+      before(:all) do
+        class ::DuckController
+          extend DecentExposure
+          def self.helper_method(*args); end
+          def self.hide_action(*args); end
+          def params; end
+          default_exposure {"default value"}
+          expose(:quack)
         end
-        it "calls find with params[:id] on the resources class" do
-          Quacker.expects(:find).with(24)
-          instance.proxy
+      end
+
+      it "uses that behavior when no block is given" do
+        DuckController.new.quack.should == "default value"
+      end
+
+      it "passes the name given to #expose into the block" do
+        DuckController.class_eval do
+          default_exposure {|name| "downy #{name}"}
+          expose :feathers
         end
+        DuckController.new.feathers.should == "downy feathers"
       end
     end
   end
 
-  describe '#_class_for' do
-    let(:name){ 'quacker' }
-    let(:classified_name){ 'Quacker' }
+  context "within Rails" do
+    let(:controller) {ActionController::Base.new}
+
+    let(:resource){ 'resource' }
+    let(:resource_class_name){ 'Resource' }
     before do
-      name.stubs(:to_s => name, :classify => classified_name)
-      classified_name.stubs(:constantize => Quacker)
+      resource.stubs(:to_s => resource, :classify => resource_class_name)
+      resource_class_name.stubs(:constantize => Resource)
     end
-    it 'retrieves a string representation of the class name' do
-      name.expects(:classify).returns(classified_name)
-      Quacker.send(:_class_for,name)
+
+    it "extends ActionController::Base" do
+      ActionController::Base.respond_to?(:expose).should == true
     end
-    it 'returns the string representation of the name as a constant' do
-      classified_name.expects(:constantize)
-      Quacker.send(:_class_for,name)
+
+    context "by default" do
+      it "calls find with params[:resource_id] on the resource's class" do
+        name = resource
+        Resource.expects(:find).with(42)
+        ActionController::Base.class_eval do
+          expose name
+        end
+        controller.resource
+      end
+      context "or, when there is no :resource_id in params" do
+        before do
+          ActionController::Base.class_eval do
+            def params; {'id' => 24}; end
+          end
+        end
+        it "calls find with params[:id] on the resource's class" do
+          Resource.expects(:find).with(24)
+          controller.resource
+        end
+      end
+    end
+
+    let(:widget){ 'widget' }
+    let(:widget_class_name){ 'Widget' }
+    before do
+      widget.stubs(:to_s => widget, :classify => widget_class_name)
+      widget_class_name.stubs(:constantize => Widget)
+    end
+
+    let(:my_controller) {MyController.new}
+
+    it "works in descendant controllers" do
+      name = widget
+      Widget.expects(:find).with(123).returns('a widget')
+      MyController.class_eval do
+        def params; {'id' => 123} end
+        expose name
+      end
+
+      my_controller.widget.should == 'a widget'
+    end
+
+    it "allows overridden default in descendant controllers" do
+      MyController.class_eval do
+        default_exposure {|name| name.to_s}
+        expose :overridden
+      end
+      my_controller.overridden.should == 'overridden'
+    end
+
+    it "preserves default in ancestors" do
+      name = widget
+      Widget.stubs(:find).returns('preserved')
+      ActionController::Base.class_eval do
+        expose name
+      end
+      controller.widget.should == 'preserved'
     end
   end
 end
