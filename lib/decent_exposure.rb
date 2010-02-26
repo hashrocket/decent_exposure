@@ -6,9 +6,11 @@ module DecentExposure
     end
   end
 
+  attr_accessor :_default_exposure
+
   def default_exposure(&block)
-    @default_exposure = block if block_given?
-    @default_exposure
+    self._default_exposure = block if block_given?
+    _default_exposure
   end
 
   def expose(name, &block)

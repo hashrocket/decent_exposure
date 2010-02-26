@@ -12,6 +12,7 @@ module ActionController
   class Base
     def self.helper_method(*args); end
     def self.hide_action(*args); end
+    def self.superclass_delegating_accessor(*args); end
     def params; {'resource_id' => 42}; end
   end
 end
