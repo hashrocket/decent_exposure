@@ -4,6 +4,7 @@ module DecentExposure
     klass.class_eval do
       default_exposure(&closured_exposure)
     end
+    super
   end
 
   attr_accessor :_default_exposure
