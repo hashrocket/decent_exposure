@@ -16,11 +16,18 @@ Installation
 
     gem install decent_exposure
 
-Configure your application to use it:
+Configure your Rails 2.X application to use it:
 
 In `config/environment.rb`:
 
     config.gem 'decent_exposure'
+
+When used in Rails 3, you must require the Railtie initializer:
+
+In `Gemfile`:
+
+    gem 'decent_exposure', :require => ['decent_exposure', 'decent_exposure/railtie']
+
 
 The Particulars
 ---------------
@@ -93,12 +100,6 @@ in to the `expose` call.
 The given block will be invoked in the context of a controller instance. It is
 possible to provide a custom default for a descendant class without disturbing
 its ancestor classes in an inheritance heirachy.
-
-**Caveat**: Note that the simplest way to provide custom default `expose` logic
-for all of your controllers is to invoke `default_exposure` inside of
-`ApplicationController`. Due to the order of Rails' initialization logic,
-attempts to invoke it in `ActionController::Base` will have no affect. Use an
-initializer if you need this behavior.
 
 Beware
 ------
