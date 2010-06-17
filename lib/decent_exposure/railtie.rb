@@ -1,7 +1,5 @@
 module DecentExposure
   class Railtie < Rails::Railtie
-    railtie_name :decent_exposure
-
     initializer "decent_exposure.extend_action_controller_base" do |app|
       ActionController::Base.class_eval do
         extend DecentExposure
