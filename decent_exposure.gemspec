@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{decent_exposure}
-  s.version = "0.2.3"
+  s.version = "0.2.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stephen Caudill", "Jon Larkowski"]
-  s.date = %q{2010-04-10}
+  s.date = %q{2010-07-01}
   s.description = %q{
       DecentExposure helps you program to an interface, rather than an implementation
       in your Rails controllers.  The fact of the matter is that sharing state
