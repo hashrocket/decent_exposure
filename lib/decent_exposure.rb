@@ -1,3 +1,5 @@
+require 'decent_exposure/railtie'
+
 module DecentExposure
   def inherited(klass)
     closured_exposure = default_exposure

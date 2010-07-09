@@ -22,11 +22,11 @@ In `config/environment.rb`:
 
     config.gem 'decent_exposure'
 
-When used in Rails 3, you must require the Railtie initializer:
+When used in Rails 3:
 
 In `Gemfile`:
 
-    gem 'decent_exposure', :require => ['decent_exposure', 'decent_exposure/railtie']
+    gem 'decent_exposure'
 
 
 The Particulars
