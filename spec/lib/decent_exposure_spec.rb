@@ -1,4 +1,6 @@
+require 'action_controller'
 require File.join(File.dirname(__FILE__), '..', 'helper')
+require File.join(File.dirname(__FILE__), '..', '..', 'rails', 'init.rb')
 
 class Quacker
   extend DecentExposure
@@ -8,26 +10,13 @@ class Quacker
   expose(:proxy)
 end
 
-module ActionController
-  class Base
-    def self.helper_method(*args); end
-    def self.hide_action(*args); end
-    def self.superclass_delegating_accessor(*args); end
-    def params; {'resource_id' => 42}; end
-  end
-end
-require File.join(File.dirname(__FILE__), '..', '..', 'rails', 'init.rb')
-
-class MyController < ActionController::Base
+ActionController::Base.class_eval do
+  def params; {'resource_id' => 42}; end
 end
 
-class Resource
-  def self.find(*args); end
-end
+class ResourceController < ActionController::Base; end
 
-class Widget
-  def self.find(*args); end
-end
+class Resource; end
 
 describe DecentExposure do
   context "classes extending DecentExposure" do
@@ -73,41 +62,27 @@ describe DecentExposure do
       instance.quack
     end
 
-    context "when specifying custom default behavior" do
-      before(:all) do
-        class ::DuckController
-          extend DecentExposure
-          def self.helper_method(*args); end
-          def self.hide_action(*args); end
-          def params; end
-          default_exposure {"default value"}
-          expose(:quack)
+    context "customizing the default exposure" do
+      it "uses the given default_exposure" do
+        ResourceController.class_eval do
+          default_exposure { 'default value' }
+          expose :resource
         end
+        ResourceController.new.resource.should == "default value"
       end
 
-      it "uses that behavior when no block is given" do
-        DuckController.new.quack.should == "default value"
-      end
-
-      it "passes the name given to #expose into the block" do
-        DuckController.class_eval do
-          default_exposure {|name| "downy #{name}"}
-          expose :feathers
+      it "uses arguments that are passed to the default_exposure" do
+        ResourceController.class_eval do
+          default_exposure {|name| "many #{name}"}
+          expose :resources
         end
-        DuckController.new.feathers.should == "downy feathers"
+        ResourceController.new.resources.should == "many resources"
       end
     end
   end
 
   context "within Rails" do
-    let(:controller) {ActionController::Base.new}
-
-    let(:resource){ 'resource' }
-    let(:resource_class_name){ 'Resource' }
-    before do
-      resource.stubs(:to_s => resource, :classify => resource_class_name)
-      resource_class_name.stubs(:constantize => Resource)
-    end
+    let(:controller) { ActionController::Base.new }
 
     it "extends ActionController::Base" do
       ActionController::Base.respond_to?(:expose).should == true
@@ -115,10 +90,9 @@ describe DecentExposure do
 
     context "by default" do
       it "calls find with params[:resource_id] on the resource's class" do
-        name = resource
         Resource.expects(:find).with(42)
         ActionController::Base.class_eval do
-          expose name
+          expose 'resource'
         end
         controller.resource
       end
@@ -135,41 +109,29 @@ describe DecentExposure do
       end
     end
 
-    let(:widget){ 'widget' }
-    let(:widget_class_name){ 'Widget' }
-    before do
-      widget.stubs(:to_s => widget, :classify => widget_class_name)
-      widget_class_name.stubs(:constantize => Widget)
-    end
+    context "within descendant controllers" do
+      let(:my_controller) {ResourceController.new}
 
-    let(:my_controller) {MyController.new}
-
-    it "works in descendant controllers" do
-      name = widget
-      Widget.expects(:find).with(123).returns('a widget')
-      MyController.class_eval do
-        def params; {'id' => 123} end
-        expose name
+      it "inherits the default exposure" do
+        ResourceController.class_eval { expose :resources }
+        my_controller.resources.should == 'many resources'
       end
 
-      my_controller.widget.should == 'a widget'
-    end
-
-    it "allows overridden default in descendant controllers" do
-      MyController.class_eval do
-        default_exposure {|name| name.to_s}
-        expose :overridden
+      it "allows overridden default in descendant controllers" do
+        ResourceController.class_eval do
+          default_exposure {|name| name.to_s}
+          expose :overridden
+        end
+        my_controller.overridden.should == 'overridden'
       end
-      my_controller.overridden.should == 'overridden'
-    end
 
-    it "preserves default in ancestors" do
-      name = widget
-      Widget.stubs(:find).returns('preserved')
-      ActionController::Base.class_eval do
-        expose name
+      it "preserves default in ancestors" do
+        Resource.stubs(:find).returns('preserved')
+        ActionController::Base.class_eval do
+          expose :resource
+        end
+        controller.resource.should == 'preserved'
       end
-      controller.widget.should == 'preserved'
     end
   end
 end
