@@ -21,7 +21,7 @@ describe DecentExposure do
 
     it 'creates a method with the given name' do
       Controller.class_eval { expose(:my_resource) }
-      instance.methods.map{ |m| m.to_s }.should include('my_resource')
+      instance.methods.should include('my_resource')
     end
 
     it 'prevents the method from being a callable action' do
