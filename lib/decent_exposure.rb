@@ -29,5 +29,4 @@ module DecentExposure
     helper_method name
     hide_action name
   end
-  alias let expose
 end
