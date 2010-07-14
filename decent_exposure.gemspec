@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{decent_exposure}
-  s.version = "0.2.4"
+  s.version = "1.0.0.rc1"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Stephen Caudill", "Jon Larkowski"]
-  s.date = %q{2010-07-01}
+  s.date = %q{2010-07-15}
   s.description = %q{
       DecentExposure helps you program to an interface, rather than an implementation
       in your Rails controllers.  The fact of the matter is that sharing state
@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "README.md",
      "VERSION",
      "lib/decent_exposure.rb",
+     "lib/decent_exposure/default_exposure.rb",
      "lib/decent_exposure/railtie.rb",
      "rails/init.rb"
   ]
@@ -37,7 +38,8 @@ Gem::Specification.new do |s|
   s.summary = %q{A helper for creating declarative interfaces in controllers}
   s.test_files = [
     "spec/helper.rb",
-     "spec/lib/decent_exposure_spec.rb"
+     "spec/lib/decent_exposure_spec.rb",
+     "spec/lib/rails_integration_spec.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -47,13 +49,16 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_development_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_development_dependency(%q<mocha>, [">= 0.9.8"])
+      s.add_development_dependency(%q<actionpack>, [">= 0"])
     else
       s.add_dependency(%q<rspec>, [">= 1.2.9"])
       s.add_dependency(%q<mocha>, [">= 0.9.8"])
+      s.add_dependency(%q<actionpack>, [">= 0"])
     end
   else
     s.add_dependency(%q<rspec>, [">= 1.2.9"])
     s.add_dependency(%q<mocha>, [">= 0.9.8"])
+    s.add_dependency(%q<actionpack>, [">= 0"])
   end
 end
 
