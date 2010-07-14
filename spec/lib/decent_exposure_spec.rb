@@ -1,13 +1,12 @@
 require 'helper'
 
 describe DecentExposure do
-  before do
-    class Controller
-      extend DecentExposure
-      def self.helper_method(*args); end
-      def self.hide_action(*args); end
-      def memoizable(arg); arg; end
-    end
+
+  class Controller
+    extend DecentExposure
+    def self.helper_method(*args); end
+    def self.hide_action(*args); end
+    def memoizable(arg); arg; end
   end
 
   context 'classes extending DecentExposure' do
@@ -17,55 +16,62 @@ describe DecentExposure do
   end
 
   context '.expose' do
-    let(:instance) { Controller.new }
+    let(:controller) { Class.new(Controller){ expose(:resource) } }
+    let(:instance) { controller.new }
 
     it 'creates a method with the given name' do
-      Controller.class_eval { expose(:my_resource) }
-      instance.methods.should include('my_resource')
+      instance.methods.should include('resource')
     end
 
     it 'prevents the method from being a callable action' do
-      Controller.expects(:hide_action).with(:blerg)
-      Controller.class_eval { expose(:blerg) }
+      controller.expects(:hide_action).with(:resources)
+      controller.class_eval { expose(:resources) }
     end
 
     it 'declares the method as a helper method' do
-      Controller.expects(:helper_method).with(:blarg)
-      Controller.class_eval { expose(:blarg) }
+      controller.expects(:helper_method).with(:resources)
+      controller.class_eval { expose(:resources) }
     end
 
-    it 'returns the result of the exposed block from the method' do
-      Controller.class_eval do
-        expose(:resource) { memoizable("I'm a resource!") }
+    context 'custom exposures' do
+      before do
+        controller.class_eval do
+          expose(:resource) { memoizable("I'm a resource!") }
+        end
       end
-      instance.resource.should == "I'm a resource!"
-    end
 
-    it 'memoizes the value of the created method' do
-      instance.expects(:memoizable).once.returns('value')
-      2.times { instance.resource }
+      it 'returns the result of the exposed block from the method' do
+        instance.resource.should == "I'm a resource!"
+      end
+
+      it 'memoizes the value of the created method' do
+        instance.expects(:memoizable).once.returns('value')
+        2.times { instance.resource }
+      end
     end
 
     context '.default_exposure' do
+      let(:defaulted_controller) { Class.new(Controller) }
+      let(:instance) { defaulted_controller.new }
       context 'when the default_exposure is overridden' do
         before do
-          Controller.class_eval do
+          defaulted_controller.class_eval do
             default_exposure { 'default value' }
-            expose :resource
+            expose(:default)
           end
         end
         it 'uses the overridden default_exposure' do
-          instance.resource.should == 'default value'
+          instance.default.should == 'default value'
         end
       end
 
       context 'with named arguments' do
         it 'makes the named arguments available' do
-          Controller.class_eval do
-            default_exposure {|name| "I gots me an #{name}"}
-            expose :other_resource
+          defaulted_controller.class_eval do
+            default_exposure {|name| "I got: '#{name}'"}
+            expose :default
           end
-          instance.other_resource.should == 'I gots me an other_resource'
+          instance.default.should == "I got: 'default'"
         end
       end
     end
