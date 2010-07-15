@@ -1,7 +1,7 @@
 require 'helper'
 require 'action_controller'
-
-require File.join(File.dirname(__FILE__), '..', '..', 'rails', 'init.rb')
+require 'decent_exposure/railtie'
+DecentExposure::Railtie.insert
 
 class Resource
   def self.scoped(opts); self; end
