@@ -41,12 +41,26 @@ describe "Rails' integration:", DecentExposure do
     end
 
     context 'when a collection method exists' do
-      before do
-        def instance.resources; end
+      let(:controller){ Class.new(ActionController::Base) }
+      let(:instance){ controller.new }
+      before { class Person < Resource; end }
+      context 'and the collection can be scoped' do
+        let(:collection){ mock(:scoped => [self]) }
+        before{ controller.expose(:person) }
+        it 'uses the existing collection method' do
+          instance.stubs(:people).returns(collection)
+          collection.expects(:new)
+          instance.person
+        end
       end
-      it 'uses the existing collection method' do
-        instance.expects(:resources).returns(Resource)
-        instance.resource
+      context 'when the collection can not be scoped' do
+        let(:collection){ mock }
+        before{ controller.expose(:person) }
+        it 'falls back to the singularized constant' do
+          instance.stubs(:people).returns(collection)
+          Person.expects(:new)
+          instance.person
+        end
       end
     end
 

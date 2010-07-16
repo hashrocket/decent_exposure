@@ -4,23 +4,30 @@ module DecentExposure
       klass.extend(DecentExposure)
       klass.superclass_delegating_accessor(:_default_exposure)
       klass.default_exposure do |name|
-        self._designation = name.to_s.pluralize
+        self._resource_name = name.to_s
         if id = params["#{name}_id"] || params[:id]
-          _collection.find(id).tap do |r|
+          _proxy.find(id).tap do |r|
             r.attributes = params[name] unless request.get?
           end
         else
-          _collection.new(params[name])
+          _proxy.new(params[name])
         end
       end
     end
 
     private
-    attr_accessor :_designation
-    attr_writer :_collection_name
+    attr_accessor :_resource_name
+
+    def _resource_class
+      _resource_name.classify.constantize
+    end
 
     def _collection_name
-      @_collection_name || _designation
+      _resource_name.pluralize
+    end
+
+    def _proxy
+      _collection.respond_to?(:scoped) ? _collection : _resource_class
     end
 
     def _collection
