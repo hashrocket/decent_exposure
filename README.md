@@ -29,37 +29,57 @@ In `Gemfile`:
     gem 'decent_exposure'
 
 
-The Particulars
----------------
-
-`expose` creates a method with the given name, evaluates the provided block (or
-intuits a value when no block is passed) and memoizes the result. This method is
-then declared as a `helper_method` so that views may have access to it and is
-made unroutable as an action.
-
 Examples
 --------
 
 ### In your controllers
 
-When no block is given, `expose` attempts to intuit which resource you want to
-acquire:
+When no block is given, `expose` attempts to determine which resource you want
+to acquire. When `params` contains `:category_id` or `:id`, a call to:
 
-    # Category.find(params[:category_id] || params[:id])
     expose(:category)
 
+Would result in the following `ActiveRecord#find`:
+
+    Category.find(params[:category_id]||params[:id])
+
 As the example shows, the symbol passed is used to guess the class name of the
-object you want an instance of. Almost every controller has one of these. In the
-RESTful controller paradigm, you might use this in `#show`, `#edit`, `#update`
-or `#destroy`.
+object (and potentially the `params` key to find it with) you want an instance
+of.
 
-In the slightly more complicated scenario, you need to find an instance of an
-object which doesn't map cleanly to `Object#find`:
+Should `params` not contain an identifiable `id`, a call to:
 
-    expose(:product){ category.products.find(params[:id]) }
+    expose(:category)
 
-In the RESTful controller paradigm, you'll again find yourself using this in
-`#show`, `#edit`, `#update` or `#destroy`.
+Will instead attempt to build a new instance of the object like so:
+
+    Category.new(params[:category])
+
+If you define a collection with a pluralized name of the singular resource,
+`decent_exposure` will attempt to use it to scope its calls from. Let's take the
+following scenario:
+
+    class ProductsController < ApplicationController
+      expose(:category)
+      expose(:products) { category.products }
+      expose(:product)
+    end
+
+The `product` resource would scope from the `products` collection via a
+fully-expanded query equivalent to this:
+
+    Category.find(params[:category_id]).products.find(params[:id])
+
+or (depending on the contents of the `params` hash) this:
+
+    Category.find(params[:category_id]).products.new(params[:product])
+
+In the straightforward case, the three exposed resources above provide for
+access to both the primary and ancestor resources in a way usable across all 7
+actions in a typicall Rails-style RESTful controller.
+
+
+#### A Note on Style
 
 When the code has become complex enough to surpass a single line (and is not
 appropriate to extract into a model method), use the `do...end` style of block:
@@ -86,10 +106,10 @@ other method you might normally have access to:
 ### Custom defaults
 
 DecentExposure provides opinionated default logic when `expose` is invoked without
-a block. It's possible, however, to override this with your own custom default
-logic by passing a block accepting a single argument to the `default_exposure`
-method inside of a controller. The argument will be the string or symbol passed
-in to the `expose` call.
+a block. It's possible, however, to override this with custom default logic by
+passing a block accepting a single argument to the `default_exposure` method
+inside of a controller. The argument will be the string or symbol passed in to
+the `expose` call.
 
     class MyController < ApplicationController
       default_exposure do |name|
@@ -104,11 +124,11 @@ its ancestor classes in an inheritance heirachy.
 Beware
 ------
 
-This is an exceptionally simple tool, which provides a solitary solution. It
-must be used in conjunction with solid design approaches ("Program to an
-interface, not an implementation.") and accepted best practices (e.g. Fat Model,
-Skinny Controller). In itself, it won't heal a bad design. It is meant only to
-be a tool to use in improving the overall design of a Ruby on Rails system and
+This is a simple tool, which provides a solitary solution. It must be used in
+conjunction with solid design approaches ("Program to an interface, not an
+implementation.") and accepted best practices (e.g. Fat Model, Skinny
+Controller). In itself, it won't heal a bad design. It is meant only to be a
+tool to use in improving the overall design of a Ruby on Rails system and
 moreover to provide a standard implementation for an emerging best practice.
 
 Development
@@ -124,8 +144,3 @@ you might get `no such file to load` errors.  The short answer is that you can
 Ryan Tomayko's [excellent
 treatise](http://tomayko.com/writings/require-rubygems-antipattern) on the
 subject).
-
-### Documentation TODO
-
-* walk-through of an actual implementation (using an existing, popular OSS Rails
-app as an example refactor).
