@@ -1,8 +1,6 @@
 DecentExposure
 ==============
 
-_Copying over instance variables is bad, mmm-kay?_
-
 DecentExposure helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
@@ -31,6 +29,11 @@ In `Gemfile`:
 
 Examples
 --------
+
+### A full example
+
+The wiki has a full example of [converting a classic-style Rails
+controller][converting].
 
 ### In your controllers
 
@@ -77,7 +80,6 @@ or (depending on the contents of the `params` hash) this:
 In the straightforward case, the three exposed resources above provide for
 access to both the primary and ancestor resources in a way usable across all 7
 actions in a typicall Rails-style RESTful controller.
-
 
 #### A Note on Style
 
@@ -141,6 +143,7 @@ force their choice in RubyGems package managers on people consuming their code.
 As a side effect of that, if you attempt to run the specs on this application,
 you might get `no such file to load` errors.  The short answer is that you can
 `export RUBYOPT='rubygems'` and be on about your way (for the long answer, see
-Ryan Tomayko's [excellent
-treatise](http://tomayko.com/writings/require-rubygems-antipattern) on the
-subject).
+Ryan Tomayko's [excellent treatise][treatise] on the subject).
+
+[treatise]: http://tomayko.com/writings/require-rubygems-antipattern
+[converting]: http://github.com/voxdolo/decent_exposure/wiki/Examples
