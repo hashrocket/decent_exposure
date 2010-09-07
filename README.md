@@ -1,11 +1,11 @@
-DecentExposure
+`decent_exposure`
 ==============
 
-DecentExposure helps you program to an interface, rather than an implementation in
+`decent_exposure` helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
 Sharing state via instance variables in controllers promotes close coupling with
-views. DecentExposure gives you a declarative manner of exposing an interface to the
+views. `decent_exposure` gives you a declarative manner of exposing an interface to the
 state that controllers contain, thereby decreasing coupling and improving your
 testability and overall design.
 
@@ -107,7 +107,7 @@ other method you might normally have access to:
 
 ### Custom defaults
 
-DecentExposure provides opinionated default logic when `expose` is invoked without
+`decent_exposure` provides opinionated default logic when `expose` is invoked without
 a block. It's possible, however, to override this with custom default logic by
 passing a block accepting a single argument to the `default_exposure` method
 inside of a controller. The argument will be the string or symbol passed in to
@@ -138,7 +138,7 @@ Development
 
 ### Running specs
 
-`DecentExposure` has been developed with the philosophy that Ruby developers shouldn't
+`decent_exposure` has been developed with the philosophy that Ruby developers shouldn't
 force their choice in RubyGems package managers on people consuming their code.
 As a side effect of that, if you attempt to run the specs on this application,
 you might get `no such file to load` errors.  The short answer is that you can
