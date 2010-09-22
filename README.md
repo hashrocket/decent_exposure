@@ -1,13 +1,11 @@
-`decent_exposure`
-==============
-
 `decent_exposure` helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
 Sharing state via instance variables in controllers promotes close coupling with
 views. `decent_exposure` gives you a declarative manner of exposing an interface to the
 state that controllers contain, thereby decreasing coupling and improving your
-testability and overall design.
+testability and overall design. I elaborate on this approach in [A Diatribe on
+Maintaining State][diatribe].
 
 Installation
 ------------
@@ -147,3 +145,4 @@ Ryan Tomayko's [excellent treatise][treatise] on the subject).
 
 [treatise]: http://tomayko.com/writings/require-rubygems-antipattern
 [converting]: http://github.com/voxdolo/decent_exposure/wiki/Examples
+[diatribe]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
