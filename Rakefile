@@ -24,7 +24,7 @@ begin
     gemspec.email = "scaudill@gmail.com"
     gemspec.homepage = "http://github.com/voxdolo/decent_exposure"
     gemspec.authors = ["Stephen Caudill", "Jon Larkowski"]
-    gemspec.add_development_dependency "rspec", ">= 1.2.9"
+    gemspec.add_development_dependency "rspec", ">= 1.3.0"
     gemspec.add_development_dependency "mocha", ">= 0.9.8"
     gemspec.add_development_dependency "actionpack"
     gemspec.files = FileList[*%w(lib/**/* VERSION COPYING README.md rails/init.rb)]

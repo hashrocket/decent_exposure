@@ -20,7 +20,7 @@ describe DecentExposure do
     let(:instance) { controller.new }
 
     it 'creates a method with the given name' do
-      instance.methods.should include('resource')
+      instance.methods.should include(:resource)
     end
 
     it 'prevents the method from being a callable action' do
