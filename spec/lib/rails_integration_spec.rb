@@ -65,9 +65,9 @@ describe "Rails' integration:", DecentExposure do
     end
 
     context 'when no collection method exists' do
-      it 'creates a collection method to scope from' do
+      it 'operates directly on the class' do
+        Resource.should_receive(:find)
         instance.resource
-        instance.methods.should include(:resources)
       end
     end
 
