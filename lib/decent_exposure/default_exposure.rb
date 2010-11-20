@@ -27,7 +27,7 @@ module DecentExposure
     end
 
     def _proxy
-      _collection.respond_to?(:scoped) ? _collection : _resource_class
+      _collection_name.classify.constantize.respond_to?(:scoped) ? _collection : _resource_class
     end
 
     def _collection
