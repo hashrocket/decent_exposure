@@ -1,2 +1,1 @@
-require 'decent_exposure/railtie'
-DecentExposure::Railtie.insert
+Kernel.load File.join(File.dirname(__FILE__), '..', 'init.rb')
