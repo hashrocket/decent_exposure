@@ -9,6 +9,12 @@ class Resource
   def initialize(*args); end
 end
 
+class Equipment
+  def self.scoped(opts); self; end
+  def self.find(*args); end
+  def initialize(*args); end
+end
+
 describe "Rails' integration:", DecentExposure do
   let(:controller) { Class.new(ActionController::Base) }
   let(:instance) { controller.new }
@@ -125,6 +131,25 @@ describe "Rails' integration:", DecentExposure do
         Resource.expects(:new).with({:name => 'bob'})
         instance.resource
       end
+    end
+  end
+end
+describe "Rails' integration:", DecentExposure do
+  let(:controller) { Class.new(ActionController::Base) }
+  let(:instance) { controller.new }
+  let(:request) { mock(:get? => true) }
+  let(:params) { HashWithIndifferentAccess.new(:resource_id => 42) }
+
+  before do
+    controller.expose(:equipment)
+    instance.stubs(:request).returns(request)
+    instance.stubs(:params).returns(params)
+  end
+  context 'when collection name is same as resource name' do
+    it 'does not create a collection method' do
+      instance.equipment
+      instance.methods.should include(:equipment)
+      instance.methods.should_not include(:equipments)
     end
   end
 end

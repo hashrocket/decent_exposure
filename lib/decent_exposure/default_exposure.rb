@@ -5,7 +5,7 @@ module DecentExposure
       klass.superclass_delegating_accessor(:_default_exposure)
       klass.default_exposure do |name|
         collection = name.to_s.pluralize
-        if respond_to?(collection) && send(collection).respond_to?(:scoped)
+        if respond_to?(collection) && collection != name.to_s && send(collection).respond_to?(:scoped)
           proxy = send(collection)
         else
           proxy = name.to_s.classify.constantize
