@@ -1,5 +1,3 @@
-require 'decent_exposure/default_exposure'
-
 module DecentExposure
   if defined? Rails::Railtie
     class Railtie < Rails::Railtie
@@ -13,7 +11,11 @@ module DecentExposure
 
   class Railtie
     def self.insert
-      ActionController::Base.send(:include, DecentExposure::DefaultExposure)
+      ActionController::Base.class_eval do
+        extend DecentExposure
+        superclass_delegating_accessor(:_default_exposure)
+        self.default_exposure = DecentExposure::ActiveModel
+      end
     end
   end
 end
