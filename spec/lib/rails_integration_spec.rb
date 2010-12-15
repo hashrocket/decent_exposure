@@ -148,8 +148,8 @@ describe "Rails' integration:", DecentExposure do
   context 'when collection name is same as resource name' do
     it 'does not create a collection method' do
       instance.equipment
-      instance.methods.should include(:equipment)
-      instance.methods.should_not include(:equipments)
+      instance.should respond_to(:equipment)
+      instance.should_not respond_to(:equipments)
     end
   end
 end
