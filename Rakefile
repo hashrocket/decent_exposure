@@ -19,7 +19,7 @@ task :release => :build do
   puts "Pushing to Github..."
   system "git push --tags"
   puts "Pushing to rubygems.org..."
-  system "gem push mongoid-#{DecentExposure::VERSION}.gem"
+  system "gem push decent_exposure-#{DecentExposure::VERSION}.gem"
 end  
 
 require 'rspec/core/rake_task'
