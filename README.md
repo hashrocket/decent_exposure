@@ -146,3 +146,11 @@ Ryan Tomayko's [excellent treatise][treatise] on the subject).
 [treatise]: http://tomayko.com/writings/require-rubygems-antipattern
 [converting]: http://github.com/voxdolo/decent_exposure/wiki/Examples
 [diatribe]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
+
+Contributors
+------------
+
+Thanks to everyone that's helped out with `decent_exposure`! You can see a full
+list here:
+
+<http://github.com/voxdolo/decent_exposure/contributors>
