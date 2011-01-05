@@ -9,7 +9,7 @@ end
 
 desc 'Install built gem'
 task :install => :build do
-  system "sudo gem install decent_exposure-#{DecentExposure::VERSION}.gem"
+  system "gem install decent_exposure-#{DecentExposure::VERSION}.gem"
 end
 
 desc 'Automate tagging, pushing, and releasing gem'
@@ -20,7 +20,7 @@ task :release => :build do
   system "git push --tags"
   puts "Pushing to rubygems.org..."
   system "gem push decent_exposure-#{DecentExposure::VERSION}.gem"
-end  
+end
 
 require 'rspec/core/rake_task'
 
