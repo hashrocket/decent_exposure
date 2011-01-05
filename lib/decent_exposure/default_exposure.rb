@@ -2,7 +2,11 @@ module DecentExposure
   module DefaultExposure
     def self.included(klass)
       klass.extend(DecentExposure)
-      klass.superclass_delegating_accessor(:_default_exposure)
+      if klass.respond_to?(:class_attribute)
+        klass.class_attribute(:_default_exposure)
+      else
+        klass.superclass_delegating_accessor(:_default_exposure)
+      end
       klass.default_exposure do |name|
         collection = name.to_s.pluralize
         if respond_to?(collection) && collection != name.to_s && send(collection).respond_to?(:scoped)
