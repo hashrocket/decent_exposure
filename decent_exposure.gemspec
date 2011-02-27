@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.3.6'
 
-  s.files = Dir.glob("lib/**/*.rb") + %w(README.md COPYING)
+  s.files = Dir.glob("lib/**/*.rb") + %w(README.md COPYING init.rb rails/init.rb)
 
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
