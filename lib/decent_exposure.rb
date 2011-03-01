@@ -27,6 +27,6 @@ module DecentExposure
       end
     end
     helper_method name
-    hide_action name
+    hide_action name if self.ancestors.include?(ActionController::Base)
   end
 end
