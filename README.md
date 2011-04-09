@@ -28,6 +28,12 @@ In `Gemfile`:
 Examples
 --------
 
+### Railscast
+
+Ryan Bates has a Railscasts episode covering `decent_exposure`. If you're just
+getting started or just enjoy screencasts (Ryan's are always great), you can
+check it out here: [Railscasts - Decent Exposure][railscast].
+
 ### A full example
 
 The wiki has a full example of [converting a classic-style Rails
@@ -146,6 +152,7 @@ Ryan Tomayko's [excellent treatise][treatise] on the subject).
 [treatise]: http://tomayko.com/writings/require-rubygems-antipattern
 [converting]: http://github.com/voxdolo/decent_exposure/wiki/Examples
 [diatribe]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
+[railscast]: http://railscasts.com/episodes/259-decent-exposure
 
 Contributors
 ------------
