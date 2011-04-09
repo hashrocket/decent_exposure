@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
 
-  s.add_development_dependency 'rspec', '~> 2.3.0'
-  s.add_development_dependency 'mocha', '~> 0.9.8'
+  s.add_development_dependency 'rspec', '~> 2.5.0'
+  s.add_development_dependency 'mocha', '~> 0.9.12'
   s.add_development_dependency 'actionpack'
   s.add_development_dependency 'activesupport'
 end
