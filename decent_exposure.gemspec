@@ -30,6 +30,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec', '~> 2.5.0'
   s.add_development_dependency 'mocha', '~> 0.9.12'
+  s.add_development_dependency 'ruby-debug19', '~> 0.11.6'
   s.add_development_dependency 'actionpack'
   s.add_development_dependency 'activesupport'
 end
