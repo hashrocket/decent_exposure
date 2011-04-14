@@ -29,4 +29,9 @@ module DecentExposure
     helper_method name
     hide_action name
   end
+
+  def expose!(name, filter_options = {}, &block)
+    expose(name, &block)
+    before_filter name, filter_options
+  end
 end
