@@ -16,7 +16,8 @@ module DecentExposure
         end
 
         if id = params["#{name}_id"] || params[:id]
-          proxy.find(id).tap do |r|
+          find_method = if proxy.respond_to?(:from_param) then :from_param else :find end
+          proxy.send(find_method, id).tap do |r|
             r.attributes = params[name] unless request.get?
           end
         else

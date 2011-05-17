@@ -1,3 +1,5 @@
+FORK: This fork adds support for slugs (aka: permalinks) through `Object.from_param`. If the Object responds to `from_param` then that method will be used instead of `find`
+
 `decent_exposure` helps you program to an interface, rather than an implementation in
 your Rails controllers.
 
