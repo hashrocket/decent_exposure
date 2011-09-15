@@ -48,6 +48,11 @@ describe DecentExposure do
         instance.expects(:memoizable).once.returns('value')
         2.times { instance.resource }
       end
+
+      it 'returns the value of a similarly named instance variable' do
+        instance.instance_variable_set('@resource', "I'm an instance var!")
+        instance.resource.should == "I'm an instance var!"
+      end
     end
 
     context '.default_exposure' do

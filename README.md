@@ -85,6 +85,12 @@ In the straightforward case, the three exposed resources above provide for
 access to both the primary and ancestor resources in a way usable across all 7
 actions in a typicall Rails-style RESTful controller.
 
+You can also manually supply resources in a controller by setting an instance variable:
+
+  def index
+    @product = Product.find_by_slug!(params[:product_id])
+  end
+
 #### A Note on Style
 
 When the code has become complex enough to surpass a single line (and is not

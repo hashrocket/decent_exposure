@@ -19,12 +19,18 @@ module DecentExposure
   def expose(name, &block)
     closured_exposure = default_exposure
     define_method name do
-      @_resources       ||= {}
-      @_resources[name] ||= if block_given?
-        instance_eval(&block)
-      else
-        instance_exec(name, &closured_exposure)
+      resource = instance_variable_get("@#{name}")
+      if !resource
+        resource = if block_given?
+          instance_eval(&block)
+        else
+          instance_exec(name, &closured_exposure)
+        end
+
+        instance_variable_set "@#{name}", resource
       end
+
+      return resource
     end
     helper_method name
     hide_action name
