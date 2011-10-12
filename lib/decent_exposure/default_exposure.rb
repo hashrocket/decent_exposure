@@ -9,6 +9,7 @@ module DecentExposure
       end
       klass.default_exposure do |name|
         collection = name.to_s.pluralize
+        collection += "_collection" if name.to_s == collection
         if respond_to?(collection) && collection != name.to_s && send(collection).respond_to?(:scoped)
           proxy = send(collection)
         else
