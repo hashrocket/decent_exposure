@@ -105,6 +105,18 @@ describe "Rails' integration:", DecentExposure do
           instance.person
         end
       end
+
+      context 'appends _collection to uncountable collections' do
+        let(:collection){ mock(:scoped => [self]) }
+
+        before{ controller.expose(:sheep) }
+
+        it 'uses the existing collection method' do
+          instance.stubs(:sheep_collection).returns(collection)
+          collection.expects(:new)
+          instance.sheep
+        end
+      end
     end
 
     context 'when either :resource_id or :id are present in params' do
