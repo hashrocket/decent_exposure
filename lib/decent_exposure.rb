@@ -1,11 +1,12 @@
 require 'decent_exposure/railtie'
-
+require 'decent_exposure/instance_methods'
 module DecentExposure
   def inherited(klass)
     closured_exposure = default_exposure
     klass.class_eval do
       default_exposure(&closured_exposure)
     end
+    klass.send(:include, InstanceMethods)
     super
   end
 

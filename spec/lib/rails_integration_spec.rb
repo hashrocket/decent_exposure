@@ -132,6 +132,19 @@ describe "Rails' integration:", DecentExposure do
         instance.resource
       end
     end
+    
+    context "over_expose" do
+      
+      before do
+        instance.over_expose(:resource, "New value")
+      end
+      
+      it "should have set the return value for resource" do
+        instance.resource.should == "New value"
+      end
+      
+    end
+    
   end
 end
 describe "Rails' integration:", DecentExposure do
