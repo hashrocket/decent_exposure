@@ -1,13 +1,19 @@
+require 'decent_exposure/active_model'
+
 module DecentExposure
   class Exposure
     attr_reader :strategy
 
     def initialize(name)
-      @strategy = Proc.new if block_given?
+      @strategy = if block_given?
+                    Proc.new
+                  else
+                    ActiveModel.new(name)
+                  end
     end
 
-    def call
-      strategy.call
+    def call(*args)
+      strategy.call(*args)
     end
   end
 end

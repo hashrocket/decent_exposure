@@ -20,7 +20,7 @@ module DecentExposure
 
       define_method(name) do
         return _resources[name] if _resources.has_key?(name)
-        _resources[name] = exposure.call
+        _resources[name] = exposure.call(params)
       end
 
       helper_method name

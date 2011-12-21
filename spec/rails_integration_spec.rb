@@ -10,6 +10,18 @@ describe BirdController, :type => :controller do
     end
   end
 
+  describe "default model strategy" do
+    it "uses the name of the exposure to determine the model and finder to use" do
+      get :show, :id => "something"
+      controller.parrot.should be_a Parrot
+    end
+
+    it "uses the name of the exposure to determine the model and finder to use" do
+      get :show, :parrot_id => "something"
+      controller.parrot.should be_a Parrot
+    end
+  end
+
 end
 
 describe DuckController, :type => :controller do
