@@ -46,6 +46,7 @@ describe DuckController, :type => :controller do
 end
 
 describe MallardController, :type => :controller do
+
   describe "deep inheritance" do
     it "allows inheritance several layers deep" do
       get :show
@@ -53,4 +54,5 @@ describe MallardController, :type => :controller do
       controller.ostrich.should == "Ostrich"
     end
   end
+
 end

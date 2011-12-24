@@ -3,7 +3,6 @@ require 'active_support/core_ext/string/inflections'
 
 module DecentExposure
   class Inflector
-
     attr_reader :original
 
     def initialize(name)
