@@ -1,11 +1,14 @@
-require 'active_support/all'
-require 'action_controller'
-require 'decent_exposure/expose'
+require 'fixtures/fake_rails_application'
 
 class BirdController < ActionController::Base
+  include Rails.application.routes.url_helpers
   extend DecentExposure::Expose
   expose(:bird) { "Bird" }
   expose(:ostrich) { "Ostrich" }
+
+  def show
+    render :text => "Foo"
+  end
 end
 
 class DuckController < BirdController
