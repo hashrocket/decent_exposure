@@ -1,3 +1,4 @@
+require 'active_support/inflector'
 require 'active_support/core_ext/string/inflections'
 
 module DecentExposure
@@ -15,6 +16,10 @@ module DecentExposure
 
     def parameter
       original.parameterize + "_id"
+    end
+
+    def plural?
+      original.pluralize == original
     end
   end
 end

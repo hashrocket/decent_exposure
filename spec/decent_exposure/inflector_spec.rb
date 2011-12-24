@@ -18,4 +18,19 @@ describe DecentExposure::Inflector do
       inflector.parameter.should == "fox_id"
     end
   end
+
+  describe "#plural" do
+    let(:inflector) { DecentExposure::Inflector.new(name) }
+    subject { inflector.plural? }
+
+    context "with a plural word" do
+      let(:name) { "cars" }
+      it { should be_true }
+    end
+
+    context "with a singular word" do
+      let(:name) { "car" }
+      it { should be_false }
+    end
+  end
 end

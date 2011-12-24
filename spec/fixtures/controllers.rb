@@ -6,6 +6,10 @@ class Parrot
   def self.find(*)
     new
   end
+
+  def self.scoped
+    [new, new]
+  end
 end
 
 # Controllers
@@ -14,6 +18,7 @@ class BirdController < ActionController::Base
   extend DecentExposure::Expose
   expose(:bird) { "Bird" }
   expose(:ostrich) { "Ostrich" }
+  expose(:parrots)
   expose(:parrot)
 
   def show

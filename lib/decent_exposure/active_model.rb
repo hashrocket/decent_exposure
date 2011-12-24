@@ -17,8 +17,16 @@ module DecentExposure
       inflector.parameter
     end
 
+    def plural?
+      inflector.plural?
+    end
+
     def call(params)
-      model.find(params[:id] || params[parameter])
+      if plural?
+        model.scoped
+      else
+        model.find(params[:id] || params[parameter])
+      end
     end
   end
 end
