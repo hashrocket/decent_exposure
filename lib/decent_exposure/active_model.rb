@@ -6,7 +6,7 @@ module DecentExposure
 
     def initialize(name)
       @name = name
-      @inflector = ::DecentExposure::Inflector.new(name)
+      @inflector = DecentExposure::Inflector.new(name)
     end
 
     def model
