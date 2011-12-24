@@ -11,14 +11,19 @@ describe BirdController, :type => :controller do
   end
 
   describe "default model strategy" do
-    it "uses the name of the exposure to determine the model and finder to use" do
+    it "finds the instance with params[:id]" do
       get :show, :id => "something"
       controller.parrot.should be_a Parrot
     end
 
-    it "uses the name of the exposure to determine the model and finder to use" do
+    it "finds the instance with params[:model_id]" do
       get :show, :parrot_id => "something"
       controller.parrot.should be_a Parrot
+    end
+
+    it "finds a collection" do
+      get :show
+      controller.parrots.should have(2).parrots
     end
   end
 
