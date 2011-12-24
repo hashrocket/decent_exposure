@@ -5,7 +5,7 @@ describe BirdController, :type => :controller do
 
   describe "block strategy" do
     it "uses the block to determine the value" do
-      get :show, :id => "something"
+      get :show
       controller.bird.should == "Bird"
     end
   end
