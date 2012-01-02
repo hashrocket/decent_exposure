@@ -6,9 +6,24 @@ class Parrot
   def self.find(*)
     new
   end
+end
 
+class Albatross
+  extend ActiveModel::Naming
   def self.scoped
     [new, new]
+  end
+end
+
+Duck = Struct.new(:id)
+
+class DuckCollection
+  def ducks
+    @ducks ||= [Duck.new("quack"), Duck.new("burp")]
+  end
+
+  def find(id)
+    ducks.detect { |d| d.id == id }
   end
 end
 
@@ -18,7 +33,7 @@ class BirdController < ActionController::Base
   extend DecentExposure::Expose
   expose(:bird) { "Bird" }
   expose(:ostrich) { "Ostrich" }
-  expose(:parrots)
+  expose(:albatrosses)
   expose(:parrot)
 
   def show
@@ -28,6 +43,8 @@ end
 
 class DuckController < BirdController
   expose(:bird) { "Duck" }
+  expose(:ducks) { DuckCollection.new }
+  expose(:duck)
 end
 
 class MallardController < DuckController; end

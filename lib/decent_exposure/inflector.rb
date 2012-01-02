@@ -17,8 +17,13 @@ module DecentExposure
       original.parameterize + "_id"
     end
 
+    def plural
+      original.pluralize
+    end
+    alias collection plural
+
     def plural?
-      original.pluralize == original
+      plural == original
     end
   end
 end
