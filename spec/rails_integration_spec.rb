@@ -23,7 +23,7 @@ describe BirdController, :type => :controller do
 
     it "finds a collection" do
       get :show
-      controller.parrots.should have(2).parrots
+      controller.albatrosses.should have(2).albatrosses
     end
   end
 
@@ -40,6 +40,13 @@ describe DuckController, :type => :controller do
 
     it "allows overriding exposures" do
       controller.bird.should == "Duck"
+    end
+  end
+
+  describe "collection scope" do
+    it "scopes a resource to its collection exposure" do
+      get :show, :id => "burp"
+      controller.duck.id.should == "burp"
     end
   end
 
