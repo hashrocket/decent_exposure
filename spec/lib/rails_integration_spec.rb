@@ -123,13 +123,26 @@ describe "Rails' integration:", DecentExposure do
       end
     end
     context 'when there are no ids in params' do
-      before do
-        instance.stubs(:params).returns({:resource => {:name => 'bob'}})
+      context "and there are no params for the resource" do
+        before do
+          instance.stubs(:params).returns({})
+        end
+
+        it 'calls new with params[:resouce_name]' do
+          Resource.expects(:new).with({})
+          instance.resource
+        end
       end
 
-      it 'calls new with params[:resouce_name]' do
-        Resource.expects(:new).with({:name => 'bob'})
-        instance.resource
+      context "and there are params for the resource" do
+        before do
+          instance.stubs(:params).returns({:resource => {:name => 'bob'}})
+        end
+
+        it 'calls new with params[:resouce_name]' do
+          Resource.expects(:new).with({:name => 'bob'})
+          instance.resource
+        end
       end
     end
   end
