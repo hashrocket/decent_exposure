@@ -20,7 +20,7 @@ module DecentExposure
             r.attributes = params[name] unless request.get?
           end
         else
-          proxy.new(params[name])
+          proxy.new(params[name]||{})
         end
       end
     end
