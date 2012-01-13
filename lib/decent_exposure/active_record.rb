@@ -44,15 +44,33 @@ module DecentExposure
         end
       end
 
+      def singular_param
+        inflector.singular
+      end
+
+      def get?
+        controller.request.get?
+      end
+
       def params
         controller.params
       end
 
+      def collection_resource
+        scope.scoped
+      end
+
+      def singular_resource
+        scope.find(params[:id] || params[parameter]).tap do |instance|
+          instance.attributes = params[singular_param] unless get?
+        end
+      end
+
       def resource
         if plural?
-          scope.scoped
+          collection_resource
         else
-          scope.find(params[:id] || params[parameter])
+          singular_resource
         end
       end
     end

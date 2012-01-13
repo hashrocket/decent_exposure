@@ -2,9 +2,13 @@ require 'fixtures/fake_rails_application'
 
 # Models
 class Parrot
+  attr_accessor :beak
   extend ActiveModel::Naming
   def self.find(*)
     new
+  end
+  def attributes=(attributes)
+    attributes.each { |k,v| send("#{k}=", v) }
   end
 end
 

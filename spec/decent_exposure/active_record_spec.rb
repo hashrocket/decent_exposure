@@ -3,11 +3,12 @@ require 'decent_exposure/active_record'
 describe DecentExposure::ActiveRecord do
   describe "#call" do
     let(:inflector) do
-      double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models')
+      double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
     end
     let(:model) { stub("Model") }
     let(:params) { Hash.new }
-    let(:controller) { stub(:params => params) }
+    let(:request) { stub(:get? => true) }
+    let(:controller) { stub(:params => params, :request => request) }
 
     before do
       DecentExposure::Inflector.stub(:new => inflector)
@@ -40,6 +41,31 @@ describe DecentExposure::ActiveRecord do
         it "scopes to that resource collection" do
           scope.should_receive(:find)
           strategy.call(controller)
+        end
+      end
+
+      context "with a put/post request" do
+        let(:params) do
+          { "model" => { "name" => "Timmy" } }
+        end
+        let(:singular) { double("Resource") }
+        let(:request) { stub(:get? => false) }
+        it "sets the attributes from the request" do
+          model.stub(:find => singular)
+          singular.should_receive(:attributes=).with({"name" => "Timmy"})
+          strategy.call(controller).should == singular
+        end
+      end
+
+      context "with a get request" do
+        let(:params) do
+          { "model" => { "name" => "Timmy" } }
+        end
+        let(:singular) { double("Resource") }
+        it "ignores the attributes" do
+          model.stub(:find => singular)
+          singular.should_not_receive(:attributes=)
+          strategy.call(controller).should == singular
         end
       end
 
