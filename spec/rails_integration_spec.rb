@@ -27,6 +27,17 @@ describe BirdController, :type => :controller do
     end
   end
 
+  describe "attribute setting" do
+    it "attributes are set for post and put requests" do
+      put :show, :parrot => { :beak => "droopy" }
+      controller.parrot.beak.should == "droopy"
+    end
+
+    it "attributes are ignored on get requests" do
+
+    end
+  end
+
 end
 
 describe DuckController, :type => :controller do

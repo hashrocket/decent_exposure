@@ -14,7 +14,11 @@ module DecentExposure
     end
 
     def parameter
-      original.parameterize + "_id"
+      singular + "_id"
+    end
+
+    def singular
+      original.parameterize 
     end
 
     def plural
