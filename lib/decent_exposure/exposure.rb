@@ -6,7 +6,7 @@ module DecentExposure
 
     def initialize(name)
       @strategy = if block_given?
-                    Proc.new
+                    BlockStrategy.new(Proc.new)
                   else
                     ActiveRecord.new(name)
                   end
@@ -14,6 +14,16 @@ module DecentExposure
 
     def call(*args)
       strategy.call(*args)
+    end
+  end
+
+  class BlockStrategy
+    attr_reader :block
+    def initialize(block)
+      @block = block
+    end
+    def call(controller)
+      controller.instance_eval(&block)
     end
   end
 end

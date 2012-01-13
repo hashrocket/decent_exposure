@@ -7,7 +7,7 @@ describe DecentExposure::Exposure do
       let(:block) { lambda { "foo" } }
       let(:exposure) { DecentExposure::Exposure.new("foobar", &block) }
       it "saves the proc as the strategy" do
-        exposure.strategy.should == block
+        exposure.strategy.block.should == block
       end
     end
 
@@ -24,10 +24,11 @@ describe DecentExposure::Exposure do
   end
 
   describe "#call" do
-    let(:block) { lambda { "foo" } }
+    let(:block) { Proc.new { "foo" } }
     let(:exposure) { DecentExposure::Exposure.new("foobar", &block) }
     it "delegates to strategy" do
-      exposure.call.should == "foo"
+      controller = stub
+      exposure.call(controller).should == "foo"
     end
   end
 end
