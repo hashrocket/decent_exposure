@@ -61,7 +61,7 @@ module DecentExposure
       end
 
       def singular_resource
-        scope.find(params[:id] || params[parameter]).tap do |instance|
+        scope.find(params[parameter] || params[:id]).tap do |instance|
           instance.attributes = params[singular_param] unless get?
         end
       end
