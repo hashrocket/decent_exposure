@@ -37,7 +37,7 @@ module DecentExposure
       end
 
       def scope
-        if controller.methods.include?(collection.to_sym) && !plural?
+        if controller.respond_to?(collection.to_sym) && !plural?
           controller.send(collection.to_sym)
         else
           model
