@@ -1,4 +1,4 @@
-require 'decent_exposure/active_model'
+require 'decent_exposure/active_record'
 
 module DecentExposure
   class Exposure
@@ -8,7 +8,7 @@ module DecentExposure
       @strategy = if block_given?
                     Proc.new
                   else
-                    ActiveModel.new(name)
+                    ActiveRecord.new(name)
                   end
     end
 

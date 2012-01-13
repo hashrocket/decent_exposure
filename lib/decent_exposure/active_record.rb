@@ -1,7 +1,7 @@
 require 'decent_exposure/inflector'
 
 module DecentExposure
-  class ActiveModel
+  class ActiveRecord
     attr_reader :name, :inflector
 
     def initialize(name)

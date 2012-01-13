@@ -1,6 +1,6 @@
-require 'decent_exposure/active_model'
+require 'decent_exposure/active_record'
 
-describe DecentExposure::ActiveModel do
+describe DecentExposure::ActiveRecord do
   describe "#call" do
     let(:inflector) do
       double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models')
@@ -14,7 +14,7 @@ describe DecentExposure::ActiveModel do
     end
 
     context "with a singular resource" do
-      let(:strategy) { DecentExposure::ActiveModel.new("model") }
+      let(:strategy) { DecentExposure::ActiveRecord.new("model") }
       let(:instance) { stub }
       let(:plural) { false }
 
@@ -47,7 +47,7 @@ describe DecentExposure::ActiveModel do
 
     context "with a resource collection" do
       let(:plural) { true }
-      let(:strategy) { DecentExposure::ActiveModel.new("models") }
+      let(:strategy) { DecentExposure::ActiveRecord.new("models") }
 
       it "returns the scoped collection" do
         scoped = stub
