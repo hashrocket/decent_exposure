@@ -34,7 +34,6 @@ end
 # Controllers
 class BirdController < ActionController::Base
   include Rails.application.routes.url_helpers
-  extend DecentExposure::Expose
   expose(:bird) { "Bird" }
   expose(:ostrich) { "Ostrich" }
   expose(:albatrosses)
