@@ -37,7 +37,7 @@ describe DecentExposure::ActiveRecord do
 
       context "with a corresponding resource collection exposure defined" do
         let(:scope) { double("Models") }
-        before { controller.stub(:methods => [:models], :models => scope) }
+        before { controller.stub(:models => scope) }
         it "scopes to that resource collection" do
           scope.should_receive(:find)
           strategy.call(controller)
