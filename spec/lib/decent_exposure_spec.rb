@@ -48,6 +48,19 @@ describe DecentExposure do
         instance.expects(:memoizable).once.returns('value')
         2.times { instance.resource }
       end
+
+      context "with a nil result" do
+        before do
+          controller.class_eval do
+            expose(:resource) { memoizable(nil) }
+          end
+        end
+
+        it 'memoizes the value of the created method' do
+          instance.expects(:memoizable).once.returns(nil)
+          2.times { instance.resource }
+        end
+      end
     end
 
     context '.default_exposure' do
