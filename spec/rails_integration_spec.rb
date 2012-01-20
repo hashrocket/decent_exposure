@@ -28,13 +28,20 @@ describe BirdController, :type => :controller do
   end
 
   describe "attribute setting" do
-    it "attributes are set for post and put requests" do
-      put :show, :parrot => { :beak => "droopy" }
+    let(:request) { [:show, { :parrot => { :beak => "droopy" } }] }
+    it "attributes are set for post requests" do
+      post *request
+      controller.parrot.beak.should == "droopy"
+    end
+
+    it "attributes are set for put requests" do
+      put *request
       controller.parrot.beak.should == "droopy"
     end
 
     it "attributes are ignored on get requests" do
-
+      get *request
+      controller.parrot.beak.should_not == "droopy"
     end
   end
 
