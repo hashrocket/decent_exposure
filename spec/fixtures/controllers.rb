@@ -60,3 +60,15 @@ class DefaultExposureController < ActionController::Base
   expose :dodo
   expose(:penguin) { 'Happy Feet' }
 end
+
+class ChildDefaultExposureController < DefaultExposureController
+  expose :eagle
+end
+
+class OverridingChildDefaultExposureController < DefaultExposureController
+  default_exposure do |name|
+    name.to_s.reverse
+  end
+
+  expose(:penguin)
+end
