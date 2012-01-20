@@ -18,7 +18,7 @@ module DecentExposure
     end
 
     def singular
-      original.parameterize 
+      original.parameterize
     end
 
     def plural
