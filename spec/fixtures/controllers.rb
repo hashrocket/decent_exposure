@@ -51,3 +51,12 @@ class DuckController < BirdController
 end
 
 class MallardController < DuckController; end
+
+class DefaultExposureController < ActionController::Base
+  default_exposure do |name|
+    name.to_s.upcase
+  end
+
+  expose :dodo
+  expose(:penguin) { 'Happy Feet' }
+end

@@ -81,3 +81,11 @@ describe MallardController, :type => :controller do
   end
 
 end
+
+describe DefaultExposureController, :type => :controller do
+  describe 'default exposure' do
+    it 'is used by blockless expose calls' do
+      controller.dodo.should == 'DODO'
+    end
+  end
+end
