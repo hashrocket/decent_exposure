@@ -87,5 +87,24 @@ describe DefaultExposureController, :type => :controller do
     it 'is used by blockless expose calls' do
       controller.dodo.should == 'DODO'
     end
+    it 'is not used by expose calls with blocks' do
+      controller.penguin.should == 'Happy Feet'
+    end
+  end
+end
+
+describe ChildDefaultExposureController, :type => :controller do
+  describe 'default exposure inheritance' do
+    it 'uses the parent default exposure' do
+      controller.eagle.should == 'EAGLE'
+    end
+  end
+end
+
+describe OverridingChildDefaultExposureController, :type => :controller do
+  describe 'default exposure inheritance' do
+    it 'can be overridden' do
+      controller.penguin.should == 'niugnep'
+    end
   end
 end
