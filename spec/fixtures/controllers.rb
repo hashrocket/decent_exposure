@@ -4,8 +4,11 @@ require 'fixtures/fake_rails_application'
 class Parrot
   attr_accessor :beak
   extend ActiveModel::Naming
-  def self.find(*)
-    new
+  def initialize(attrs={})
+    self.attributes = attrs
+  end
+  def self.find(id)
+    new if id
   end
   def attributes=(attributes)
     attributes.each { |k,v| send("#{k}=", v) }
@@ -41,6 +44,10 @@ class BirdController < ActionController::Base
 
   def show
     render :text => "Foo"
+  end
+
+  def new
+    render :text => "new"
   end
 end
 
