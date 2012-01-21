@@ -14,6 +14,7 @@ module Rails
       return @routes if defined?(@routes)
       @routes = ActionDispatch::Routing::RouteSet.new
       @routes.draw do
+        get '/bird/new' => "bird#new"
         get '/bird/(:id)' => "bird#show"
         get '/duck/(:id)' => "duck#show"
         get '/mallard/(:id)' => "mallard#show"

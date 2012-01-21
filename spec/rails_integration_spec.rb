@@ -28,7 +28,7 @@ describe BirdController, :type => :controller do
   end
 
   describe "attribute setting" do
-    let(:request) { [:show, { :parrot => { :beak => "droopy" } }] }
+    let(:request) { [:show, { :id => 2, :parrot => { :beak => "droopy" } }] }
     it "attributes are set for post requests" do
       post *request
       controller.parrot.beak.should == "droopy"
@@ -42,6 +42,18 @@ describe BirdController, :type => :controller do
     it "attributes are ignored on get requests" do
       get *request
       controller.parrot.beak.should_not == "droopy"
+    end
+
+    context "with no finding parameter" do
+      it "builds a new model instance with the provided attributes" do
+        get :new, :parrot => { :beak => "smallish" }
+        controller.parrot.beak.should == "smallish"
+      end
+
+      it "builds a new model without attributes" do
+        get :new
+        controller.parrot.beak.should be_nil
+      end
     end
   end
 

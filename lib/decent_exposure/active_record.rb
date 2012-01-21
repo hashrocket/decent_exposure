@@ -60,9 +60,17 @@ module DecentExposure
         scope.scoped
       end
 
+      def attributes
+        params[singular_param] || {}
+      end
+
       def singular_resource
-        scope.find(params[parameter] || params[:id]).tap do |instance|
-          instance.attributes = params[singular_param] unless get?
+        if id = params[parameter] || params[:id]
+          scope.find(id).tap do |instance|
+            instance.attributes = attributes unless get?
+          end
+        else
+          scope.new(attributes)
         end
       end
 
