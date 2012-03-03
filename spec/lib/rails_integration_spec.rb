@@ -26,6 +26,17 @@ describe "Rails' integration:", DecentExposure do
     instance.stubs(:request).returns(request)
   end
 
+  context 'when inserting decent exposure' do
+
+    let(:blacklist) do
+      ActionController::Base.protected_instance_variables
+    end
+
+    it 'blacklists the @_resources instance variable' do
+      blacklist.should include("@_resources")
+    end
+  end
+
   context '.expose' do
     it 'is available to ActionController::Base' do
       ActionController::Base.should respond_to(:expose)
