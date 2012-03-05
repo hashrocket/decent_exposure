@@ -17,7 +17,7 @@ module DecentExposure
 
         if id = params["#{name}_id"] || params[:id]
           proxy.find(id).tap do |r|
-            r.attributes = params[name] unless request.get?
+            r.attributes = (respond_to?("#{name}_params") ? send("#{name}_params") : params[name]) unless request.get?
           end
         else
           proxy.new(params[name])
