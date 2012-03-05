@@ -14,6 +14,7 @@ module DecentExposure
   class Railtie
     def self.insert
       ActionController::Base.send(:include, DecentExposure::DefaultExposure)
+      ActionController::Base.protected_instance_variables.push("@_resources")
     end
   end
 end
