@@ -20,10 +20,12 @@ module DecentExposure
     closured_exposure = default_exposure
     define_method name do
       @_resources       ||= {}
-      @_resources[name] ||= if block_given?
-        instance_eval(&block)
-      else
-        instance_exec(name, &closured_exposure)
+      @_resources.fetch(name) do
+        @_resources[name] = if block_given?
+          instance_eval(&block)
+        else
+          instance_exec(name, &closured_exposure)
+        end
       end
     end
     helper_method name
