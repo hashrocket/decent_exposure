@@ -85,6 +85,23 @@ In the straightforward case, the three exposed resources above provide for
 access to both the primary and ancestor resources in a way usable across all 7
 actions in a typicall Rails-style RESTful controller.
 
+By default, `decent_exposure` tries to update the exposed resources using
+normal rails conventions, before returning the resource. This saves you
+from needing to manually do this:
+
+    product.attributes = params[:product]
+
+However, you might want to alter the parameters before they get set on the
+model. To do this, you can create a method that will return the filtered
+parameters.
+
+    expose(:product)
+
+    protected
+    def product_params
+      params.slice(:name, :description)
+    end
+
 #### A Note on Style
 
 When the code has become complex enough to surpass a single line (and is not

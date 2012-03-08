@@ -7,6 +7,7 @@ class Resource
   def self.scoped(opts); self; end
   def self.find(*args); end
   def initialize(*args); end
+  attr_accessor :attributes
 end
 
 class Equipment
@@ -79,6 +80,27 @@ describe "Rails' integration:", DecentExposure do
 
     it 'is available to ActionController::Base' do
       ActionController::Base.should respond_to(:default_exposure)
+    end
+
+    context 'for non-get requests' do
+      let(:request) { mock(:get? => false) }
+      let(:params) { HashWithIndifferentAccess.new(:id => 1, :resource => "unfiltered resource params") }
+      before { Resource.stubs(:find).returns(Resource.new) }
+      it 'updates attributes from params' do
+        instance.resource.attributes.should == 'unfiltered resource params'
+      end
+      context do
+        before do
+          controller.class_eval do
+            def resource_params
+              'improved resource attributes'
+            end
+          end
+        end
+        it 'updates attributes from resource_params' do
+          instance.resource.attributes.should == 'improved resource attributes'
+        end
+      end
     end
 
     context 'when no collection method exists' do
