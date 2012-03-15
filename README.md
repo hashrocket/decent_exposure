@@ -97,6 +97,10 @@ Specify the finder method:
 
     expose(:company, finder: :find_by_slug)
 
+Specify the parameter accessor:
+
+    expose(:company, params: :company_params)
+
 ### Getting your hands dirty
 
 While we try to make things as easy for you as possible, sometimes you just
