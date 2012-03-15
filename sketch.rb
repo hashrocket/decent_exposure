@@ -232,6 +232,20 @@ class Controller
   expose(:whatever, model: :thing)
   expose(:whatever, model: :thing, :finder: :find_by_thing, scope: :things)
 
+  # filtering parameters
+  expose(:whatever, attributes: [:ok, :also_ok])
+
+  # using a custom / filtered set of parameters
+  expose(:whatever, params: :whatever_params)
+  def whatever_params
+    attrs = params[:whatever] || {}
+    if current_user.admin?
+      attrs.slice(:ok, :also_ok, :ok_for_admin)
+    else
+      attrs.slice(:ok, :also_ok)
+    end
+  end
+
   # using the default behavior of decent_exposure with an app specific twist
   expose(:whatever, orm: :data_mapper) { app_specific(framework.execute_default) }
 
