@@ -20,7 +20,9 @@ module DecentExposure
             r.attributes = params[name] unless request.get?
           end
         else
-          proxy.new(params[name])
+          proxy.new.tap do |r|
+            r.attributes = params[name] unless params[name].nil?
+          end
         end
       end
     end
