@@ -15,14 +15,14 @@ module DecentExposure
           proxy = name.to_s.classify.constantize
         end
 
-        if id = params["#{name}_id"] || params[:id]
-          proxy.find(id).tap do |r|
-            r.attributes = params[name] unless request.get?
-          end
+        resource = if id = params["#{name}_id"] || params[:id]
+          proxy.find(id)
         else
-          proxy.new.tap do |r|
-            r.attributes = params[name] unless params[name].nil?
-          end
+          proxy.new
+        end
+        
+        resource.tap do |r|
+          r.attributes = params[name] if params[name] && !request.get?
         end
       end
     end
