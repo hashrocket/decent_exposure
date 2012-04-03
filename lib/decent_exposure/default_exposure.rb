@@ -22,7 +22,7 @@ module DecentExposure
         end
         
         resource.tap do |r|
-          r.attributes = params[name] if params[name] && !request.get?
+          r.attributes = params[name] if r && params[name] && !request.get?
         end
       end
     end
