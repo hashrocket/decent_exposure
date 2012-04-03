@@ -1,4 +1,5 @@
 require 'decent_exposure/default_exposure'
+require 'decent_exposure/default_exposure_finder'
 
 module DecentExposure
   if defined? Rails::Railtie

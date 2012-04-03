@@ -6,12 +6,14 @@ DecentExposure::Railtie.insert
 class Resource
   def self.scoped(opts); self; end
   def self.find(*args); end
+  def self.custom_finder(*args); end
   def initialize(*args); end
 end
 
 class Equipment
   def self.scoped(opts); self; end
   def self.find(*args); end
+  def self.custom_finder(*args); end
   def initialize(*args); end
 end
 
@@ -140,6 +142,41 @@ describe "Rails' integration:", DecentExposure do
 
       it 'calls new with params[:resouce_name]' do
         Resource.expects(:new).with({:name => 'bob'})
+        instance.resource
+      end
+    end
+  end
+
+  context ".default_exposure_finder" do
+    let(:controller)  { Class.new(ActionController::Base) }
+    let(:instance)    { controller.new }
+
+    before do
+      instance.stubs(:request).returns(request)
+      instance.stubs(:params).returns({id: 42})
+      controller.expose :resource
+    end
+
+    it 'is available to ActionController::Base' do
+      ActionController::Base.should respond_to(:default_exposure_finder)
+    end
+
+    context 'when no finder method exists' do
+      it 'calls find method on the class' do
+        Resource.should_receive(:find)
+        instance.resource
+      end
+    end
+
+    context 'when finder method exists' do
+
+      it 'calls custom finder on the class' do
+        controller.class_eval do
+          default_exposure_finder :custom_finder
+          expose :resource
+        end
+
+        Resource.should_receive(:custom_finder)
         instance.resource
       end
     end

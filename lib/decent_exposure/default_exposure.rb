@@ -2,6 +2,7 @@ module DecentExposure
   module DefaultExposure
     def self.included(klass)
       klass.extend(DecentExposure)
+      klass.extend(DefaultExposureFinder)
       if klass.respond_to?(:class_attribute)
         klass.class_attribute(:_default_exposure)
       else
@@ -16,7 +17,7 @@ module DecentExposure
         end
 
         if id = params["#{name}_id"] || params[:id]
-          proxy.find(id).tap do |r|
+          proxy.send(self.class.default_exposure_finder, id).tap do |r|
             r.attributes = params[name] unless request.get?
           end
         else
