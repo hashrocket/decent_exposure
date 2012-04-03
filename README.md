@@ -111,6 +111,22 @@ other method you might normally have access to:
 
 ### Custom defaults
 
+#### Default exposure finder method
+
+By default, `decent_exposure` uses the `find` method to get back the exposed objects.
+It's possible to invoke another method by defining `default_exposure_finder`. The
+passed argument must be a string or a symbol.
+
+    class MyController < ApplicationController
+      default_exposure_finder :find_by_id
+    end
+
+In this case, `default_exposure_finder` will be called unless you override the whole
+`default_exposure` method. It is possible to provide a custom default for a descendant
+class without disturbing its ancestor classes in an inheritance heirachy.
+
+#### Default exposure method
+
 `decent_exposure` provides opinionated default logic when `expose` is invoked without
 a block. It's possible, however, to override this with custom default logic by
 passing a block accepting a single argument to the `default_exposure` method
