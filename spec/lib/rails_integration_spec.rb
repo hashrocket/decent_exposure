@@ -7,12 +7,14 @@ class Resource
   def self.scoped(opts); self; end
   def self.find(*args); end
   def initialize(*args); end
+  def attributes=(*args); end
 end
 
 class Equipment
   def self.scoped(opts); self; end
   def self.find(*args); end
   def initialize(*args); end
+  def attributes=(*args); end
 end
 
 describe "Rails' integration:", DecentExposure do
@@ -100,8 +102,9 @@ describe "Rails' integration:", DecentExposure do
         before{ controller.expose(:person) }
 
         it 'uses the existing collection method' do
+          person = Person.new
           instance.stubs(:people).returns(collection)
-          collection.expects(:new)
+          collection.expects(:new).returns(person)
           instance.person
         end
       end
@@ -111,8 +114,9 @@ describe "Rails' integration:", DecentExposure do
         before{ controller.expose(:person) }
 
         it 'falls back to the singularized constant' do
+          person = Person.new
           instance.stubs(:people).returns(collection)
-          Person.expects(:new)
+          Person.expects(:new).returns(person)
           instance.person
         end
       end
@@ -139,7 +143,9 @@ describe "Rails' integration:", DecentExposure do
       end
 
       it 'calls new with params[:resouce_name]' do
-        Resource.expects(:new).with({:name => 'bob'})
+        resource = Resource.new
+        Resource.expects(:new).returns(resource)
+        resource.expects(:attributes=).with({:name => 'bob'})
         instance.resource
       end
     end
