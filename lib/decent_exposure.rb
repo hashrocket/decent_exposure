@@ -16,7 +16,7 @@ module DecentExposure
     _default_exposure
   end
 
-  def expose(name, &block)
+  def expose(name, opts = {}, &block)
     closured_exposure = default_exposure
     define_method name do
       @_resources       ||= {}
@@ -24,7 +24,8 @@ module DecentExposure
         @_resources[name] = if block_given?
           instance_eval(&block)
         else
-          instance_exec(name, &closured_exposure)
+          class_name = opts[:class_name] ? opts[:class_name].downcase : name
+          instance_exec(class_name, &closured_exposure)
         end
       end
     end

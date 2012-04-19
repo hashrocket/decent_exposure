@@ -70,6 +70,19 @@ describe "Rails' integration:", DecentExposure do
       Resource.stubs(:find).returns('preserved')
       instance.resource.should == 'preserved'
     end
+
+    context "with class_name option" do
+      let(:params) { HashWithIndifferentAccess.new(:equipment_id => 42) }
+
+      before do
+        resource_controller.expose(:resource, :class_name => 'Equipment')
+      end
+
+      it 'should call the different class' do
+        Equipment.stubs(:find).returns('equipment')
+        instance.resource.should == 'equipment'
+      end
+    end
   end
 
   context '.default_exposure' do
