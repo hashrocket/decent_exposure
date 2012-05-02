@@ -15,6 +15,14 @@ class Equipment
   def initialize(*args); end
 end
 
+module My
+  class Resource
+    def self.scoped(opts); self; end
+    def self.find(*args); end
+    def initialize(*args); end
+  end
+end
+
 describe "Rails' integration:", DecentExposure do
   let(:controller) { Class.new(ActionController::Base) }
   let(:instance) { controller.new }
@@ -69,6 +77,23 @@ describe "Rails' integration:", DecentExposure do
     it 'does not override the default in ancestors' do
       Resource.stubs(:find).returns('preserved')
       instance.resource.should == 'preserved'
+    end
+
+    context "with class_name option" do
+      let(:params) { HashWithIndifferentAccess.new(:resource_id => 42) }
+
+      it 'should call the different class when given a constant' do
+        resource_controller.expose(:resource, :class_name => My::Resource)
+        My::Resource.should_receive(:find).and_return('my::resource')
+        instance.resource.should == 'my::resource'
+      end
+
+      it 'should call the different class when given a string' do
+        resource_controller.expose(:resource, :class_name => 'My::Resource')
+        My::Resource.should_receive(:find).and_return('my::resource')
+        instance.resource.should == 'my::resource'
+      end
+
     end
   end
 
