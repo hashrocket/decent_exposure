@@ -7,12 +7,13 @@ module DecentExposure
       else
         klass.superclass_delegating_accessor(:_default_exposure)
       end
-      klass.default_exposure do |name|
+      klass.default_exposure do |name, opts={}|
         collection = name.to_s.pluralize
         if respond_to?(collection) && collection != name.to_s && send(collection).respond_to?(:scoped)
           proxy = send(collection)
         else
-          proxy = name.to_s.classify.constantize
+          class_name = opts[:class_name] || name
+          proxy = class_name.to_s.classify.constantize
         end
 
         if id = params["#{name}_id"] || params[:id]

@@ -24,8 +24,7 @@ module DecentExposure
         @_resources[name] = if block_given?
           instance_eval(&block)
         else
-          class_name = opts[:class_name] ? opts[:class_name].downcase : name
-          instance_exec(class_name, &closured_exposure)
+          instance_exec(name, opts, &closured_exposure)
         end
       end
     end
