@@ -10,7 +10,7 @@ end
 
 describe DecentExposure::Expose do
 
-  describe "#expose" do
+  describe ".expose" do
     let(:controller) { MyController.new }
     it "defines a method with the given name" do
       controller.should respond_to(:bird)
