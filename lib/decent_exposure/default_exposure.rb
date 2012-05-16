@@ -12,7 +12,7 @@ module DecentExposure
         if respond_to?(collection) && collection != name.to_s && send(collection).respond_to?(:scoped)
           proxy = send(collection)
         else
-          proxy = name.to_s.classify.constantize
+          proxy = name.to_s.pluralize.classify.constantize
         end
 
         if id = params["#{name}_id"] || params[:id]
