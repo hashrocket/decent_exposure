@@ -2,7 +2,7 @@
 
 This README represents planned functionality. Much of it is implemented. Still
 more is yet to be implemented. We've endeavored to note where the functionality
-has yet to be implemented by tagging it ***#NOTIMPLEMENTED*** and indicating
+has yet to be implemented by tagging it **#NOTIMPLEMENTED** and indicating
 different ways of achieving the same effect where possible.
 
 ## Mad Decent
@@ -142,7 +142,7 @@ we actually need it.
 Rails conveniently responds with a 404 if you get a record not found in the
 controller. Since we don't find the object until we're in the view in this
 paradigm, we get an ugly `ActionView::TemplateError` instead. If this is
-problematic for you, consider using the `expose!` (`expose!` is ***#NOTIMPLEMENTED***,
+problematic for you, consider using the `expose!` (`expose!` is **#NOTIMPLEMENTED**,
 instead use a `before_filter` to call the exposed method and eagerly evaluate)
 method to circumvent lazy evaluation and eagerly evaluate whilst still in the
 controller.
@@ -176,7 +176,7 @@ expose(:person)
   </tr>
 </table>
 
-### Obtaining a collection of objects (***#NOTIMPLEMENTED***):
+### Obtaining a collection of objects (**#NOTIMPLEMENTED**):
 
 ```ruby
 expose(:people)
@@ -223,7 +223,7 @@ expose(:person)
 
 How about a more realistic scenario where the object hierarchy specifies
 something useful, like only finding people in a given company (the `scope:`
-configuration option is ***#NOTIMPLEMENTED***, pass a block instead):
+configuration option is **#NOTIMPLEMENTED**, pass a block instead):
 
 ```ruby
 expose(:company)
@@ -253,19 +253,19 @@ expose(:person)
 `decent_exposure` is a configurable beast. Let's take a look at some of the
 things you can do:
 
-**Specify the model name (***#NOTIMPLEMENTED***, use a custom strategy):**
+**Specify the model name (**#NOTIMPLEMENTED**, use a custom strategy):**
 
 ```ruby
 expose(:company, model: :enterprisey_company)
 ```
 
-**Specify the finder method (***#NOTIMPLEMENTED***, use a custom strategy):**
+**Specify the finder method (**#NOTIMPLEMENTED**, use a custom strategy):**
 
 ```ruby
 expose(:company, finder: :find_by_slug)
 ```
 
-**Specify the parameter accessor (***#NOTIMPLEMENTED***, use a custom strategy):**
+**Specify the parameter accessor (**#NOTIMPLEMENTED**, use a custom strategy):**
 
 ```ruby
 expose(:company, params: :company_params)
@@ -317,7 +317,7 @@ common helpers to access common things, such as the `params` hash. For
 everything else, you can delegate to `controller`, which is the same as
 `self` in the context of a normal controller action.
 
-### Customizing your exposures (***#NOTIMPLEMENTED***, use a custom strategy)
+### Customizing your exposures (**#NOTIMPLEMENTED**, use a custom strategy)
 
 For most things, you'll be able to pass a few configuration options and get
 the desired behavior. For changes you want to affect every call to `expose` in
