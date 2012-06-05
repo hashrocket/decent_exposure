@@ -89,7 +89,7 @@ expanded on my thoughts in the article [A Diatribe on Maintaining State][1].
 ## Environmental Awareness
 
 Well, no it won't lessen your carbon footprint, but it does take a lot of
-queues from what's going on around it...
+cues from what's going on around it...
 
 `decent_exposure` will build the requested object in one of a couple of ways
 depending on what the `params` make available to it. At its simplest, when an
