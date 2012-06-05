@@ -1,7 +1,7 @@
-require 'decent_exposure/active_record'
+require 'decent_exposure/active_record_strategy'
 
-describe DecentExposure::ActiveRecord do
-  describe "#call" do
+describe DecentExposure::ActiveRecordStrategy do
+  describe "#resource" do
     let(:inflector) do
       double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
     end
@@ -9,13 +9,11 @@ describe DecentExposure::ActiveRecord do
     let(:params) { Hash.new }
     let(:request) { stub(:get? => true) }
     let(:controller) { stub(:params => params, :request => request) }
+    let(:strategy) { DecentExposure::ActiveRecordStrategy.new(controller, inflector) }
 
-    before do
-      DecentExposure::Inflector.stub(:new => inflector)
-    end
+    subject { strategy.resource }
 
     context "with a singular resource" do
-      let(:strategy) { DecentExposure::ActiveRecord.new("model") }
       let(:instance) { stub }
       let(:plural) { false }
 
@@ -24,7 +22,7 @@ describe DecentExposure::ActiveRecord do
           let(:params) { { :id => "7" } }
           it "finds the on the model using that id" do
             model.should_receive(:find).with("7").and_return(instance)
-            strategy.call(controller).should == instance
+            should == instance
           end
         end
 
@@ -32,34 +30,10 @@ describe DecentExposure::ActiveRecord do
           let(:params) { { "model_id" => "7" } }
           it "finds the on the model using model_id" do
             model.should_receive(:find).with("7").and_return(instance)
-            strategy.call(controller).should == instance
+            should == instance
           end
         end
 
-        context "with a put/post request" do
-          let(:params) do
-            { "model" => { "name" => "Timmy" }, :id => 2 }
-          end
-          let(:singular) { double("Resource") }
-          let(:request) { stub(:get? => false) }
-          it "sets the attributes from the request" do
-            model.stub(:find => singular)
-            singular.should_receive(:attributes=).with({"name" => "Timmy"})
-            strategy.call(controller).should == singular
-          end
-        end
-
-        context "with a get request" do
-          let(:params) do
-            { "model" => { "name" => "Timmy" }, :id => 1 }
-          end
-          let(:singular) { double("Resource") }
-          it "ignores the attributes" do
-            model.stub(:find => singular)
-            singular.should_not_receive(:attributes=)
-            strategy.call(controller).should == singular
-          end
-        end
       end
 
       context "with an unfindable resource" do
@@ -67,7 +41,7 @@ describe DecentExposure::ActiveRecord do
         let(:builder) { stub }
         it "it builds a new instance of the resource" do
           model.should_receive(:new).and_return(instance)
-          strategy.call(controller).should == instance
+          should == instance
         end
       end
 
@@ -78,14 +52,13 @@ describe DecentExposure::ActiveRecord do
 
         it "scopes find to that resource collection " do
           scope.should_receive(:find).with(3)
-          strategy.call(controller)
+          subject
         end
 
         it "builds unfindable resources scoped to that resource collection " do
-          controller = stub(:params => {}, :request => request)
-          controller.stub(:models => scope)
+          controller.stub(:params => {}, :request => request, :models => scope)
           scope.should_receive(:new).and_return(instance)
-          strategy.call(controller).should == instance
+          should == instance
         end
       end
 
@@ -93,12 +66,11 @@ describe DecentExposure::ActiveRecord do
 
     context "with a resource collection" do
       let(:plural) { true }
-      let(:strategy) { DecentExposure::ActiveRecord.new("models") }
 
       it "returns the scoped collection" do
         scoped = stub
         model.should_receive(:scoped).and_return(scoped)
-        strategy.call(controller).should == scoped
+        should == scoped
       end
     end
   end

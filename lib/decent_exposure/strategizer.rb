@@ -1,35 +1,59 @@
-require 'decent_exposure/active_record'
+require 'decent_exposure/exposure'
+require 'decent_exposure/active_record_with_eager_attributes_strategy'
 
 module DecentExposure
   class Strategizer
-    attr_reader :name, :block, :default_exposure
-    def initialize(name, default_exposure)
-      @name, @default_exposure = name, default_exposure
+    attr_reader :name, :block, :default_exposure, :options
+
+    def initialize(name, options={})
+      @name, @default_exposure = name, options.delete(:default_exposure)
+      @custom_strategy_class = options.delete(:strategy)
+      @options = options
       @block = Proc.new if block_given?
     end
 
     def strategy
-      if block
-        BlockStrategy.new(block)
-      elsif default_exposure
-        DefaultStrategy.new(name, default_exposure)
-      else
-        ActiveRecord.new(name)
-      end
+      [block_strategy, default_exposure_strategy, exposure_strategy].detect(&applicable)
+    end
+
+    def model
+      options[:model] || options[:collection] || name
+    end
+
+    private
+
+    def applicable
+      lambda { |s| s }
+    end
+
+    def exposure_strategy
+      Exposure.new(model, exposure_strategy_class)
+    end
+
+    def block_strategy
+      BlockStrategy.new(block) if block
+    end
+
+    def default_exposure_strategy
+      DefaultStrategy.new(name, default_exposure) if default_exposure
+    end
+
+    def exposure_strategy_class
+      custom || ActiveRecordWithEagerAttributesStrategy
+    end
+
+    def custom
+      @custom_strategy_class
     end
   end
 
-  class DefaultStrategy < Struct.new(:name, :block)
+  DefaultStrategy = Struct.new(:name, :block) do
     def call(controller)
       controller.instance_exec(name, &block)
     end
   end
 
-  class BlockStrategy
-    attr_reader :block
-    def initialize(block)
-      @block = block
-    end
+  BlockStrategy = Struct.new(:block) do
     def call(controller)
       controller.instance_eval(&block)
     end

@@ -4,6 +4,7 @@ require 'active_support/core_ext/string/inflections'
 module DecentExposure
   class Inflector
     attr_reader :original
+    alias name original
 
     def initialize(name)
       @original = name.to_s

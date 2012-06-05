@@ -20,8 +20,9 @@ module DecentExposure
       self._default_exposure = block
     end
 
-    def expose(name, &block)
-      _exposures[name] = exposure = DecentExposure::Strategizer.new(name, _default_exposure, &block).strategy
+    def expose(name, options={}, &block)
+      options.merge!(:default_exposure => _default_exposure)
+      _exposures[name] = exposure = DecentExposure::Strategizer.new(name, options, &block).strategy
 
       define_method(name) do
         return _resources[name] if _resources.has_key?(name)

@@ -25,6 +25,20 @@ describe BirdController, :type => :controller do
       get :show
       controller.albatrosses.should have(2).albatrosses
     end
+
+    context "with a named model" do
+      it "finds an instance" do
+        get :show, :id => "something"
+        controller.albert.should be_a Parrot
+      end
+    end
+
+    context "with a named collection" do
+      it "finds a collection" do
+        get :show
+        controller.hoard.should have(2).albatrosses
+      end
+    end
   end
 
   describe "attribute setting" do
@@ -54,6 +68,13 @@ describe BirdController, :type => :controller do
         get :new
         controller.parrot.beak.should be_nil
       end
+    end
+  end
+
+  describe "custom strategy classes" do
+    it "initializes classes with name, calls them with call" do
+      get :show
+      controller.custom.should == 'customshow'
     end
   end
 

@@ -112,6 +112,38 @@ it lazily evaluates and returns the result of when called. So for instance:
 Now houses the memoized result of that call to `Rails.env` that you can access
 by calling `environment` anywhere in your controller or it's views.
 
+### Custom strategies
+
+For the times when custom behavior is needed for resource finding,
+`decent_exposure` provides a base class for extending. For example, if
+scoping a resource from `current_user` is not and option, but you'd like
+to verify a resource's relationship to the `current_user`, you can use a
+custom strategy like the following:
+
+```ruby
+class VerifiableStrategy < DecentExposure::Strategy
+  delegate :current_user, :to => :controller
+
+  def resource
+    instance = model.find(params[:id])
+    if current_user != instance.user
+      raise ActiveRecord::RecordNotFound
+    end
+    instance
+  end
+end
+```
+
+You would then use your custom strategy in your controller:
+
+    expose(:post, strategy: VerifiableStrategy)
+
+
+The API only necessitates you to define `resource`, but provides some
+common helpers to access common things, such as the `params` hash. For
+everything else, you can delegate to `controller`, which is the same as
+`self` in the context of a normal controller action.
+
 ### Custom exposures
 
 For most things, you'll be able to pass a few configuration options and get
