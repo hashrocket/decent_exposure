@@ -250,7 +250,7 @@ expose(:person)
 `decent_exposure` is a configurable beast. Let's take a look at some of the
 things you can do:
 
-**Specify the model name (**#NOTIMPLEMENTED**, use a custom strategy):**
+**Specify the model name:**
 
 ```ruby
 expose(:company, model: :enterprisey_company)
