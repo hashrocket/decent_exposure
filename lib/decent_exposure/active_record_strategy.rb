@@ -33,6 +33,10 @@ module DecentExposure
       end
     end
 
+    def finder
+      options[:finder] || :find
+    end
+
     def collection_resource
       scope.scoped
     end
@@ -43,7 +47,7 @@ module DecentExposure
 
     def singular_resource
       if id
-        scope.find(id)
+        scope.send(finder, id)
       else
         scope.new
       end

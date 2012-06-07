@@ -82,6 +82,18 @@ describe DecentExposure::ActiveRecordStrategy do
         end
       end
 
+      context "with a finder override specified" do
+        let(:params) { { :id => 'my_slug' } }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, finder: :find_by_slug)
+        end
+
+        it "uses the finder override to find instances" do
+          model.should_receive(:find_by_slug).with('my_slug')
+          subject
+        end
+      end
+
     end
 
     context "with a resource collection" do

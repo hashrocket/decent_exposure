@@ -256,7 +256,7 @@ things you can do:
 expose(:company, model: :enterprisey_company)
 ```
 
-**Specify the finder method (**#NOTIMPLEMENTED**, use a custom strategy):**
+**Specify the finder method:**
 
 ```ruby
 expose(:company, finder: :find_by_slug)
