@@ -92,6 +92,28 @@ describe DecentExposure::ActiveRecordStrategy do
         model.should_receive(:scoped).and_return(scoped)
         should == scoped
       end
+
+      context "with a scope override specified" do
+
+        let(:params) { { :id => 3 } }
+        let(:models) { double("Models") }
+        let(:association_scope) { double('AssociationScope') }
+        let(:association) { double("Association", :scoped => association_scope) }
+        let(:collection) { double("Collection", :models => association) }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, scope: :override_collection)
+        end
+
+        before do
+          controller.stub(:models => models)
+          controller.stub(:override_collection => collection)
+        end
+
+        it "uses the scope override to scope its queries" do
+          should == association_scope
+        end
+
+      end
     end
   end
 end

@@ -11,9 +11,17 @@ module DecentExposure
 
     def scope
       if options[:scope]
-        controller.send(options[:scope])
+        scoped_scope
       else
         default_scope
+      end
+    end
+
+    def scoped_scope
+      if plural?
+        controller.send(options[:scope]).send(inflector.plural)
+      else
+        controller.send(options[:scope])
       end
     end
 
