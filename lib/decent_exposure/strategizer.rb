@@ -20,7 +20,7 @@ module DecentExposure
     end
 
     def model
-      options[:model] || options[:collection] || name
+      options[:model] || name
     end
 
     private

@@ -65,7 +65,7 @@ describe DecentExposure::Strategizer do
 
     subject { exposure.model }
 
-    context "with no model or collection option" do
+    context "with no model option" do
       it "is the provided name" do
         should == name
       end
@@ -76,14 +76,6 @@ describe DecentExposure::Strategizer do
       let(:model_option) { :indecent }
       it "is the provided model" do
         should == model_option
-      end
-    end
-
-    context "with a 'collection' option"  do
-      let(:exposure) { DecentExposure::Strategizer.new(name, :collection => collection) }
-      let(:collection) { :indecent }
-      it "is the provided model" do
-        should == collection
       end
     end
   end

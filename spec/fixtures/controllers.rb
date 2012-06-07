@@ -51,7 +51,6 @@ class BirdController < ActionController::Base
   expose(:custom, :strategy => CustomStrategy)
 
   expose(:albert, :model => :parrot)
-  expose(:hoard, :collection => :albatrosses)
 
   def show
     render :text => "Foo"

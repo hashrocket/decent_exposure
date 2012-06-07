@@ -32,13 +32,6 @@ describe BirdController, :type => :controller do
         controller.albert.should be_a Parrot
       end
     end
-
-    context "with a named collection" do
-      it "finds a collection" do
-        get :show
-        controller.hoard.should have(2).albatrosses
-      end
-    end
   end
 
   describe "attribute setting" do
