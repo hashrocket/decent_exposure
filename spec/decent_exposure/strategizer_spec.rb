@@ -37,7 +37,7 @@ describe DecentExposure::Strategizer do
           let(:name) { "exposed" }
 
           it "initializes a provided class" do
-            DecentExposure::Exposure.should_receive(:new).with(name, strategy).and_return(instance)
+            DecentExposure::Exposure.should_receive(:new).with(name, strategy,{}).and_return(instance)
             should == instance
           end
         end
@@ -50,7 +50,7 @@ describe DecentExposure::Strategizer do
 
           it "sets the strategy to Active Record" do
             DecentExposure::Exposure.should_receive(:new).
-              with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy).
+              with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy,{:model => :other}).
               and_return(strategy)
             should == strategy
           end

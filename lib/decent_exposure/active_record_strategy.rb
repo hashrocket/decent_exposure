@@ -10,6 +10,14 @@ module DecentExposure
     end
 
     def scope
+      if options[:scope]
+        controller.send(options[:scope])
+      else
+        default_scope
+      end
+    end
+
+    def default_scope
       if controller.respond_to?(collection) && !plural?
         controller.send(collection)
       else

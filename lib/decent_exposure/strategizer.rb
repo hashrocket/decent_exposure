@@ -3,17 +3,20 @@ require 'decent_exposure/active_record_with_eager_attributes_strategy'
 
 module DecentExposure
   class Strategizer
-    attr_reader :name, :block, :default_exposure, :options
+    attr_accessor :name, :block, :default_exposure, :options, :custom_strategy_class
 
     def initialize(name, options={})
-      @name, @default_exposure = name, options.delete(:default_exposure)
-      @custom_strategy_class = options.delete(:strategy)
-      @options = options
-      @block = Proc.new if block_given?
+      self.name = name
+      self.default_exposure = options.delete(:default_exposure)
+      self.custom_strategy_class = options.delete(:strategy)
+      self.options = options
+      self.block = Proc.new if block_given?
     end
 
     def strategy
-      [block_strategy, default_exposure_strategy, exposure_strategy].detect(&applicable)
+      [block_strategy,
+       default_exposure_strategy,
+       exposure_strategy].detect(&applicable)
     end
 
     def model
@@ -27,7 +30,7 @@ module DecentExposure
     end
 
     def exposure_strategy
-      Exposure.new(model, exposure_strategy_class)
+      Exposure.new(model, exposure_strategy_class, options)
     end
 
     def block_strategy

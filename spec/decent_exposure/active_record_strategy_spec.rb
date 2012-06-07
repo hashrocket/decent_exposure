@@ -62,6 +62,26 @@ describe DecentExposure::ActiveRecordStrategy do
         end
       end
 
+      context "with a scope override specified" do
+        let(:params) { { :id => 3 } }
+        let(:models) { double("Models") }
+        let(:collection) { double("Collection") }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, scope: :override_collection)
+        end
+
+        before do
+          controller.stub(:models => models)
+          controller.stub(:override_collection => collection)
+        end
+
+        it "uses the scope override to scope its queries" do
+          models.should_not_receive(:find)
+          collection.should_receive(:find).with(3)
+          subject
+        end
+      end
+
     end
 
     context "with a resource collection" do

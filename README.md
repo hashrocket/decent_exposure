@@ -220,8 +220,7 @@ expose(:person)
 </table>
 
 How about a more realistic scenario where the object hierarchy specifies
-something useful, like only finding people in a given company (the `scope:`
-configuration option is **#NOTIMPLEMENTED**, pass a block instead):
+something useful, like only finding people in a given company:
 
 ```ruby
 expose(:company)

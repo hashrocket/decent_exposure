@@ -1,9 +1,9 @@
 module DecentExposure
   class Strategy
-    attr_reader :controller, :inflector
+    attr_reader :controller, :inflector, :options
 
-    def initialize(controller, inflector)
-      @controller, @inflector = controller, inflector
+    def initialize(controller, inflector, options={})
+      @controller, @inflector, @options = controller, inflector, options
     end
 
     def resource

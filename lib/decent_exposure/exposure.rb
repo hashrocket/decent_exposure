@@ -2,15 +2,16 @@ require 'decent_exposure/inflector'
 
 module DecentExposure
   class Exposure
-    attr_reader :inflector, :strategy
+    attr_accessor :inflector, :strategy, :options
 
-    def initialize(name, strategy)
-      @strategy = strategy
-      @inflector = DecentExposure::Inflector.new(name)
+    def initialize(name, strategy, options)
+      self.strategy = strategy
+      self.options = options
+      self.inflector = DecentExposure::Inflector.new(name)
     end
 
     def call(controller)
-      strategy.new(controller, inflector).resource
+      strategy.new(controller, inflector, options).resource
     end
   end
 end
