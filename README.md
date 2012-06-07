@@ -142,10 +142,8 @@ we actually need it.
 Rails conveniently responds with a 404 if you get a record not found in the
 controller. Since we don't find the object until we're in the view in this
 paradigm, we get an ugly `ActionView::TemplateError` instead. If this is
-problematic for you, consider using the `expose!` (`expose!` is **#NOTIMPLEMENTED**,
-instead use a `before_filter` to call the exposed method and eagerly evaluate)
-method to circumvent lazy evaluation and eagerly evaluate whilst still in the
-controller.
+problematic for you, consider using the `expose!` method to circumvent lazy
+evaluation and eagerly evaluate whilst still in the controller.
 
 ## Usage
 

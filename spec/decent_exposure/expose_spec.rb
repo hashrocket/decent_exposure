@@ -29,4 +29,18 @@ describe DecentExposure::Expose do
       2.times { controller.bird }
     end
   end
+
+  describe ".expose!" do
+    let(:controller) { MyController.new }
+    let(:block) { lambda { "I'm a block" } }
+    it "delegates to .expose" do
+      MyController.should_receive(:expose).once
+      MyController.expose!(:worm)
+    end
+
+    it "sets up a callback to evaluate the method in-controller" do
+      MyController.should_receive(:set_callback).with(:process_action, :before, :worm)
+      MyController.expose!(:worm)
+    end
+  end
 end

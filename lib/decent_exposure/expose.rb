@@ -20,6 +20,11 @@ module DecentExposure
       self._default_exposure = block
     end
 
+    def expose!(*args, &block)
+      set_callback(:process_action, :before, args.first)
+      expose(*args, &block)
+    end
+
     def expose(name, options={}, &block)
       options.merge!(:default_exposure => _default_exposure)
       _exposures[name] = exposure = DecentExposure::Strategizer.new(name, options, &block).strategy
