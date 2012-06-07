@@ -174,7 +174,7 @@ expose(:person)
   </tr>
 </table>
 
-### Obtaining a collection of objects (**#NOTIMPLEMENTED**):
+### Obtaining a collection of objects
 
 ```ruby
 expose(:people)
