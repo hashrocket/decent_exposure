@@ -94,6 +94,23 @@ describe DecentExposure::ActiveRecordStrategy do
         end
       end
 
+      context "with a params method override specified" do
+        let(:filtered_params) { { :id => 3 } }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, params: :filtered_params)
+        end
+        before do
+          model.stub(:find)
+          controller.stub(:filtered_params => filtered_params)
+        end
+
+        it "uses the params method override" do
+          controller.should_not_receive(:params)
+          controller.should_receive(:filtered_params)
+          subject
+        end
+      end
+
     end
 
     context "with a resource collection" do

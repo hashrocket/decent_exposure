@@ -25,7 +25,13 @@ module DecentExposure
     end
 
     def params
-      controller.params
+      controller.send(params_method)
+    end
+
+    private
+
+    def params_method
+      options[:params] || :params
     end
   end
 end

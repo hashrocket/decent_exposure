@@ -262,7 +262,7 @@ expose(:company, model: :enterprisey_company)
 expose(:company, finder: :find_by_slug)
 ```
 
-**Specify the parameter accessor (**#NOTIMPLEMENTED**, use a custom strategy):**
+**Specify the parameter accessor:**
 
 ```ruby
 expose(:company, params: :company_params)
