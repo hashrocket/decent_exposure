@@ -142,4 +142,10 @@ describe TaxonomiesController, :type => :controller do
       controller.organism.should be_a(Organism)
     end
   end
+  describe 'named configration' do
+    it "uses the named configuration's options" do
+      get :show, :id => "something"
+      controller.owl.species.should eq('Striginae')
+    end
+  end
 end

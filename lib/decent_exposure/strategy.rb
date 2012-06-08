@@ -1,5 +1,3 @@
-require 'decent_exposure/configuration'
-
 module DecentExposure
   class Strategy
     attr_reader :controller, :inflector, :options
@@ -13,7 +11,7 @@ module DecentExposure
     end
 
     def options
-      Configuration.new(&configuration_block).options.merge(@options)
+      configuration.options.merge(@options)
     end
 
     def resource
@@ -22,8 +20,8 @@ module DecentExposure
 
     protected
 
-    def configuration_block
-      controller._decent_configuration
+    def configuration
+      controller.class._decent_configurations[config_method]
     end
 
     def model
@@ -39,6 +37,10 @@ module DecentExposure
     end
 
     private
+
+    def config_method
+      @options[:config] || :default
+    end
 
     def params_method
       options[:params] || :params

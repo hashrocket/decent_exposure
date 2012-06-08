@@ -8,7 +8,9 @@ describe DecentExposure::ActiveRecordStrategy do
     let(:model) { stub("Model", :new => nil) }
     let(:params) { Hash.new }
     let(:request) { stub(:get? => true) }
-    let(:controller) { stub(:params => params, :request => request, :_decent_configuration => nil) }
+    let(:config) { stub(:options => {}) }
+    let(:controller_class) { stub(:_decent_configurations => Hash.new(config)) }
+    let(:controller) { stub(:params => params, :request => request, :class => controller_class) }
     let(:strategy) { DecentExposure::ActiveRecordStrategy.new(controller, inflector) }
 
     subject { strategy.resource }

@@ -24,8 +24,15 @@ end
 
 class Organism
   extend ActiveModel::Naming
+  attr_accessor :species
+  def initialize(attrs={})
+    self.attributes = attrs
+  end
   def self.find_by_itis_id(itis_id)
     new
+  end
+  def self.find(id)
+    new(:species => 'Striginae')
   end
   def attributes=(attributes)
     attributes.each { |k,v| send("#{k}=", v) }
@@ -107,7 +114,12 @@ class TaxonomiesController < ActionController::Base
     finder :find_by_itis_id
   end
 
+  decent_configuration(:owl_find) do
+    finder :find
+  end
+
   expose(:organism)
+  expose(:owl, :config => :owl_find, :model => :organism)
 
   def show
     render :text => 'show'
