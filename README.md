@@ -1,10 +1,3 @@
-## NOTICE OF WORK IN PROGRESS
-
-This README represents planned functionality. Much of it is implemented. Still
-more is yet to be implemented. We've endeavored to note where the functionality
-has yet to be implemented by tagging it **#NOTIMPLEMENTED** and indicating
-different ways of achieving the same effect where possible.
-
 ## Mad Decent
 
 Rails controllers are the sweaty armpit of every rails app. This is due, in
