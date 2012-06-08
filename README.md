@@ -320,28 +320,44 @@ common helpers to access common things, such as the `params` hash. For
 everything else, you can delegate to `controller`, which is the same as
 `self` in the context of a normal controller action.
 
-### Customizing your exposures (**#NOTIMPLEMENTED**, use a custom strategy)
+### Customizing your exposures(**#NOTIMPLEMENTED**)
 
 For most things, you'll be able to pass a few configuration options and get
 the desired behavior. For changes you want to affect every call to `expose` in
 a controller or controllers inheriting from it (e.g. `ApplicationController`,
 if you need to change the behavior for all your controllers), you can define
-an `exposure` configuration block:
+an `decent_configuration` block:
 
 ```ruby
-exposure(:example) do
-  orm :mem_cache
-  model { Thing }
-  finder :find_by_thing
-  ancestor { model.scoped.further }
+class ApplicationController
+  decent_configuration do
+    strategy MongoidStrategy
+  end
 end
 ```
 
-If you only want to use that exposure in one call to `expose`, you can do so
-like this:
+A `decent_configuration` block without a `:name` argument is considered the
+"default" configuration for that controller (and it's ancestors).  All things
+considered, you probably only want to change the strategy in a default.
+Nonetheless, you can pass any configuration option you can to an individual
+exposure to the `decent_configuration` block.
+
+If you don't want a specific configuration to affect every exposure in the
+given controller, you can give it a name like so:
 
 ```ruby
-expose(:foo, exposure: :example)
+class ArticleController < ApplicationController
+  decent_configuration(:sluggable) do
+    finder :find_by_slug
+    finder_parameter :slug
+  end
+end
+```
+
+And opt into it like so:
+
+```ruby
+expose(:article, config: :sluggable)
 ```
 
 [1]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
