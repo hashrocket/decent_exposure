@@ -22,6 +22,16 @@ class Albatross
   end
 end
 
+class Organism
+  extend ActiveModel::Naming
+  def self.find_by_itis_id(itis_id)
+    new
+  end
+  def attributes=(attributes)
+    attributes.each { |k,v| send("#{k}=", v) }
+  end
+end
+
 Duck = Struct.new(:id)
 
 class DuckCollection
@@ -88,4 +98,18 @@ class OverridingChildDefaultExposureController < DefaultExposureController
   end
 
   expose(:penguin)
+end
+
+class TaxonomiesController < ActionController::Base
+  include Rails.application.routes.url_helpers
+
+  decent_configuration do
+    finder :find_by_itis_id
+  end
+
+  expose(:organism)
+
+  def show
+    render :text => 'show'
+  end
 end

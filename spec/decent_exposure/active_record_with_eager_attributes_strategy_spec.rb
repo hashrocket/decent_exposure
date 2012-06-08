@@ -8,7 +8,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
     let(:model) { stub("Model", :new => nil) }
     let(:params) { Hash.new }
     let(:request) { stub(:get? => true) }
-    let(:controller) { stub(:params => params, :request => request) }
+    let(:controller) { stub(:params => params, :request => request, :_decent_configuration => nil) }
     let(:strategy) { DecentExposure::ActiveRecordWithEagerAttributesStrategy.new(controller, inflector) }
 
     subject { strategy.resource }

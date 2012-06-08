@@ -134,3 +134,12 @@ describe OverridingChildDefaultExposureController, :type => :controller do
     end
   end
 end
+
+describe TaxonomiesController, :type => :controller do
+  describe 'default configration' do
+    it 'uses the configured finder' do
+      get :show, :id => "something"
+      controller.organism.should be_a(Organism)
+    end
+  end
+end

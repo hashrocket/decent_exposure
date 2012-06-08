@@ -4,7 +4,8 @@ module DecentExposure
   module Expose
     def self.extended(base)
       base.class_eval do
-        cattr_accessor :_default_exposure
+        class_attribute :_default_exposure
+        class_attribute :_decent_configuration
         def _resources
           @_resources ||= {}
         end
@@ -14,6 +15,10 @@ module DecentExposure
 
     def _exposures
       @_exposures ||= {}
+    end
+
+    def decent_configuration(&block)
+      self._decent_configuration = block
     end
 
     def default_exposure(&block)

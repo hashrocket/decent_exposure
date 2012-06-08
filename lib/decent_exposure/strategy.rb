@@ -1,3 +1,5 @@
+require 'decent_exposure/configuration'
+
 module DecentExposure
   class Strategy
     attr_reader :controller, :inflector, :options
@@ -6,26 +8,34 @@ module DecentExposure
       @controller, @inflector, @options = controller, inflector, options
     end
 
-    def resource
-      raise 'Implement in subclass'
-    end
-
     def name
       inflector.name
     end
 
+    def options
+      Configuration.new(&configuration_block).options.merge(@options)
+    end
+
+    def resource
+      raise 'Implement in subclass'
+    end
+
     protected
+
+    def configuration_block
+      controller._decent_configuration
+    end
 
     def model
       inflector.constant
     end
 
-    def request
-      controller.request
-    end
-
     def params
       controller.send(params_method)
+    end
+
+    def request
+      controller.request
     end
 
     private

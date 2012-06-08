@@ -320,7 +320,7 @@ common helpers to access common things, such as the `params` hash. For
 everything else, you can delegate to `controller`, which is the same as
 `self` in the context of a normal controller action.
 
-### Customizing your exposures(**#NOTIMPLEMENTED**)
+### Customizing your exposures
 
 For most things, you'll be able to pass a few configuration options and get
 the desired behavior. For changes you want to affect every call to `expose` in

@@ -18,6 +18,7 @@ module Rails
         get '/bird/(:id)' => "bird#show"
         get '/duck/(:id)' => "duck#show"
         get '/mallard/(:id)' => "mallard#show"
+        get '/taxonomies/(:id)' => "taxonomies#show"
       end
       @routes
     end
