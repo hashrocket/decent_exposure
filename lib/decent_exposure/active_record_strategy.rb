@@ -10,18 +10,18 @@ module DecentExposure
     end
 
     def scope
-      if options[:scope]
-        scoped_scope
+      if options[:ancestor]
+        ancestor_scope
       else
         default_scope
       end
     end
 
-    def scoped_scope
+    def ancestor_scope
       if plural?
-        controller.send(options[:scope]).send(inflector.plural)
+        controller.send(options[:ancestor]).send(inflector.plural)
       else
-        controller.send(options[:scope])
+        controller.send(options[:ancestor])
       end
     end
 

@@ -224,7 +224,7 @@ something useful, like only finding people in a given company:
 
 ```ruby
 expose(:company)
-expose(:people, scope: :company)
+expose(:people, ancestor: :company)
 expose(:person)
 ```
 
@@ -333,7 +333,7 @@ exposure(:example) do
   orm :mem_cache
   model { Thing }
   finder :find_by_thing
-  scope { model.scoped.further }
+  ancestor { model.scoped.further }
 end
 ```
 

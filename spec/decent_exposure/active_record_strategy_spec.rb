@@ -67,7 +67,7 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:models) { double("Models") }
         let(:collection) { double("Collection") }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, scope: :override_collection)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, ancestor: :override_collection)
         end
 
         before do
@@ -142,12 +142,12 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:association) { double("Association", :scoped => association_scope) }
         let(:collection) { double("Collection", :models => association) }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, scope: :override_collection)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, ancestor: :ancestor_collection)
         end
 
         before do
           controller.stub(:models => models)
-          controller.stub(:override_collection => collection)
+          controller.stub(:ancestor_collection => collection)
         end
 
         it "uses the scope override to scope its queries" do
