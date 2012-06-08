@@ -83,13 +83,13 @@ describe DecentExposure::ActiveRecordStrategy do
       end
 
       context "with a finder override specified" do
-        let(:params) { { :id => 'my_slug' } }
+        let(:params) { { :id => 'article-title-slug' } }
         let(:strategy) do
           DecentExposure::ActiveRecordStrategy.new(controller, inflector, finder: :find_by_slug)
         end
 
         it "uses the finder override to find instances" do
-          model.should_receive(:find_by_slug).with('my_slug')
+          model.should_receive(:find_by_slug).with('article-title-slug')
           subject
         end
       end
@@ -111,6 +111,18 @@ describe DecentExposure::ActiveRecordStrategy do
         end
       end
 
+      context "with a parameter key override specified" do
+        let(:params) { { :slug => 'article-title-slug' } }
+        let(:slug) { stub('Slug') }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, finder_parameter: :slug)
+        end
+
+        it "uses the params method override" do
+          model.should_receive(:find).with('article-title-slug')
+          subject
+        end
+      end
     end
 
     context "with a resource collection" do

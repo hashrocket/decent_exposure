@@ -256,16 +256,22 @@ things you can do:
 expose(:company, model: :enterprisey_company)
 ```
 
-**Specify the finder method:**
-
-```ruby
-expose(:company, finder: :find_by_slug)
-```
-
-**Specify the parameter accessor:**
+**Specify the parameter accessor method:**
 
 ```ruby
 expose(:company, params: :company_params)
+```
+
+**Specify the finder method:**
+
+```ruby
+expose(:article, finder: :find_by_slug)
+```
+
+**Specify the parameter key to use to fetch the object:**
+
+```ruby
+expose(:article, finder_parameter: :slug)
 ```
 
 ### Getting your hands dirty
