@@ -10,6 +10,17 @@ module DecentExposure
           @_resources ||= {}
         end
         hide_action :_resources
+
+        # refines an existing exposure allowing the default behavior to be reused
+        def refine(exposure, &block)
+          result = send(exposure)
+          class_eval do
+            define_method exposure do
+              block.call(result)
+            end
+          end
+        end
+        hide_action :refine
       end
     end
 
