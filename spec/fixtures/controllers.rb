@@ -15,6 +15,14 @@ class Parrot
   end
 end
 
+module Admin
+  class Parrot < ::Parrot
+    def beak
+      "admin"
+    end
+  end
+end
+
 class Albatross
   extend ActiveModel::Naming
   def self.scoped
@@ -68,6 +76,7 @@ class BirdController < ActionController::Base
   expose(:custom, :strategy => CustomStrategy)
 
   expose(:albert, :model => :parrot)
+  expose(:bernard, :model => Admin::Parrot)
 
   def show
     render :text => "Foo"

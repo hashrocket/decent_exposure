@@ -32,6 +32,13 @@ describe BirdController, :type => :controller do
         controller.albert.should be_a Parrot
       end
     end
+
+    context "with a namespaced model class" do
+      it "finds an instance" do
+        get :show, :id => "something"
+        controller.bernard.beak.should == 'admin'
+      end
+    end
   end
 
   describe "attribute setting" do
