@@ -82,6 +82,10 @@ class BirdController < ActionController::Base
     render :text => "Foo"
   end
 
+  def index
+    render :text => "index"
+  end
+
   def new
     render :text => "new"
   end
