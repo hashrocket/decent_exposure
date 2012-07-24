@@ -15,6 +15,7 @@ module Rails
       @routes = ActionDispatch::Routing::RouteSet.new
       @routes.draw do
         get '/bird/new' => "bird#new"
+        get '/birds' => "bird#index"
         get '/bird/(:id)' => "bird#show"
         get '/duck/(:id)' => "duck#show"
         get '/mallard/(:id)' => "mallard#show"

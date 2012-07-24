@@ -88,6 +88,11 @@ class BirdController < ActionController::Base
     render :text => "Foo"
   end
 
+  def index
+    self.bird = Parrot.new(beak: "custom")
+    render :text => "index"
+  end
+
   def new
     render :text => "new"
   end
