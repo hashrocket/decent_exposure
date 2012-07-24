@@ -71,6 +71,13 @@ describe BirdController, :type => :controller do
     end
   end
 
+  describe "setter method for overriding" do
+    it "sets the exposure to the provided object" do
+      get :index
+      controller.bird.should be_a Parrot
+    end
+  end
+
   describe "custom strategy classes" do
     it "initializes classes with name, calls them with call" do
       get :show

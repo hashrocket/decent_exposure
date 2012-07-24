@@ -43,6 +43,10 @@ module DecentExposure
         _resources[name] = exposure.call(self)
       end
 
+      define_method("#{name}=") do |value|
+        _resources[name] = value
+      end
+
       helper_method name
       hide_action name
     end
