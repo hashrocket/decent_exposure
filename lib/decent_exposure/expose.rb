@@ -27,7 +27,7 @@ module DecentExposure
 
     def default_exposure(&block)
       warn "[DEPRECATION] `default_exposure` is deprecated, and will " \
-      "be remove in DecentExposure 2.1 without a replacement.  Please " \
+      "be removed in DecentExposure 2.1 without a replacement.  Please " \
       "use a custom strategy instead.\n" \
       "#{caller.first}"
       self._default_exposure = block
