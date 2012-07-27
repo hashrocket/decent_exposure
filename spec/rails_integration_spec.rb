@@ -76,6 +76,11 @@ describe BirdController, :type => :controller do
       get :show
       controller.custom.should == 'customshow'
     end
+
+    it "works with decent_configuration" do
+      get :show
+      controller.custom_from_config.should == "custom_from_configshow"
+    end
   end
 
 end

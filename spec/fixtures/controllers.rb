@@ -78,6 +78,12 @@ class BirdController < ActionController::Base
   expose(:albert, :model => :parrot)
   expose(:bernard, :model => Admin::Parrot)
 
+  decent_configuration(:custom) do
+    strategy CustomStrategy
+  end
+
+  expose(:custom_from_config, :config => :custom)
+
   def show
     render :text => "Foo"
   end

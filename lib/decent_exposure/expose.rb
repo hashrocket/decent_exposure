@@ -39,12 +39,19 @@ module DecentExposure
     end
 
     def expose(name, options={}, &block)
+      config = options[:config] || :default
+      options = _decent_configurations[config].merge(options)
       options.merge!(:default_exposure => _default_exposure)
+
       _exposures[name] = exposure = Strategizer.new(name, options, &block).strategy
 
       define_method(name) do
         return _resources[name] if _resources.has_key?(name)
         _resources[name] = exposure.call(self)
+      end
+
+      define_method("#{name}=") do |value|
+        _resources[name] = value
       end
 
       helper_method name
