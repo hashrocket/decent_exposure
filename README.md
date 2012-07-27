@@ -322,7 +322,7 @@ if you need to change the behavior for all your controllers), you can define
 an `decent_configuration` block:
 
 ```ruby
-class ApplicationController
+class ApplicationController < ActionController::Base
   decent_configuration do
     strategy MongoidStrategy
   end
