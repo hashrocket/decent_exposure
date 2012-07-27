@@ -38,10 +38,9 @@ module DecentExposure
       expose(*args, &block)
     end
 
-    def expose(name, options={}, &block)
+    def expose(name, options={:default_exposure => _default_exposure}, &block)
       config = options[:config] || :default
       options = _decent_configurations[config].merge(options)
-      options.merge!(:default_exposure => _default_exposure)
 
       _exposures[name] = exposure = Strategizer.new(name, options, &block).strategy
 
