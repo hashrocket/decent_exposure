@@ -97,6 +97,8 @@ class DuckController < BirdController
   expose(:bird) { "Duck" }
   expose(:ducks) { DuckCollection.new }
   expose(:duck)
+
+  expose(:custom_from_config, :config => :custom)
 end
 
 class MallardController < DuckController; end

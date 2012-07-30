@@ -5,7 +5,9 @@ module DecentExposure
   module Expose
     def self.extended(base)
       base.class_eval do
-        class_attribute :_default_exposure
+        class_attribute :_default_exposure, :_decent_configurations
+        self._decent_configurations ||= Hash.new(Configuration.new)
+
         def _resources
           @_resources ||= {}
         end
@@ -15,10 +17,6 @@ module DecentExposure
 
     def _exposures
       @_exposures ||= {}
-    end
-
-    def _decent_configurations
-      @_decent_configurations ||= Hash.new(Configuration.new)
     end
 
     def decent_configuration(name=:default,&block)

@@ -97,6 +97,10 @@ describe DuckController, :type => :controller do
     it "allows overriding exposures" do
       controller.bird.should == "Duck"
     end
+
+    it "inherits decent configurations" do
+      controller.custom_from_config.should == "custom_from_configshow"
+    end
   end
 
   describe "collection scope" do
