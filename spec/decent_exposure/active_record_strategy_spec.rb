@@ -69,7 +69,7 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:models) { double("Models") }
         let(:collection) { double("Collection") }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, ancestor: :override_collection)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :ancestor => :override_collection)
         end
 
         before do
@@ -87,7 +87,7 @@ describe DecentExposure::ActiveRecordStrategy do
       context "with a finder override specified" do
         let(:params) { { :id => 'article-title-slug' } }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, finder: :find_by_slug)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :finder => :find_by_slug)
         end
 
         it "uses the finder override to find instances" do
@@ -99,7 +99,7 @@ describe DecentExposure::ActiveRecordStrategy do
       context "with a params method override specified" do
         let(:filtered_params) { { :id => 3 } }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, params: :filtered_params)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :params => :filtered_params)
         end
         before do
           model.stub(:find)
@@ -117,7 +117,7 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:params) { { :slug => 'article-title-slug' } }
         let(:slug) { stub('Slug') }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, finder_parameter: :slug)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :finder_parameter => :slug)
         end
 
         it "uses the params method override" do
@@ -144,7 +144,7 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:association) { double("Association", :scoped => association_scope) }
         let(:collection) { double("Collection", :models => association) }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, ancestor: :ancestor_collection)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :ancestor => :ancestor_collection)
         end
 
         before do
