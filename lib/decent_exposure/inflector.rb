@@ -19,11 +19,11 @@ module DecentExposure
     end
 
     def singular
-      original.parameterize
+      original.demodulize.parameterize
     end
 
     def plural
-      original.pluralize
+      original.demodulize.pluralize
     end
     alias collection plural
 

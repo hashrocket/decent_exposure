@@ -19,7 +19,7 @@ describe DecentExposure::Inflector do
     end
   end
 
-  describe "#plural" do
+  describe "#plural?" do
     let(:inflector) { DecentExposure::Inflector.new(name) }
     subject { inflector.plural? }
 
@@ -31,6 +31,17 @@ describe DecentExposure::Inflector do
     context "with a singular word" do
       let(:name) { "car" }
       it { should be_false }
+    end
+  end
+
+  describe "#singular" do
+    let(:inflector) { DecentExposure::Inflector.new(name) }
+
+    context "with a namespaced name" do
+      let(:name) { "Content::Page" }
+      it "returns a demodulized parameterized string" do
+        inflector.singular.should == "page"
+      end
     end
   end
 end
