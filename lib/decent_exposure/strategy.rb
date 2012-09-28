@@ -17,7 +17,7 @@ module DecentExposure
     protected
 
     def model
-      inflector.constant
+      inflector.constant(controller.class)
     end
 
     def params

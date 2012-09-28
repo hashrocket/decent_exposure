@@ -3,15 +3,21 @@ require 'active_support/core_ext/string/inflections'
 
 module DecentExposure
   class Inflector
-    attr_reader :original
-    alias name original
+    attr_reader :string, :original
+    alias name string
 
     def initialize(name)
-      @original = name.to_s
+      @original = name
+      @string = name.to_s.demodulize
     end
 
-    def constant
-      original.classify.constantize
+    def constant(context=Object)
+      case original
+      when Module, Class
+        original
+      else
+        context.const_get string.classify
+      end
     end
 
     def parameter
@@ -19,16 +25,16 @@ module DecentExposure
     end
 
     def singular
-      original.demodulize.parameterize
+      string.parameterize
     end
 
     def plural
-      original.demodulize.pluralize
+      string.pluralize
     end
     alias collection plural
 
     def plural?
-      plural == original
+      plural == string
     end
   end
 end

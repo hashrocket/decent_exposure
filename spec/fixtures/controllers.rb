@@ -18,7 +18,7 @@ end
 module Admin
   class Parrot < ::Parrot
     def beak
-      "admin"
+      @beak ||= "admin"
     end
   end
 end
