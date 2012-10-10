@@ -37,6 +37,13 @@ module DecentExposure
     end
 
     def expose(name, options={:default_exposure => _default_exposure}, &block)
+      if ActionController::Base.instance_methods.include?(name.to_sym)
+        Kernel.warn "[WARNING] You are exposing the `#{name}` method, " \
+          "which overrides an existing ActionController method of the same name. " \
+          "Consider a different exposure name\n" \
+          "#{caller.first}"
+      end
+
       config = options[:config] || :default
       options = _decent_configurations[config].merge(options)
 
