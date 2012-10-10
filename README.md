@@ -267,6 +267,22 @@ expose(:article, finder: :find_by_slug)
 expose(:article, finder_parameter: :slug)
 ```
 
+### Setting a distinct object for a single action
+
+There are times when one action in a controller is different from the
+rest of the actions. Rather than putting conditional logic in your
+exposure block, a better approach is the use the controller's setter
+methods:
+
+```ruby
+expose(:articles) { current_user.articles }
+expose(:article)
+
+def index
+  self.articles = Article.all
+end
+```
+
 ### Getting your hands dirty
 
 While we try to make things as easy for you as possible, sometimes you just
