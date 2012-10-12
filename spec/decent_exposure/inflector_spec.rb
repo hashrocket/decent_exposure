@@ -32,6 +32,19 @@ describe DecentExposure::Inflector do
       let(:name) { "car" }
       it { should be_false }
     end
+
+    context "with an uncountable word" do
+      let(:name) { "sheep" }
+      it { should be_false }
+    end
+  end
+
+  describe "#plural" do
+    let(:inflector) { DecentExposure::Inflector.new(name) }
+    let(:name) { "car" }
+    it "pluralizes the passed-in string" do
+      inflector.plural.should == "cars"
+    end
   end
 
   describe "#singular" do
@@ -41,6 +54,27 @@ describe DecentExposure::Inflector do
       let(:name) { "Content::Page" }
       it "returns a demodulized parameterized string" do
         inflector.singular.should == "page"
+      end
+    end
+
+    context "with an already singular word" do
+      let(:name) { "car" }
+      it "returns the string" do
+        inflector.singular.should == "car"
+      end
+    end
+
+    context "with a plural word" do
+      let(:name) { "cars" }
+      it "returns the string in singular form" do
+        inflector.singular.should == "car"
+      end
+    end
+
+    context "with an uncountable word" do
+      let(:name) { "sheep" }
+      it "returns the string" do
+        inflector.singular.should == "sheep"
       end
     end
   end

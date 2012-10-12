@@ -25,7 +25,7 @@ module DecentExposure
     end
 
     def singular
-      string.parameterize
+      @singular ||= string.singularize.parameterize
     end
 
     def plural
@@ -34,7 +34,11 @@ module DecentExposure
     alias collection plural
 
     def plural?
-      plural == string
+      plural == string && !uncountable?
+    end
+
+    def uncountable?
+      plural == singular
     end
   end
 end
