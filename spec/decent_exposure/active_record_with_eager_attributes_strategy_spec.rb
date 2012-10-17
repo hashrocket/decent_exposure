@@ -43,6 +43,18 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       end
     end
 
+    context "when the params for the resource is nil" do
+      let(:params) { {} }
+      let(:instance) { stub }
+      let(:plural) { false }
+
+      it "sends a empty hash to attributes=" do
+        model.should_receive(:new).and_return(instance)
+        instance.should_receive(:attributes=).with({})
+        should == instance
+      end
+    end
+
     context "with an unfindable singular resource" do
       let(:params) do
         { "model" => { "name" => "Timmy" } }
