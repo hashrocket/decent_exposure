@@ -17,12 +17,37 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
 
     context "with a found singular resource" do
       let(:plural) { false }
-      context "with a put/post request" do
+      context "with a get request" do
+        let(:params) do
+          { "model" => { "name" => "Timmy" }, :id => 1 }
+        end
+        let(:singular) { double("Resource") }
+        let(:request) { double("Request") }
+        before do
+          request.stub(:get?    => true)
+          request.stub(:post?   => false)
+          request.stub(:put?    => false)
+          request.stub(:delete? => false)
+        end
+        it "ignores the attributes" do
+          model.stub(:find => singular)
+          singular.should_not_receive(:attributes=)
+          should == singular
+        end
+      end
+
+      context "with a post request" do
         let(:params) do
           { "model" => { "name" => "Timmy" }, :id => 2 }
         end
         let(:singular) { double("Resource") }
-        let(:request) { stub(:get? => false) }
+        let(:request) { double("Request") }
+        before do
+          request.stub(:get?    => false)
+          request.stub(:post?   => true)
+          request.stub(:put?    => false)
+          request.stub(:delete? => false)
+        end
         it "sets the attributes from the request" do
           model.stub(:find => singular)
           singular.should_receive(:attributes=).with({"name" => "Timmy"})
@@ -30,11 +55,37 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         end
       end
 
-      context "with a get request" do
+      context "with a put request" do
+        let(:params) do
+          { "model" => { "name" => "Timmy" }, :id => 2 }
+        end
+        let(:singular) { double("Resource") }
+        let(:request) { double("Request") }
+        before do
+          request.stub(:get?    => false)
+          request.stub(:post?   => false)
+          request.stub(:put?    => true)
+          request.stub(:delete? => false)
+        end
+        it "sets the attributes from the request" do
+          model.stub(:find => singular)
+          singular.should_receive(:attributes=).with({"name" => "Timmy"})
+          should == singular
+        end
+      end
+
+      context "with a delete request" do
         let(:params) do
           { "model" => { "name" => "Timmy" }, :id => 1 }
         end
         let(:singular) { double("Resource") }
+        let(:request) { double("Request") }
+        before do
+          request.stub(:get?    => false)
+          request.stub(:post?   => false)
+          request.stub(:put?    => false)
+          request.stub(:delete? => true)
+        end
         it "ignores the attributes" do
           model.stub(:find => singular)
           singular.should_not_receive(:attributes=)

@@ -2,7 +2,10 @@ require 'decent_exposure/active_record_strategy'
 
 module DecentExposure
   class ActiveRecordWithEagerAttributesStrategy < ActiveRecordStrategy
-    delegate :get?, :to => :request
+    delegate :get?,    :to => :request
+    delegate :post?,   :to => :request
+    delegate :put?,    :to => :request
+    delegate :delete?, :to => :request
 
     def singular?
       !plural?
@@ -14,7 +17,7 @@ module DecentExposure
 
     def assign_attributes?
       return false unless attributes && singular?
-      !get? || new_record?
+      (!get? && !delete?) || new_record?
     end
 
     def new_record?
