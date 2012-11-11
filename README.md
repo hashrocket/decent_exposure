@@ -353,4 +353,52 @@ And opt into it like so:
 expose(:article, config: :sluggable)
 ```
 
+## Testing
+
+Controller testing remains trivially easy. The shift is that you now set expectations on methods rather than instance variables. With RSpec, this mostly means avoiding `assign` and `assigns`.
+
+```ruby
+describe CompaniesController do
+  describe "GET index" do
+
+    # this...
+    it "assigns @companies" do
+      company = Company.create
+      get :index
+      assigns(:companies).should eq([company])
+    end
+
+    # becomes this
+    it "exposes companies" do
+      company = Company.create
+      get :index
+      controller.companies.should eq([company])
+    end
+  end
+end
+```
+
+View specs follow a similar pattern:
+
+```ruby
+describe "people/index.html.erb" do
+
+  # this...
+  it "lists people" do
+    assign(:people, [ mock_model(Person, name: 'John Doe') ])
+    render
+    rendered.should have_content('John Doe')
+  end
+
+  # becomes this
+  it "lists people" do
+    view.stub(people: [ mock_model(Person, name: 'John Doe') ])
+    render
+    rendered.should have_content('John Doe')
+  end
+
+end
+```
+
+
 [1]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
