@@ -58,7 +58,12 @@ module DecentExposure
       end
 
       def namespace_qualified
-        context.to_s.deconstantize.constantize.const_get(constant_name)
+        namespace.const_get(constant_name)
+      end
+
+      def namespace
+        path = context.to_s
+        path[0...(path.rindex('::') || 0)].constantize
       end
     end
   end
