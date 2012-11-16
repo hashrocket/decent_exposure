@@ -1,13 +1,40 @@
 require 'decent_exposure/inflector'
 
-class Fox; end
 
 describe DecentExposure::Inflector do
   describe "#constant" do
     let(:name) { "fox" }
     let(:inflector) { DecentExposure::Inflector.new(name) }
+
+    before do
+      class Fox; end
+      class Wolf; end
+      module Dogs
+        class Fox; end
+        class Wolf; end
+      end
+    end
+
+    it "looks up sibling constants" do
+      inflector.constant(Dogs::Wolf).should == Dogs::Fox
+    end
+
+    it "looks up child constants" do
+      inflector.constant(Dogs).should == Dogs::Fox
+    end
+
     it "returns a constant from that word" do
       inflector.constant.should == Fox
+    end
+
+    it "returns a constant from that word" do
+      inflector.constant(Wolf).should == Fox
+    end
+
+    it "raises when you pass in silly things" do
+      expect do
+        DecentExposure::Inflector.new("foo").constant
+      end.to raise_error(NameError)
     end
   end
 

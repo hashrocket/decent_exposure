@@ -1,5 +1,5 @@
 require 'active_support/inflector'
-require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/string'
 
 module DecentExposure
   class Inflector
@@ -16,7 +16,7 @@ module DecentExposure
       when Module, Class
         original
       else
-        context.const_get string.classify
+        ConstantResolver.new(context, string.classify).constant
       end
     end
 
@@ -39,6 +39,27 @@ module DecentExposure
 
     def uncountable?
       plural == singular
+    end
+
+    private
+
+    ConstantResolver = Struct.new :context, :constant_name do
+
+      def constant
+        immediate_child || namespace_qualified
+      end
+
+      private
+
+      def immediate_child
+        context.constants.map do |c|
+          context.const_get(c) if c.to_s == constant_name
+        end.compact.first
+      end
+
+      def namespace_qualified
+        context.to_s.deconstantize.constantize.const_get(constant_name)
+      end
     end
   end
 end

@@ -170,3 +170,10 @@ describe TaxonomiesController, :type => :controller do
     end
   end
 end
+
+describe Namespace::ModelController, :type => :controller do
+  it "finds the instance of the namespaced model" do
+    get :show, :id => "foo"
+    controller.model.name.should == "inner"
+  end
+end
