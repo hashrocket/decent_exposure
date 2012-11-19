@@ -284,7 +284,7 @@ This block is evaluated and the memoized result is returned whenever you call
 
 For the times when custom behavior is needed for resource finding,
 `decent_exposure` provides a base class for extending. For example, if
-scoping a resource from `current_user` is not and option, but you'd like
+scoping a resource from `current_user` is not an option, but you'd like
 to verify a resource's relationship to the `current_user`, you can use a
 custom strategy like the following:
 
