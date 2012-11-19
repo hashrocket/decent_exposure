@@ -25,8 +25,6 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         let(:request) { double("Request") }
         before do
           request.stub(:get?    => true)
-          request.stub(:post?   => false)
-          request.stub(:put?    => false)
           request.stub(:delete? => false)
         end
         it "ignores the attributes" do
@@ -44,8 +42,6 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         let(:request) { double("Request") }
         before do
           request.stub(:get?    => false)
-          request.stub(:post?   => true)
-          request.stub(:put?    => false)
           request.stub(:delete? => false)
         end
         it "sets the attributes from the request" do
@@ -63,8 +59,6 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         let(:request) { double("Request") }
         before do
           request.stub(:get?    => false)
-          request.stub(:post?   => false)
-          request.stub(:put?    => true)
           request.stub(:delete? => false)
         end
         it "sets the attributes from the request" do
@@ -82,8 +76,6 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         let(:request) { double("Request") }
         before do
           request.stub(:get?    => false)
-          request.stub(:post?   => false)
-          request.stub(:put?    => false)
           request.stub(:delete? => true)
         end
         it "ignores the attributes" do

@@ -3,8 +3,6 @@ require 'decent_exposure/active_record_strategy'
 module DecentExposure
   class ActiveRecordWithEagerAttributesStrategy < ActiveRecordStrategy
     delegate :get?,    :to => :request
-    delegate :post?,   :to => :request
-    delegate :put?,    :to => :request
     delegate :delete?, :to => :request
 
     def singular?
