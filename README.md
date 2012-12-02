@@ -353,6 +353,30 @@ And opt into it like so:
 expose(:article, config: :sluggable)
 ```
 
+### Refinements
+
+Use the #refine method in a controller action to alter the value of the exposure.
+The result of the block passed to #refine will become the new value of the exposure.
+Also, the block will receive the original exposed value to build from.
+An exposure can be refined as many times as necessary.
+This allows you to leverage the power, simplicity and elegance of the default exposure behavior,
+without sacrificing customization options during the request.
+
+```ruby
+class SomeController < ApplicationController
+  expose(:people) # Person.scoped
+
+  def index
+    if params[:first_name]
+      refine(:people) {|people| people.where(first_name: params[:first_name]) }
+    end
+    if params[:last_name]
+      refine(:people) {|people| people.where(last_name: params[:last_name]) }
+    end
+  end
+end
+```
+
 ## Testing
 
 Controller testing remains trivially easy. The shift is that you now set expectations on methods rather than instance variables. With RSpec, this mostly means avoiding `assign` and `assigns`.
@@ -399,6 +423,5 @@ describe "people/index.html.erb" do
 
 end
 ```
-
 
 [1]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
