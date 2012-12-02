@@ -79,7 +79,7 @@ module DecentExposure
     def define_exposure_method name, &block
       define_method(name) do
         return _resources[name] if _resources.has_key?(name)
-        _resources[name] = block.call()
+        _resources[name] = instance_eval(&block)
       end
     end
 
