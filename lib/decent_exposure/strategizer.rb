@@ -42,11 +42,7 @@ module DecentExposure
     end
 
     def exposure_strategy_class
-      custom || ActiveRecordWithEagerAttributesStrategy
-    end
-
-    def custom
-      @custom_strategy_class
+      custom_strategy_class || ActiveRecordWithEagerAttributesStrategy
     end
   end
 

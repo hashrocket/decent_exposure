@@ -5,7 +5,9 @@ module DecentExposure
   module Expose
     def self.extended(base)
       base.class_eval do
-        class_attribute :_default_exposure
+        class_attribute :_default_exposure, :_decent_configurations
+        self._decent_configurations ||= Hash.new(Configuration.new)
+
         def _resources
           @_resources ||= {}
         end
@@ -30,15 +32,15 @@ module DecentExposure
       @_exposures ||= {}
     end
 
-    def _decent_configurations
-      @_decent_configurations ||= Hash.new(Configuration.new)
-    end
-
     def decent_configuration(name=:default,&block)
       _decent_configurations[name] = Configuration.new(&block)
     end
 
     def default_exposure(&block)
+      warn "[DEPRECATION] `default_exposure` is deprecated, and will " \
+      "be removed in DecentExposure 2.1 without a replacement.  Please " \
+      "use a custom strategy instead.\n" \
+      "#{caller.first}"
       self._default_exposure = block
     end
 
@@ -47,12 +49,25 @@ module DecentExposure
       expose(*args, &block)
     end
 
-    def expose(name, options={}, &block)
-      options.merge!(:default_exposure => _default_exposure)
+    def expose(name, options={:default_exposure => _default_exposure}, &block)
+      if ActionController::Base.instance_methods.include?(name.to_sym)
+        Kernel.warn "[WARNING] You are exposing the `#{name}` method, " \
+          "which overrides an existing ActionController method of the same name. " \
+          "Consider a different exposure name\n" \
+          "#{caller.first}"
+      end
+
+      config = options[:config] || :default
+      options = _decent_configurations[config].merge(options)
+
       _exposures[name] = exposure = Strategizer.new(name, options, &block).strategy
 
       define_exposure_method(name) do
         exposure.call(self)
+      end
+
+      define_method("#{name}=") do |value|
+        _resources[name] = value
       end
 
       helper_method name

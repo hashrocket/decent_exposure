@@ -15,6 +15,14 @@ class Parrot
   end
 end
 
+module Admin
+  class Parrot < ::Parrot
+    def beak
+      @beak ||= "admin"
+    end
+  end
+end
+
 class Albatross
   extend ActiveModel::Naming
   def self.scoped
@@ -65,9 +73,18 @@ class BirdController < ActionController::Base
   expose(:albatrosses)
   expose(:parrot)
 
+  expose(:logger) { "" }
+
   expose(:custom, :strategy => CustomStrategy)
 
   expose(:albert, :model => :parrot)
+  expose(:bernard, :model => Admin::Parrot)
+
+  decent_configuration(:custom) do
+    strategy CustomStrategy
+  end
+
+  expose(:custom_from_config, :config => :custom)
 
   def show
     render :text => "Foo"
@@ -82,6 +99,8 @@ class DuckController < BirdController
   expose(:bird) { "Duck" }
   expose(:ducks) { DuckCollection.new }
   expose(:duck)
+
+  expose(:custom_from_config, :config => :custom)
 end
 
 class MallardController < DuckController; end
@@ -105,6 +124,24 @@ class OverridingChildDefaultExposureController < DefaultExposureController
   end
 
   expose(:penguin)
+end
+
+class ::Model
+  def self.find(*); new end
+  def name; "outer" end
+end
+
+module ::Namespace
+  class Model
+    def self.find(*); new end
+    def name; "inner" end
+  end
+
+  class ModelController < ActionController::Base
+    include Rails.application.routes.url_helpers
+    expose(:model)
+    def show; render :text => ""; end
+  end
 end
 
 class TaxonomiesController < ActionController::Base

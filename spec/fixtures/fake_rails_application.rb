@@ -19,11 +19,12 @@ module Rails
         get '/duck/(:id)' => "duck#show"
         get '/mallard/(:id)' => "mallard#show"
         get '/taxonomies/(:id)' => "taxonomies#show"
+        get '/namespace/model/:id' => "namespace/model#show"
       end
       @routes
     end
   end
   def self.application
-    App.new
+    @app ||= App.new
   end
 end

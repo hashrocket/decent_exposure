@@ -284,7 +284,7 @@ This block is evaluated and the memoized result is returned whenever you call
 
 For the times when custom behavior is needed for resource finding,
 `decent_exposure` provides a base class for extending. For example, if
-scoping a resource from `current_user` is not and option, but you'd like
+scoping a resource from `current_user` is not an option, but you'd like
 to verify a resource's relationship to the `current_user`, you can use a
 custom strategy like the following:
 
@@ -322,7 +322,7 @@ if you need to change the behavior for all your controllers), you can define
 an `decent_configuration` block:
 
 ```ruby
-class ApplicationController
+class ApplicationController < ActionController::Base
   decent_configuration do
     strategy MongoidStrategy
   end
@@ -352,5 +352,53 @@ And opt into it like so:
 ```ruby
 expose(:article, config: :sluggable)
 ```
+
+## Testing
+
+Controller testing remains trivially easy. The shift is that you now set expectations on methods rather than instance variables. With RSpec, this mostly means avoiding `assign` and `assigns`.
+
+```ruby
+describe CompaniesController do
+  describe "GET index" do
+
+    # this...
+    it "assigns @companies" do
+      company = Company.create
+      get :index
+      assigns(:companies).should eq([company])
+    end
+
+    # becomes this
+    it "exposes companies" do
+      company = Company.create
+      get :index
+      controller.companies.should eq([company])
+    end
+  end
+end
+```
+
+View specs follow a similar pattern:
+
+```ruby
+describe "people/index.html.erb" do
+
+  # this...
+  it "lists people" do
+    assign(:people, [ mock_model(Person, name: 'John Doe') ])
+    render
+    rendered.should have_content('John Doe')
+  end
+
+  # becomes this
+  it "lists people" do
+    view.stub(people: [ mock_model(Person, name: 'John Doe') ])
+    render
+    rendered.should have_content('John Doe')
+  end
+
+end
+```
+
 
 [1]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html

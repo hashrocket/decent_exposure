@@ -6,7 +6,7 @@ require 'decent_exposure/version'
 Gem::Specification.new do |s|
   s.name        = 'decent_exposure'
   s.version     = DecentExposure::VERSION
-  s.authors     = ["Stephen Caudill", "Jon Larkowski"]
+  s.authors     = ["Stephen Caudill", "Jon Larkowski", "Joshua Davey"]
   s.email       = 'scaudill@gmail.com'
   s.homepage    = 'http://github.com/voxdolo/decent_exposure'
 

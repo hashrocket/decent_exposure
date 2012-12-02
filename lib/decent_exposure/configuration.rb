@@ -4,6 +4,10 @@ module DecentExposure
       instance_exec(&block) if block_given?
     end
 
+    def merge(other)
+      options.merge(other)
+    end
+
     def options
       @options ||= {}
     end

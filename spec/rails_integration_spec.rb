@@ -32,6 +32,18 @@ describe BirdController, :type => :controller do
         controller.albert.should be_a Parrot
       end
     end
+
+    context "with a namespaced model class" do
+      it "finds an instance" do
+        get :show, :id => "something"
+        controller.bernard.beak.should == 'admin'
+      end
+
+      it "assigns based on unnamespaced parameter" do
+        post :show, :parrot => { :beak => 'bent' }
+        controller.bernard.beak.should == 'bent'
+      end
+    end
   end
 
   describe "attribute setting" do
@@ -69,6 +81,11 @@ describe BirdController, :type => :controller do
       get :show
       controller.custom.should == 'customshow'
     end
+
+    it "works with decent_configuration" do
+      get :show
+      controller.custom_from_config.should == "custom_from_configshow"
+    end
   end
 
 end
@@ -84,6 +101,10 @@ describe DuckController, :type => :controller do
 
     it "allows overriding exposures" do
       controller.bird.should == "Duck"
+    end
+
+    it "inherits decent configurations" do
+      controller.custom_from_config.should == "custom_from_configshow"
     end
   end
 
@@ -147,5 +168,12 @@ describe TaxonomiesController, :type => :controller do
       get :show, :id => "something"
       controller.owl.species.should eq('Striginae')
     end
+  end
+end
+
+describe Namespace::ModelController, :type => :controller do
+  it "finds the instance of the namespaced model" do
+    get :show, :id => "foo"
+    controller.model.name.should == "inner"
   end
 end

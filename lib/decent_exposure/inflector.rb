@@ -1,17 +1,23 @@
 require 'active_support/inflector'
-require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/string'
 
 module DecentExposure
   class Inflector
-    attr_reader :original
-    alias name original
+    attr_reader :string, :original
+    alias name string
 
     def initialize(name)
-      @original = name.to_s
+      @original = name
+      @string = name.to_s.demodulize
     end
 
-    def constant
-      original.classify.constantize
+    def constant(context=Object)
+      case original
+      when Module, Class
+        original
+      else
+        ConstantResolver.new(context, string.classify).constant
+      end
     end
 
     def parameter
@@ -19,16 +25,46 @@ module DecentExposure
     end
 
     def singular
-      original.parameterize
+      @singular ||= string.singularize.parameterize
     end
 
     def plural
-      original.pluralize
+      string.pluralize
     end
     alias collection plural
 
     def plural?
-      plural == original
+      plural == string && !uncountable?
+    end
+
+    def uncountable?
+      plural == singular
+    end
+
+    private
+
+    ConstantResolver = Struct.new :context, :constant_name do
+
+      def constant
+        immediate_child || namespace_qualified
+      end
+
+      private
+
+      def immediate_child
+        context.constants.map do |c|
+          context.const_get(c) if c.to_s == constant_name
+        end.compact.first
+      end
+
+      def namespace_qualified
+        namespace.const_get(constant_name)
+      end
+
+      def namespace
+        path = context.to_s
+        path[0...(path.rindex('::') || 0)].constantize
+      end
     end
   end
 end
