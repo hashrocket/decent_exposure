@@ -12,6 +12,19 @@ module DecentExposure
           @_resources ||= {}
         end
         hide_action :_resources
+
+        # refines an existing exposure allowing the default behavior to be reused
+        def refine(exposure, &block)
+          result = send(exposure)
+          _resources.delete(exposure)
+
+          class_eval do
+            define_exposure_method(exposure) do
+              block.call(result)
+            end
+          end
+        end
+        hide_action :refine
       end
     end
 
@@ -49,9 +62,8 @@ module DecentExposure
 
       _exposures[name] = exposure = Strategizer.new(name, options, &block).strategy
 
-      define_method(name) do
-        return _resources[name] if _resources.has_key?(name)
-        _resources[name] = exposure.call(self)
+      define_exposure_method(name) do
+        exposure.call(self)
       end
 
       define_method("#{name}=") do |value|
@@ -61,5 +73,15 @@ module DecentExposure
       helper_method name
       hide_action name
     end
+
+    private
+
+    def define_exposure_method name, &block
+      define_method(name) do
+        return _resources[name] if _resources.has_key?(name)
+        _resources[name] = instance_eval(&block)
+      end
+    end
+
   end
 end
