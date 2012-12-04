@@ -3,18 +3,19 @@ require 'active_support/core_ext/string'
 
 module DecentExposure
   class Inflector
-    attr_reader :string, :original
+    attr_reader :string, :original, :model
     alias name string
 
-    def initialize(name)
-      @original = name
-      @string = name.to_s.demodulize
+    def initialize(name, model=nil)
+      @original = name.to_s
+      @model = model
+      @string = (model || name).to_s.demodulize
     end
 
     def constant(context=Object)
-      case original
+      case model
       when Module, Class
-        original
+        model
       else
         ConstantResolver.new(context, string.classify).constant
       end

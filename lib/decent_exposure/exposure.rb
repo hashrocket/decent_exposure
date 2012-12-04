@@ -7,7 +7,7 @@ module DecentExposure
     def initialize(name, strategy, options)
       self.strategy = strategy
       self.options = options
-      self.inflector = DecentExposure::Inflector.new(name)
+      self.inflector = DecentExposure::Inflector.new(name, options[:model])
     end
 
     def call(controller)
