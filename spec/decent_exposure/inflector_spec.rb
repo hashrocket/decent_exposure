@@ -64,6 +64,12 @@ describe DecentExposure::Inflector do
       let(:name) { "sheep" }
       it { should be_false }
     end
+
+    context "with a plural word and model option" do
+      before { class Auto; end }
+      let(:inflector) { DecentExposure::Inflector.new("cars", Auto) }
+      it { should be_true }
+    end
   end
 
   describe "#plural" do

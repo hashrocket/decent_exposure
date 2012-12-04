@@ -35,11 +35,11 @@ module DecentExposure
     alias collection plural
 
     def plural?
-      plural == string && !uncountable?
+      original.pluralize == original && !uncountable?
     end
 
     def uncountable?
-      plural == singular
+      original.pluralize == original.singularize
     end
 
     private
