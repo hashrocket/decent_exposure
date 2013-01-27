@@ -3,6 +3,7 @@ require 'decent_exposure/strategizer'
 describe DecentExposure::Strategizer do
   describe "#strategy" do
     subject { exposure.strategy }
+
     context "when a block is given" do
       let(:block) { lambda { "foo" } }
       let(:exposure) { DecentExposure::Strategizer.new("foobar", &block) }
@@ -12,48 +13,29 @@ describe DecentExposure::Strategizer do
     end
 
     context "with no block" do
-      context "and a default exposure" do
-        let(:exposure) do
-          DecentExposure::Strategizer.new(name, :default_exposure => block)
-        end
-        let(:block) do
-          lambda { |name| name.upcase }
-        end
-        let(:name) { "foo" }
-        it "has a name" do
-          subject.name.should == name
-        end
-        it "passes the name to the block" do
-          context = stub
-          subject.call(context).should == "FOO"
+      context "with a custom strategy" do
+        let(:exposure) { DecentExposure::Strategizer.new(name, :strategy => strategy) }
+        let(:strategy) { double("Custom") }
+        let(:instance) { double("custom") }
+        let(:name) { "exposed" }
+
+        it "initializes a provided class" do
+          DecentExposure::Exposure.should_receive(:new).with(name, strategy,{}).and_return(instance)
+          should == instance
         end
       end
 
-      context "and no default exposure" do
-        context "with a custom strategy" do
-          let(:exposure) { DecentExposure::Strategizer.new(name, :default_exposure => nil, :strategy => strategy) }
-          let(:strategy) { double("Custom") }
-          let(:instance) { double("custom") }
-          let(:name) { "exposed" }
+      context "with no custom strategy" do
+        let(:exposure) { DecentExposure::Strategizer.new(name, :model => model_option) }
+        let(:strategy) { double("ActiveRecordStrategy") }
+        let(:name) { "exposed" }
+        let(:model_option) { :other }
 
-          it "initializes a provided class" do
-            DecentExposure::Exposure.should_receive(:new).with(name, strategy,{}).and_return(instance)
-            should == instance
-          end
-        end
-
-        context "with no custom strategy" do
-          let(:exposure) { DecentExposure::Strategizer.new(name, :model => model_option) }
-          let(:strategy) { double("ActiveRecordStrategy") }
-          let(:name) { "exposed" }
-          let(:model_option) { :other }
-
-          it "sets the strategy to Active Record" do
-            DecentExposure::Exposure.should_receive(:new).
-              with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy,{:model => :other}).
-              and_return(strategy)
-            should == strategy
-          end
+        it "sets the strategy to Active Record" do
+          DecentExposure::Exposure.should_receive(:new).
+            with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other}).
+            and_return(strategy)
+          should == strategy
         end
       end
     end

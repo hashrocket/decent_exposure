@@ -103,27 +103,6 @@ end
 
 class MallardController < DuckController; end
 
-class DefaultExposureController < ActionController::Base
-  default_exposure do |name|
-    name.to_s.upcase
-  end
-
-  expose :dodo
-  expose(:penguin) { 'Happy Feet' }
-end
-
-class ChildDefaultExposureController < DefaultExposureController
-  expose :eagle
-end
-
-class OverridingChildDefaultExposureController < DefaultExposureController
-  default_exposure do |name|
-    name.to_s.reverse
-  end
-
-  expose(:penguin)
-end
-
 class ::Model
   def self.find(*); new end
   def name; "outer" end
