@@ -30,6 +30,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rspec', '~> 2.11'
   s.add_development_dependency 'rspec-rails', '~> 2.11'
-  s.add_development_dependency 'actionpack', '~> 3.1'
-  s.add_development_dependency 'activesupport', '~> 3.1'
+  s.add_development_dependency 'actionpack', '>= 3.1.0'
+  s.add_development_dependency 'activesupport', '>= 3.1.0'
 end
