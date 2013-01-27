@@ -73,8 +73,6 @@ class BirdController < ActionController::Base
   expose(:albatrosses)
   expose(:parrot)
 
-  expose(:logger) { "" }
-
   expose(:custom, :strategy => CustomStrategy)
 
   expose(:albert, :model => :parrot)
