@@ -1,15 +1,27 @@
 language: ruby
+
 rvm:
   - 1.9.3
   - 1.9.2
   - 1.8.7
-  - jruby
+
 gemfile:
   - ".gemfiles/Gemfile.rails-3.1.x"
   - ".gemfiles/Gemfile.rails-3.2.x"
-  - ".gemfiles/Gemfile.rails-edge"
-exclude:
-  - rvm: jruby
-    gemfile: ".gemfiles/Gemfile.rails-3.2.x"
-  - rvm: jruby
-    gemfile: ".gemfiles/Gemfile.rails-edge"
+
+matrix:
+  include:
+    - rvm: 1.9.3
+      gemfile: ".gemfiles/Gemfile.rails-edge"
+    - rvm: ruby-head
+      gemfile: ".gemfiles/Gemfile.rails-edge"
+    - rvm: jruby
+      gemfile: ".gemfiles/Gemfile.rails-3.2.x"
+    - rvm: rbx-18mode
+      gemfile: ".gemfiles/Gemfile.rails-3.2.x"
+    - rvm: rbx-19mode
+      gemfile: ".gemfiles/Gemfile.rails-3.2.x"
+
+  allow_failures:
+    - rvm: ruby-head
+    - gemfile: ".gemfiles/Gemfile.rails-edge"
