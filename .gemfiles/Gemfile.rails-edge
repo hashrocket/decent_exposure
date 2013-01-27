@@ -1,0 +1,5 @@
+source :rubygems
+
+gemspec :path => '..'
+
+gem 'rails', :git => 'git://github.com/rails/rails.git'

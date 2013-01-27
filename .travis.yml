@@ -7,3 +7,9 @@ rvm:
 gemfile:
   - ".gemfiles/Gemfile.rails-3.1.x"
   - ".gemfiles/Gemfile.rails-3.2.x"
+  - ".gemfiles/Gemfile.rails-edge"
+exclude:
+  - rvm: jruby
+    gemfile: ".gemfiles/Gemfile.rails-3.2.x"
+  - rvm: jruby
+    gemfile: ".gemfiles/Gemfile.rails-edge"
