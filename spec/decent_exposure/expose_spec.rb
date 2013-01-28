@@ -43,4 +43,30 @@ describe DecentExposure::Expose do
       MyController.expose!(:worm)
     end
   end
+
+  describe ".decent_configuration" do
+    class ParentContoller < ActionController::Base
+      extend DecentExposure::Expose
+      decent_configuration do
+        finder :find
+      end
+    end
+
+    class NonOverridingController < ParentContoller
+    end
+
+    class OverridingController < ParentContoller
+      decent_configuration do
+        finder :overridden
+      end
+    end
+
+    it "inherits from superclasses" do
+      ParentContoller._decent_configurations[:default].options.should == NonOverridingController._decent_configurations[:default].options
+    end
+
+    it "does not override config for sibling classes" do
+      OverridingController._decent_configurations[:default].options.should_not == NonOverridingController._decent_configurations[:default].options
+    end
+  end
 end

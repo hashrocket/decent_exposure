@@ -20,7 +20,7 @@ module DecentExposure
     end
 
     def decent_configuration(name=:default,&block)
-      _decent_configurations[name] = Configuration.new(&block)
+      self._decent_configurations = _decent_configurations.merge(name => Configuration.new(&block))
     end
 
     def expose!(*args, &block)
