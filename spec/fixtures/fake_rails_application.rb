@@ -21,6 +21,7 @@ module Rails
         get '/mallard/(:id)' => "mallard#show"
         get '/taxonomies/(:id)' => "taxonomies#show"
         get '/namespace/model/:id' => "namespace/model#show"
+        get '/strong_parameters/:id' => "strong_parameters#show"
       end
       @routes
     end

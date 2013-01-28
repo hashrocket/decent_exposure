@@ -108,6 +108,25 @@ end
 
 class MallardController < DuckController; end
 
+class StrongParametersController < ActionController::Base
+  include Rails.application.routes.url_helpers
+
+  decent_configuration do
+    strategy DecentExposure::StrongParametersStrategy
+  end
+
+  expose(:assignable, :attributes => :assignable_attributes, :model => Parrot)
+  expose(:unassignable, :model => Parrot)
+
+  def show
+    render :text => "show"
+  end
+
+  def assignable_attributes
+    params[:assignable]
+  end
+end
+
 class ::Model
   def self.find(*); new end
   def name; "outer" end
