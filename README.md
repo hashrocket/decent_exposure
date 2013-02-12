@@ -369,6 +369,39 @@ And opt into it like so:
 expose(:article, config: :sluggable)
 ```
 
+## Usage with Rails 4 (or strong\_parameters plugin)
+
+If you're using Rails 4 or
+[strong\_parameters](https://github.com/rails/strong_parameters), add the
+following to your ApplicationController:
+
+
+``` ruby
+class ApplicationController < ActionController::Base
+  decent_configuration do
+    strategy DecentExposure::StrongParametersStrategy
+  end
+end
+```
+
+Then, when you'd like parameters to be assigned to a model, add the
+`attributes` option to your exposure:
+
+```ruby
+class FooController < ApplicationController
+  expose(:foo, attributes: :foo_params)
+
+  private
+  def foo_params
+    params.require(:foo).permit(:bar, :baz)
+  end
+end
+```
+
+In the example above, `foo_params` will only be called on a PUT, POST or
+PATCH request.
+
+
 ## Testing
 
 Controller testing remains trivially easy. The shift is that you now set expectations on methods rather than instance variables. With RSpec, this mostly means avoiding `assign` and `assigns`.
