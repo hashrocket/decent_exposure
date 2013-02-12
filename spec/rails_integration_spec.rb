@@ -136,6 +136,37 @@ describe MallardController, :type => :controller do
 
 end
 
+describe StrongParametersController, :type => :controller do
+  describe "attribute setting" do
+
+    context "with an 'attributes' option set" do
+      let(:request) { [:show, { :id => 2, :assignable => { :beak => "droopy" } }] }
+      it "assigns attributes for post requests, using the method from 'attributes'" do
+        post *request
+        controller.assignable.beak.should == "droopy"
+      end
+
+      it "assigns attributes for post requests, using the method from 'attributes'" do
+        put *request
+        controller.assignable.beak.should == "droopy"
+      end
+
+      it "does not assign attributes on get requests" do
+        get *request
+        controller.assignable.beak.should_not == "droopy"
+      end
+    end
+
+    context "with no 'attributes' option set" do
+      let(:request) { [:show, { :id => 2, :unassignable => { :beak => "droopy" } }] }
+      it "does not assign attributes" do
+        post *request
+        controller.assignable.beak.should_not == "droopy"
+      end
+    end
+  end
+end
+
 describe TaxonomiesController, :type => :controller do
   describe 'default configration' do
     it 'uses the configured finder' do

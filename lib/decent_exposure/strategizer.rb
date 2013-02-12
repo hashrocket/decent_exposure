@@ -1,5 +1,6 @@
 require 'decent_exposure/exposure'
 require 'decent_exposure/active_record_with_eager_attributes_strategy'
+require 'decent_exposure/strong_parameters_strategy'
 
 module DecentExposure
   class Strategizer
