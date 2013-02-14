@@ -38,7 +38,7 @@ module DecentExposure
     end
 
     def collection_resource
-      scope.scoped
+      Rails::VERSION::MAJOR < 4 ? scope.scoped : scope.all
     end
 
     def id
