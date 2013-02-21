@@ -130,10 +130,26 @@ describe DecentExposure::ActiveRecordStrategy do
     context "with a resource collection" do
       let(:plural) { true }
 
-      it "returns the scoped collection" do
-        scoped = stub
-        model.should_receive(:scoped).and_return(scoped)
-        should == scoped
+      context "with ActiveRecord 3" do
+        before do
+          stub_const("ActiveRecord::VERSION::MAJOR", 3)
+        end
+        it "returns the scoped collection" do
+          scoped = stub
+          model.should_receive(:scoped).and_return(scoped)
+          should == scoped
+        end
+      end
+
+      context "with ActiveRecord 4" do
+        before do
+          stub_const("ActiveRecord::VERSION::MAJOR", 4)
+        end
+        it "returns the scoped collection" do
+          scoped = stub
+          model.should_receive(:all).and_return(scoped)
+          should == scoped
+        end
       end
 
       context "with a scope override specified" do

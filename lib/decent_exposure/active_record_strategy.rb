@@ -38,7 +38,7 @@ module DecentExposure
     end
 
     def collection_resource
-      scope.scoped
+      scope.send(scope_method)
     end
 
     def id
@@ -62,6 +62,16 @@ module DecentExposure
         collection_resource
       else
         singular_resource
+      end
+    end
+
+    private
+
+    def scope_method
+      if defined?(ActiveRecord) && ActiveRecord::VERSION::MAJOR > 3
+        :all
+      else
+        :scoped
       end
     end
   end
