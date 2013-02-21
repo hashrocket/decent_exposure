@@ -28,6 +28,9 @@ class Albatross
   def self.scoped
     [new, new]
   end
+  def self.all
+    scoped
+  end
 end
 
 class Organism

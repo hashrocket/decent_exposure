@@ -113,6 +113,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
 
     context "with a collection resource" do
       let(:plural) { true }
+      before { stub_const("ActiveRecord::VERSION::MAJOR", 3) }
       it "does not attempt to assign attributes" do
         scoped = stub
         model.should_receive(:scoped).and_return(scoped)

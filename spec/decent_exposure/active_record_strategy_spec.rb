@@ -157,7 +157,7 @@ describe DecentExposure::ActiveRecordStrategy do
         let(:params) { { :id => 3 } }
         let(:models) { double("Models") }
         let(:association_scope) { double('AssociationScope') }
-        let(:association) { double("Association", :scoped => association_scope) }
+        let(:association) { double("Association", :scoped => association_scope, :all => association_scope) }
         let(:collection) { double("Collection", :models => association) }
         let(:strategy) do
           DecentExposure::ActiveRecordStrategy.new(controller, inflector, :ancestor => :ancestor_collection)
