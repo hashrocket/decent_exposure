@@ -76,7 +76,7 @@ handling all that repetitive initialization, as we'll see next.
 
 Even if you decide not to use `decent_exposure`, do yourself a favor and stop
 using instance variables in your views. Your code will be cleaner and easier to
-refactor as a result. If you want to learn more about his approach, I've
+refactor as a result. If you want to learn more about this approach, I've
 expanded on my thoughts in the article [A Diatribe on Maintaining State][1].
 
 ## Environmental Awareness
