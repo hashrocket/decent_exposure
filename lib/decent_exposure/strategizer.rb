@@ -9,7 +9,7 @@ module DecentExposure
     def initialize(name, options={})
       self.name = name
       self.custom_strategy_class = options.delete(:strategy)
-      self.options = options
+      self.options = options.merge(:name => name)
       self.block = Proc.new if block_given?
     end
 
