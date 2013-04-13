@@ -298,6 +298,20 @@ expose(:environment) { Rails.env }
 This block is evaluated and the memoized result is returned whenever you call
 `environment`.
 
+#### Using the Default decent_exposure Goodness
+
+If you don't want to go too far off the beaten path, the value of the default
+exposure can be easily obtained inside of your custom block. The block will
+receive an object that you can `call` to lazily evaluate the default
+decent_exposure logic. For example:
+
+```ruby
+expose(:articles) {|default| default.call.limit(10) }
+```
+
+This allows you to customize your exposures, without having to redo all of
+the built-in logic decent_exposure gives you out of the box.
+
 ### Custom strategies
 
 For the times when custom behavior is needed for resource finding,
