@@ -32,7 +32,7 @@ module DecentExposure
     end
 
     def block_strategy
-      BlockStrategy.new(block) if block
+      BlockStrategy.new(block, exposure_strategy) if block
     end
 
     def exposure_strategy_class
@@ -40,9 +40,12 @@ module DecentExposure
     end
   end
 
-  BlockStrategy = Struct.new(:block) do
+  BlockStrategy = Struct.new(:block, :exposure_strategy) do
     def call(controller)
-      controller.instance_eval(&block)
+      default = if block.arity == 1
+        exposure_strategy.call(controller) rescue nil
+      end
+      controller.instance_exec(default, &block)
     end
   end
 end
