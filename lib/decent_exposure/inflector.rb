@@ -1,3 +1,4 @@
+require 'decent_exposure/constant_resolver'
 require 'active_support/inflector'
 require 'active_support/core_ext/string'
 
@@ -17,7 +18,7 @@ module DecentExposure
       when Module, Class
         model
       else
-        ConstantResolver.new(context, string.classify).constant
+        ConstantResolver.new(string, context).constant
       end
     end
 
@@ -40,32 +41,6 @@ module DecentExposure
 
     def uncountable?
       original.pluralize == original.singularize
-    end
-
-    private
-
-    ConstantResolver = Struct.new :context, :constant_name do
-
-      def constant
-        immediate_child || namespace_qualified
-      end
-
-      private
-
-      def immediate_child
-        context.constants.map do |c|
-          context.const_get(c) if c.to_s == constant_name
-        end.compact.first
-      end
-
-      def namespace_qualified
-        namespace.const_get(constant_name)
-      end
-
-      def namespace
-        path = context.to_s
-        path[0...(path.rindex('::') || 0)].constantize
-      end
     end
   end
 end
