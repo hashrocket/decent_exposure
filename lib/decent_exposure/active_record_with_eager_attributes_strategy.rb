@@ -10,7 +10,7 @@ module DecentExposure
     end
 
     def attributes
-      params[inflector.singular] || {}
+      params[options[:param_key] || inflector.param_key] || {}
     end
 
     def assign_attributes?

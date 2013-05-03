@@ -3,7 +3,7 @@ require 'decent_exposure/active_record_with_eager_attributes_strategy'
 describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
   describe "#resource" do
     let(:inflector) do
-      double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
+      double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model', :param_key => 'model')
     end
     let(:model) { stub("Model", :new => nil) }
     let(:params) { Hash.new }

@@ -39,8 +39,8 @@ describe BirdController, :type => :controller do
         controller.bernard.beak.should == 'admin'
       end
 
-      it "assigns based on unnamespaced parameter" do
-        post :show, :parrot => { :beak => 'bent' }
+      it "assigns based on model's param key" do
+        post :show, :admin_parrot => { :beak => 'bent' }
         controller.bernard.beak.should == 'bent'
       end
     end

@@ -49,7 +49,7 @@ describe DecentExposure::Inflector do
     end
   end
 
-  describe "#singular" do
+  describe "#param_key" do
     let(:inflector) { DecentExposure::Inflector.new(name, model) }
 
     context "with a namespaced name" do
@@ -60,9 +60,13 @@ describe DecentExposure::Inflector do
       let(:model) { Content::Page }
       let(:name) { "Content::Page" }
       it "returns a parameterized string" do
-        inflector.singular.should == "page"
+        inflector.param_key.should == "content_page"
       end
     end
+  end
+
+  describe "#singular" do
+    let(:inflector) { DecentExposure::Inflector.new(name, model) }
 
     context "with an already singular word" do
       let(:name) { "car" }
