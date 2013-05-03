@@ -3,7 +3,7 @@ require 'decent_exposure/active_record_strategy'
 describe DecentExposure::ActiveRecordStrategy do
   describe "#resource" do
     let(:inflector) do
-      double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
+      double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
     end
     let(:model) { stub("Model", :new => nil) }
     let(:params) { Hash.new }
@@ -12,6 +12,11 @@ describe DecentExposure::ActiveRecordStrategy do
     let(:controller_class) { stub(:_decent_configurations => Hash.new(config)) }
     let(:controller) { stub(:params => params, :request => request, :class => controller_class) }
     let(:strategy) { DecentExposure::ActiveRecordStrategy.new(controller, inflector) }
+
+    before do
+      strategy.model = model
+      strategy.inflector = inflector
+    end
 
     subject { strategy.resource }
 

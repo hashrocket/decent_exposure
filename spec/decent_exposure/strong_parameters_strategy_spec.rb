@@ -14,6 +14,10 @@ describe DecentExposure::StrongParametersStrategy do
 
     subject { strategy.assign_attributes? }
 
+    before do
+      strategy.inflector = inflector
+    end
+
     context "when the resource is a collection (plural)" do
       let(:plural) { true }
       it { should be_false }

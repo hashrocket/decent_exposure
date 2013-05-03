@@ -10,7 +10,7 @@ module DecentExposure
     def initialize(name, model=nil)
       @original = name.to_s
       @model = model
-      @string = (model || name).to_s.demodulize
+      @string = (model || name).to_s.demodulize.downcase
     end
 
     def constant(context=Object)
