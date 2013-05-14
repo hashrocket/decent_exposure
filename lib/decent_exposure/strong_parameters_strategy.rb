@@ -11,7 +11,11 @@ module DecentExposure
 
     def attributes
       return @attributes if defined?(@attributes)
-      @attributes = controller.send(options[:attributes]) if options[:attributes]
+      if options[:permit].present?
+        @attributes = params.require(name.to_sym).permit(*options[:permit])
+      else
+        @attributes = controller.send(options[:attributes]) if options[:attributes]
+      end
     end
 
     def assign_attributes?

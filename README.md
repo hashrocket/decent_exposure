@@ -385,21 +385,15 @@ end
 ```
 
 Then, when you'd like parameters to be assigned to a model, add the
-`attributes` option to your exposure:
+`permit` option to your exposure:
 
 ```ruby
 class FooController < ApplicationController
-  expose(:foo, attributes: :foo_params)
-
-  private
-  def foo_params
-    params.require(:foo).permit(:bar, :baz)
-  end
+  expose(:foo, permit: [:bar, :baz])
 end
 ```
 
-In the example above, `foo_params` will only be called on a PUT, POST or
-PATCH request.
+In the examples above, the :bar and :baz parameters will only be assigned on a PUT, POST or PATCH request.
 
 
 ## Testing
