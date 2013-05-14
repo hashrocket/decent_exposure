@@ -36,11 +36,8 @@ describe DecentExposure::StrongParametersStrategy do
     context "for a post/put/patch request" do
       let(:request) { stub(:get? => false, :delete? => false) }
 
-      context "and the :attributes option is set" do
-        let(:options) { { :attributes => :my_attributes } }
-        before do
-          controller.stub(:my_attributes).and_return(results)
-        end
+      context "and the :permit option is set" do
+        let(:options) { { :permit => [:hello] } }
 
         context "and sending the attributes method returns a non-blank value" do
           let(:results) { { :hello => "there" } }
@@ -53,7 +50,7 @@ describe DecentExposure::StrongParametersStrategy do
         end
       end
 
-      context "and the :attributes option is not set" do
+      context "and the :permit option is not set" do
         it { should be_false }
       end
     end
