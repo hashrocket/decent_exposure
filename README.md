@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/voxdolo/decent_exposure.png?branch=master)](https://travis-ci.org/voxdolo/decent_exposure) [![Code Climate](https://codeclimate.com/github/voxdolo/decent_exposure.png)](https://codeclimate.com/github/voxdolo/decent_exposure)
+[![Gem Version](https://badge.fury.io/rb/decent_exposure.png)](http://badge.fury.io/rb/decent_exposure) [![Build Status](https://api.travis-ci.org/voxdolo/decent_exposure.png?branch=master)](https://travis-ci.org/voxdolo/decent_exposure) [![Code Climate](https://codeclimate.com/github/voxdolo/decent_exposure.png)](https://codeclimate.com/github/voxdolo/decent_exposure)
 
 ## Mad Decent
 
