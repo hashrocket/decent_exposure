@@ -95,6 +95,14 @@ describe BirdController, :type => :controller do
     end
   end
 
+  describe "collection with plural name and model" do
+    it "scopes the resource to the collection" do
+      get :index
+      controller.organisms.each do |organism|
+        organism.should be_a Organism
+      end
+    end
+  end
 end
 
 describe DuckController, :type => :controller do
