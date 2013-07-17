@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Stephen Caudill", "Jon Larkowski", "Joshua Davey"]
   s.email       = 'scaudill@gmail.com'
   s.homepage    = 'http://github.com/voxdolo/decent_exposure'
+  s.license     = 'WTFPL'
 
   s.description = %q{
     DecentExposure helps you program to an interface, rather than an
