@@ -5,7 +5,7 @@ module DecentExposure
     attr_accessor :name, :strategy, :options
 
     def initialize(name, strategy, options)
-      self.name = name.to_s
+      self.name = options[:name].to_s
       self.strategy = strategy
       self.options = options
     end
