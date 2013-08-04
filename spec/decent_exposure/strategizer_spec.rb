@@ -33,7 +33,7 @@ describe DecentExposure::Strategizer do
 
         it "sets the strategy to Active Record" do
           DecentExposure::Exposure.should_receive(:new).
-            with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name}).
+            with(name, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name}).
             and_return(strategy)
           should == strategy
         end

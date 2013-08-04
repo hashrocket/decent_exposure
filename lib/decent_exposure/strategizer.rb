@@ -28,7 +28,7 @@ module DecentExposure
     end
 
     def exposure_strategy
-      Exposure.new(model, exposure_strategy_class, options)
+      Exposure.new(name, exposure_strategy_class, options)
     end
 
     def block_strategy

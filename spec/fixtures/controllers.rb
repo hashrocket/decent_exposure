@@ -42,6 +42,12 @@ class Organism
   def self.find_by_itis_id(itis_id)
     new
   end
+  def self.scoped
+    [new, new]
+  end
+  def self.all
+    scoped
+  end
   def self.find(id)
     new(:species => 'Striginae')
   end
@@ -75,6 +81,7 @@ class BirdController < ActionController::Base
   expose(:ostrich) { "Ostrich" }
   expose(:albatrosses)
   expose(:parrot)
+  expose(:organisms, :model => Organism)
 
   expose(:custom, :strategy => CustomStrategy)
 
