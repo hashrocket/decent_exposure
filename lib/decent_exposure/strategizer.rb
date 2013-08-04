@@ -17,10 +17,6 @@ module DecentExposure
       [block_strategy, exposure_strategy].detect(&applicable)
     end
 
-    def model
-      options[:model] || name
-    end
-
     private
 
     def applicable
