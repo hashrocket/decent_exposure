@@ -14,14 +14,10 @@ module DecentExposure
     end
 
     def strategy
-      [block_strategy, exposure_strategy].detect(&applicable)
+      block_strategy || exposure_strategy
     end
 
     private
-
-    def applicable
-      lambda { |s| s }
-    end
 
     def exposure_strategy
       Exposure.new(name, exposure_strategy_class, options)
