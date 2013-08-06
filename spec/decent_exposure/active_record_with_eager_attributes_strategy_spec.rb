@@ -5,12 +5,12 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
     let(:inflector) do
       double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model', :param_key => 'model')
     end
-    let(:model) { stub("Model", :new => nil) }
+    let(:model) { double("Model", :new => nil) }
     let(:params) { Hash.new }
-    let(:request) { stub(:get? => true) }
-    let(:config) { stub(:options => {}) }
-    let(:controller_class) { stub(:_decent_configurations => Hash.new(config)) }
-    let(:controller) { stub(:params => params, :request => request, :class => controller_class) }
+    let(:request) { double(:get? => true) }
+    let(:config) { double(:options => {}) }
+    let(:controller_class) { double(:_decent_configurations => Hash.new(config)) }
+    let(:controller) { double(:params => params, :request => request, :class => controller_class) }
     let(:strategy) { DecentExposure::ActiveRecordWithEagerAttributesStrategy.new(controller, inflector) }
 
     subject { strategy.resource }
@@ -93,7 +93,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
 
     context "when the params for the resource is nil" do
       let(:params) { {} }
-      let(:instance) { stub }
+      let(:instance) { double }
       let(:plural) { false }
 
       it "sends a empty hash to attributes=" do
@@ -108,7 +108,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         { "model" => { "name" => "Timmy" } }
       end
       let(:plural) { false }
-      let(:instance) { stub }
+      let(:instance) { double }
       it "it builds a new instance of the resource" do
         model.should_receive(:new).and_return(instance)
         instance.should_receive(:attributes=)
@@ -120,7 +120,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       let(:plural) { true }
       before { stub_const("ActiveRecord::VERSION::MAJOR", 3) }
       it "does not attempt to assign attributes" do
-        scoped = stub
+        scoped = double
         model.should_receive(:scoped).and_return(scoped)
         scoped.should_not_receive(:attributes=)
         should == scoped
