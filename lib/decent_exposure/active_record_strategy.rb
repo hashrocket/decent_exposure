@@ -38,7 +38,7 @@ module DecentExposure
     end
 
     def collection_resource
-      return scope if scope.respond_to?(:each)
+      return scope if scope.is_a?(ActiveRecord::Relation)
       scope.send(scope_method)
     end
 
