@@ -39,8 +39,8 @@ describe BirdController, :type => :controller do
         controller.bernard.beak.should == 'admin'
       end
 
-      it "assigns based on unnamespaced parameter" do
-        post :show, :parrot => { :beak => 'bent' }
+      it "assigns based on model's param key" do
+        post :show, :admin_parrot => { :beak => 'bent' }
         controller.bernard.beak.should == 'bent'
       end
     end
@@ -95,6 +95,14 @@ describe BirdController, :type => :controller do
     end
   end
 
+  describe "collection with plural name and model" do
+    it "scopes the resource to the collection" do
+      get :index
+      controller.organisms.each do |organism|
+        organism.should be_a Organism
+      end
+    end
+  end
 end
 
 describe DuckController, :type => :controller do

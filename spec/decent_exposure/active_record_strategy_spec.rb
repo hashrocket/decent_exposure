@@ -3,20 +3,25 @@ require 'decent_exposure/active_record_strategy'
 describe DecentExposure::ActiveRecordStrategy do
   describe "#resource" do
     let(:inflector) do
-      double("Inflector", :constant => model, :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
+      double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model')
     end
-    let(:model) { stub("Model", :new => nil) }
+    let(:model) { double("Model", :new => nil) }
     let(:params) { Hash.new }
-    let(:request) { stub(:get? => true) }
-    let(:config) { stub(:options => {}) }
-    let(:controller_class) { stub(:_decent_configurations => Hash.new(config)) }
-    let(:controller) { stub(:params => params, :request => request, :class => controller_class) }
+    let(:request) { double('request', :get? => true) }
+    let(:config) { double('config', :options => {}) }
+    let(:controller_class) { double('controller_class', :_decent_configurations => Hash.new(config)) }
+    let(:controller) { double('controller', :params => params, :request => request, :class => controller_class) }
     let(:strategy) { DecentExposure::ActiveRecordStrategy.new(controller, inflector) }
+
+    before do
+      strategy.model = model
+      strategy.inflector = inflector
+    end
 
     subject { strategy.resource }
 
     context "with a singular resource" do
-      let(:instance) { stub }
+      let(:instance) { double }
       let(:plural) { false }
 
       context "with a findable resource" do
@@ -40,7 +45,7 @@ describe DecentExposure::ActiveRecordStrategy do
 
       context "with an unfindable resource" do
         let(:params) { { } }
-        let(:builder) { stub }
+        let(:builder) { double }
         it "it builds a new instance of the resource" do
           model.should_receive(:new).and_return(instance)
           should == instance
@@ -115,7 +120,7 @@ describe DecentExposure::ActiveRecordStrategy do
 
       context "with a parameter key override specified" do
         let(:params) { { :slug => 'article-title-slug' } }
-        let(:slug) { stub('Slug') }
+        let(:slug) { double('Slug') }
         let(:strategy) do
           DecentExposure::ActiveRecordStrategy.new(controller, inflector, :finder_parameter => :slug)
         end
@@ -129,13 +134,13 @@ describe DecentExposure::ActiveRecordStrategy do
 
     context "with a resource collection" do
       let(:plural) { true }
+      let(:scoped) { double('Scoped') }
 
       context "with ActiveRecord 3" do
         before do
           stub_const("ActiveRecord::VERSION::MAJOR", 3)
         end
         it "returns the scoped collection" do
-          scoped = stub
           model.should_receive(:scoped).and_return(scoped)
           should == scoped
         end
@@ -146,7 +151,6 @@ describe DecentExposure::ActiveRecordStrategy do
           stub_const("ActiveRecord::VERSION::MAJOR", 4)
         end
         it "returns the scoped collection" do
-          scoped = stub
           model.should_receive(:all).and_return(scoped)
           should == scoped
         end

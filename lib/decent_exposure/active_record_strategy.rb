@@ -10,7 +10,7 @@ module DecentExposure
     end
 
     def scope
-      if options[:ancestor]
+      @scope ||= if options[:ancestor]
         ancestor_scope
       else
         default_scope
@@ -38,6 +38,7 @@ module DecentExposure
     end
 
     def collection_resource
+      return scope if scope.respond_to?(:each)
       scope.send(scope_method)
     end
 

@@ -1,13 +1,13 @@
+require 'decent_exposure/inflector'
+require 'decent_exposure/constant_resolver'
+
 module DecentExposure
   class Strategy
-    attr_reader :controller, :inflector, :options
+    attr_reader :controller, :name, :options
+    attr_writer :model, :inflector
 
-    def initialize(controller, inflector, options={})
-      @controller, @inflector, @options = controller, inflector, options
-    end
-
-    def name
-      inflector.name
+    def initialize(controller, name, options={})
+      @controller, @name, @options = controller, name.to_s, options
     end
 
     def resource
@@ -16,8 +16,18 @@ module DecentExposure
 
     protected
 
+    def inflector
+      @inflector ||= DecentExposure::Inflector.new(name, model)
+    end
+
     def model
-      inflector.constant(controller.class)
+      @model ||= case options[:model]
+                 when Class, Module
+                   options[:model]
+                 else
+                   name_or_model = options[:model] || name
+                   DecentExposure::ConstantResolver.new(name_or_model.to_s, controller.class).constant
+                 end
     end
 
     def params

@@ -33,31 +33,10 @@ describe DecentExposure::Strategizer do
 
         it "sets the strategy to Active Record" do
           DecentExposure::Exposure.should_receive(:new).
-            with(model_option, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name}).
+            with(name, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name}).
             and_return(strategy)
           should == strategy
         end
-      end
-    end
-  end
-
-  describe "#model" do
-    let(:exposure) { DecentExposure::Strategizer.new(name) }
-    let(:name) { "exposed" }
-
-    subject { exposure.model }
-
-    context "with no model option" do
-      it "is the provided name" do
-        should == name
-      end
-    end
-
-    context "with a 'model' option"  do
-      let(:exposure) { DecentExposure::Strategizer.new(name, :model => model_option) }
-      let(:model_option) { :indecent }
-      it "is the provided model" do
-        should == model_option
       end
     end
   end
