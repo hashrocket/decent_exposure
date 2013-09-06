@@ -34,8 +34,8 @@ module DecentExposure
 
   BlockStrategy = Struct.new(:block, :exposure_strategy) do
     def call(controller)
-      default = if block.arity == 1
-        exposure_strategy.call(controller) rescue nil
+      default = Proc.new do
+        exposure_strategy.call(controller)
       end
       controller.instance_exec(default, &block)
     end
