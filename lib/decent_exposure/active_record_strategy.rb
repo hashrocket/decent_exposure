@@ -28,10 +28,9 @@ module DecentExposure
     end
 
     def shallow_scope
-      if !params["#{ancestor}_id"] && controller.class._exposures[ancestor].is_a?(DecentExposure::Exposure)
-        controller.class._exposures[ancestor] = Proc.new do
-          model.find(id).send(ancestor)
-        end
+      ancestor_exposure = controller.class._exposures[ancestor]
+      if !params["#{ancestor}_id"] && ancestor_exposure.is_a?(DecentExposure::Exposure)
+        controller.send("#{ancestor}=", model.find(id).send(ancestor))
       end
 
       if plural?
