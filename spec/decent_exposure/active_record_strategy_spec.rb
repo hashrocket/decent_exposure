@@ -87,6 +87,18 @@ describe DecentExposure::ActiveRecordStrategy do
           collection.should_receive(:find).with(3)
           subject
         end
+
+        context "with a shallow ancestor" do
+          let(:strategy) do
+            DecentExposure::ActiveRecordStrategy.new(controller, inflector, :ancestor => :override_collection, :shallow => true)
+          end
+
+          it "doesn't use the scope override to scope its queries" do
+            model.should_receive(:find).with(3)
+            collection.should_not_receive(:find)
+            subject
+          end
+        end
       end
 
       context "with a finder override specified" do
@@ -174,6 +186,16 @@ describe DecentExposure::ActiveRecordStrategy do
 
         it "uses the scope override to scope its queries" do
           should == association_scope
+        end
+
+        context "with a shallow ancestor" do
+          let(:strategy) do
+            DecentExposure::ActiveRecordStrategy.new(controller, inflector, :ancestor => :ancestor_collection, :shallow => true)
+          end
+
+          it "still uses the scope override to scope its queries" do
+            should == association_scope
+          end
         end
 
       end

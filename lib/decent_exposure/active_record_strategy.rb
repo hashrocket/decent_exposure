@@ -18,10 +18,20 @@ module DecentExposure
     end
 
     def ancestor_scope
+      return shallow_scope if options[:shallow]
+
       if plural?
         controller.send(options[:ancestor]).send(inflector.plural)
       else
         controller.send(options[:ancestor])
+      end
+    end
+
+    def shallow_scope
+      if plural?
+        default_scope
+      else
+        model
       end
     end
 
