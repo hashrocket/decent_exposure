@@ -10,7 +10,7 @@ module DecentExposure
     end
 
     def scope
-      @scope ||= if options[:ancestor]
+      @scope ||= if ancestor
         ancestor_scope
       else
         default_scope
@@ -18,16 +18,22 @@ module DecentExposure
     end
 
     def ancestor_scope
-      return shallow_scope if options[:shallow]
+      return shallow_scope if options[:shallow] && member_route?
 
       if plural?
-        controller.send(options[:ancestor]).send(inflector.plural)
+        controller.send(ancestor).send(inflector.plural)
       else
-        controller.send(options[:ancestor])
+        controller.send(ancestor)
       end
     end
 
     def shallow_scope
+      if !params["#{ancestor}_id"] && controller.class._exposures[ancestor].is_a?(DecentExposure::Exposure)
+        controller.class._exposures[ancestor] = Proc.new do
+          model.find(id).send(ancestor)
+        end
+      end
+
       if plural?
         default_scope
       else
@@ -77,6 +83,10 @@ module DecentExposure
     end
 
     private
+
+    def ancestor
+      options[:ancestor]
+    end
 
     def scope_method
       if defined?(ActiveRecord) && ActiveRecord::VERSION::MAJOR > 3
