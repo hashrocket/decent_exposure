@@ -302,11 +302,11 @@ This block is evaluated and the memoized result is returned whenever you call
 
 If you don't want to go too far off the beaten path, the value of the default
 exposure can be easily obtained inside of your custom block. The block will
-receive an object that you can `call` to lazily evaluate the default
-decent_exposure logic. For example:
+receive a proxy object that you can use to lazily evaluate 
+the default decent_exposure logic. For example:
 
 ```ruby
-expose(:articles) {|default| default.call.limit(10) }
+expose(:articles) {|default| default.limit(10) }
 ```
 
 This allows you to customize your exposures, without having to redo all of

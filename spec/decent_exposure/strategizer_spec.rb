@@ -5,7 +5,7 @@ describe DecentExposure::Strategizer do
     subject { exposure.strategy }
 
     context "when a block is given" do
-      let(:block) { lambda {|default| "foo" } }
+      let(:block) { lambda { "foo" } }
       let(:exposure) { DecentExposure::Strategizer.new("foobar", &block) }
       it "saves the proc as the strategy" do
         subject.block.should == block
@@ -20,7 +20,7 @@ describe DecentExposure::Strategizer do
           exposure.stub(:exposure_strategy) { exposure_strategy }
         end
 
-        context "that doesn't get called" do
+        context "that doesn't get used" do
           let(:block) { lambda{|default| "foo" } }
 
           it "doesn't call the exposure_strategy" do
@@ -32,15 +32,15 @@ describe DecentExposure::Strategizer do
           end
         end
 
-        context "that does get called" do
-          let(:block) { lambda{|default| default.call } }
+        context "that does get used" do
+          let(:block) { lambda{|default| default.upcase } }
 
           it "calls the exposure strategy" do
-            exposure_strategy.should_receive(:call).with(controller)
+            exposure_strategy.should_receive(:call).with(controller).and_call_original
           end
 
           it "returns the default value" do
-            strategy.call(controller).should == "default"
+            strategy.call(controller).should == "DEFAULT"
           end
         end
 
