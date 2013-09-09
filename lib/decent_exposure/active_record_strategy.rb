@@ -29,8 +29,22 @@ module DecentExposure
 
     def shallow_scope
       ancestor_exposure = controller.class._exposures[ancestor]
-      if !params["#{ancestor}_id"] && ancestor_exposure.is_a?(DecentExposure::Exposure)
-        controller.send("#{ancestor}=", model.find(id).send(ancestor))
+      if !params["#{ancestor}_id"] && ancestor_exposure.is_a?(DecentExposure::Exposure) && !controller._resources.has_key?(ancestor)
+        # Prevents an infinite recursive loop, but we
+        # may want to consider a different place holder
+        controller._resources[ancestor] = DecentExposure
+
+        if controller.respond_to?(inflector.singular)
+          child = controller.send(inflector.singular)
+        else
+          raise MissingExposure.new("Please define a '#{inflector.singular}' exposure so decent_exposure can determine its '#{ancestor}' ancestor")
+        end
+
+        if child.respond_to?(ancestor)
+          controller.send("#{ancestor}=", child.send(ancestor))
+        else
+          raise UnknownAncestor.new("The #{inflector.singular} exposure does not 'belong_to' the '#{ancestor}' ancestor")
+        end
       end
 
       if plural?

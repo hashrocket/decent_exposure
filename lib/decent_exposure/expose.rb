@@ -51,7 +51,7 @@ module DecentExposure
 
     def define_exposure_methods(name, exposure)
       define_method(name) do
-        return _resources[name] if _resources.has_key?(name)
+        return _resources[name] if _resources.has_key?(name) && _resources[name] != DecentExposure
         _resources[name] = exposure.call(self)
       end
 
