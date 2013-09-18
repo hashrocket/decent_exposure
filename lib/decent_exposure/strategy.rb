@@ -38,6 +38,14 @@ module DecentExposure
       controller.request
     end
 
+    def member_route?
+      params.has_key?(:id)
+    end
+
+    def collection_route?
+      !member_route?
+    end
+
     private
 
     def params_method
