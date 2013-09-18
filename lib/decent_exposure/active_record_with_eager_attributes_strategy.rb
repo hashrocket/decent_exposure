@@ -23,9 +23,9 @@ module DecentExposure
     end
 
     def resource
-      super.tap do |r|
-        r.attributes = attributes if assign_attributes?
-      end
+      r = super
+      r.attributes = attributes if assign_attributes?
+      r
     end
   end
 end
