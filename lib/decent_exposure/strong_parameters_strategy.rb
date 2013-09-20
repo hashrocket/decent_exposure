@@ -2,13 +2,6 @@ require 'decent_exposure/active_record_strategy'
 
 module DecentExposure
   class StrongParametersStrategy < ActiveRecordStrategy
-    delegate :get?,    :to => :request
-    delegate :delete?, :to => :request
-
-    def singular?
-      !plural?
-    end
-
     def attributes
       return @attributes if defined?(@attributes)
       @attributes = controller.send(options[:attributes]) if options[:attributes]

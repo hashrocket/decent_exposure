@@ -2,12 +2,6 @@ require 'decent_exposure/active_record_strategy'
 
 module DecentExposure
   class ActiveRecordWithEagerAttributesStrategy < ActiveRecordStrategy
-    delegate :get?,    :to => :request
-    delegate :delete?, :to => :request
-
-    def singular?
-      !plural?
-    end
 
     def attributes
       params[options[:param_key] || inflector.param_key] || {}

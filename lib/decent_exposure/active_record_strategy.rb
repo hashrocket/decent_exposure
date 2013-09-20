@@ -4,6 +4,11 @@ require 'active_support/core_ext/module/delegation'
 module DecentExposure
   class ActiveRecordStrategy < Strategy
     delegate :plural?, :parameter, :to => :inflector
+    delegate :get?, :delete?,      :to => :request
+
+    def singular?
+      !plural?
+    end
 
     def collection
       inflector.plural.to_sym
