@@ -45,6 +45,7 @@ module DecentExposure
 
       helper_method name
       hide_action name
+      hide_action "#{name}="
     end
 
     private
