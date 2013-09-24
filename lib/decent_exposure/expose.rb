@@ -42,10 +42,6 @@ module DecentExposure
       _exposures[name] = exposure = Strategizer.new(name, options, &block).strategy
 
       define_exposure_methods(name, exposure)
-
-      helper_method name
-      hide_action name
-      hide_action "#{name}="
     end
 
     private
@@ -55,10 +51,13 @@ module DecentExposure
         return _resources[name] if _resources.has_key?(name)
         _resources[name] = exposure.call(self)
       end
+      helper_method name
+      hide_action name
 
       define_method("#{name}=") do |value|
         _resources[name] = value
       end
+      hide_action "#{name}="
     end
   end
 end
