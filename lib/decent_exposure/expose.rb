@@ -12,6 +12,8 @@ module DecentExposure
           @_resources ||= {}
         end
         hide_action :_resources
+
+        protected_instance_variables.push("@_resources")
       end
     end
 

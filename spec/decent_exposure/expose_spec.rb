@@ -30,6 +30,10 @@ describe DecentExposure::Expose do
       controller.class._exposures[:bird].should_receive(:call).once
       2.times { controller.bird }
     end
+
+    it 'blacklists the @_resources instance variable' do
+      controller.protected_instance_variables.should include("@_resources")
+    end
   end
 
   describe ".expose!" do
