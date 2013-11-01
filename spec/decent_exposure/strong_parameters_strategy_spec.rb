@@ -4,7 +4,7 @@ require 'active_support/core_ext'
 describe DecentExposure::StrongParametersStrategy do
   describe "#assign_attributes?" do
     let(:inflector) do
-      double("Inflector", :plural? => plural)
+      double("Inflector", :plural? => plural, :param_key => :model)
     end
     let(:plural) { false }
     let(:request) { double('request', :get? => true) }
@@ -40,10 +40,11 @@ describe DecentExposure::StrongParametersStrategy do
         let(:options) { { :attributes => :my_attributes } }
         before do
           controller.stub(:my_attributes).and_return(results)
+          controller.stub(:params).and_return(results)
         end
 
         context "and sending the attributes method returns a non-blank value" do
-          let(:results) { { :hello => "there" } }
+          let(:results) { { :model => {:hello => "there"} } }
           it { should be_true }
         end
 

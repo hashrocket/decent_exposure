@@ -125,7 +125,7 @@ class StrongParametersController < ActionController::Base
     strategy DecentExposure::StrongParametersStrategy
   end
 
-  expose(:assignable, :attributes => :assignable_attributes, :model => Parrot)
+  expose(:assignable, :attributes => :assignable_attributes, :model => Parrot, :param_key => :assignable)
   expose(:unassignable, :model => Parrot)
 
   def show
@@ -133,7 +133,11 @@ class StrongParametersController < ActionController::Base
   end
 
   def assignable_attributes
-    params[:assignable]
+    if defined?(ActionController::StrongParameters)
+      params.require(:assignable)
+    else
+      params[:assignable]
+    end
   end
 end
 
