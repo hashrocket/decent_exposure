@@ -133,7 +133,11 @@ class StrongParametersController < ActionController::Base
   end
 
   def assignable_attributes
-    params.require(:assignable)
+    if defined?(ActionController::StrongParameters)
+      params.require(:assignable)
+    else
+      params[:assignable]
+    end
   end
 end
 
