@@ -67,21 +67,28 @@ end
 And your views from this:
 
 ```ruby
-= form_for @user do |f|
-  = f.email_field :email
-  = f.password_field :password
-  = f.submit
+@person.email
+```
+
+To simply this:
+
+```ruby
+person.email
+```
+
+In your forms, instead of this:
+
+```ruby
+= form_for @person do |f|
+  ...
 ```
 
 To this:
 
 ```ruby
-= form_for user do |f|
-  = f.email_field :email
-  = f.password_field :password
-  = f.submit
+= form_for person do |f|
+  ...
 ```
-
 
 `decent_exposure` makes it easy to define named methods that are made available
 to your views and which memoize the resultant values. It also tucks away the
