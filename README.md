@@ -64,6 +64,32 @@ class Controller
 end
 ```
 
+And your views from this:
+
+```ruby
+@person.email
+```
+
+To simply this:
+
+```ruby
+person.email
+```
+
+In your forms, instead of this:
+
+```ruby
+= form_for @person do |f|
+  ...
+```
+
+To this:
+
+```ruby
+= form_for person do |f|
+  ...
+```
+
 `decent_exposure` makes it easy to define named methods that are made available
 to your views and which memoize the resultant values. It also tucks away the
 details of the common fetching, initializing and updating of resources and
@@ -302,7 +328,7 @@ This block is evaluated and the memoized result is returned whenever you call
 
 If you don't want to go too far off the beaten path, the value of the default
 exposure can be easily obtained inside of your custom block. The block will
-receive a proxy object that you can use to lazily evaluate 
+receive a proxy object that you can use to lazily evaluate
 the default decent_exposure logic. For example:
 
 ```ruby
