@@ -13,7 +13,7 @@ module DecentExposure
         end
         hide_action :_resources
 
-        protected_instance_variables.push("@_resources")
+        protected_instance_variables << "@_resources"
       end
     end
 
