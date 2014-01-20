@@ -13,9 +13,7 @@ module DecentExposure
         end
         hide_action :_resources
 
-        def protected_instance_variables
-          ActionController::Base.protected_instance_variables + ["@_resources"]
-        end
+        protected_instance_variables << "@_resources"
       end
     end
 
