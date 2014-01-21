@@ -26,7 +26,9 @@ module DecentExposure
 
     def namespace
       path = context.to_s
-      path[0...(path.rindex('::') || 0)].constantize
+      name = path[0...(path.rindex('::') || 0)]
+      return Object if name.blank?
+      name.constantize
     end
   end
 end
