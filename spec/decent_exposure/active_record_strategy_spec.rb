@@ -119,15 +119,23 @@ describe DecentExposure::ActiveRecordStrategy do
       end
 
       context "with a parameter key override specified" do
-        let(:params) { { :slug => 'article-title-slug' } }
+        let(:params) { { "slug" => 'article-title-slug' } }
         let(:slug) { double('Slug') }
         let(:strategy) do
-          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :finder_parameter => :slug)
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, :finder_parameter => "slug")
         end
 
         it "uses the params method override" do
           model.should_receive(:find).with('article-title-slug')
           subject
+        end
+
+        context "when the implicit finder parameter is also present" do
+          let(:params) { { "model_id" => "model_id", "slug" => 'article-title-slug' } }
+          it "prefers passed-in finder parameter to implicit one" do
+            model.should_receive(:find).with('article-title-slug')
+            subject
+          end
         end
       end
     end

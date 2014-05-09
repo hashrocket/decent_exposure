@@ -48,11 +48,11 @@ module DecentExposure
     end
 
     def id
-      params[parameter] || params[finder_parameter]
-    end
-
-    def finder_parameter
-      options[:finder_parameter] || :id
+      if finder_parameter = options[:finder_parameter]
+        params[finder_parameter]
+      else
+        params[parameter] || params[:id]
+      end
     end
 
     def singular_resource
