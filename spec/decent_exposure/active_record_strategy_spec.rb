@@ -7,7 +7,7 @@ describe DecentExposure::ActiveRecordStrategy do
     end
     let(:model) { double("Model", :new => nil) }
     let(:params) { Hash.new }
-    let(:request) { double('request', :get? => true) }
+    let(:request) { double('request', :post? => false, :put? => false, :patch? => false) }
     let(:config) { double('config', :options => {}) }
     let(:controller_class) { double('controller_class', :_decent_configurations => Hash.new(config)) }
     let(:controller) { double('controller', :params => params, :request => request, :class => controller_class) }

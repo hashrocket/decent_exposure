@@ -7,7 +7,7 @@ module DecentExposure
       end
 
       def assign_attributes?
-        singular? && !get? && !delete? && attributes.present?
+        singular? && (post? || put? || patch?) && attributes.present?
       end
 
       def resource

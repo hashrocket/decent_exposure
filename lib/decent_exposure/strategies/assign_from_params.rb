@@ -7,7 +7,7 @@ module DecentExposure
 
       def assign_attributes?
         return false unless attributes && singular?
-        (!get? && !delete?) || new_record?
+        post? || put? || patch? || new_record?
       end
 
       def new_record?

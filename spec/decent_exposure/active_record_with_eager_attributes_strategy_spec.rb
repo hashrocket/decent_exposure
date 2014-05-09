@@ -7,7 +7,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
     end
     let(:model) { double("Model", :new => nil) }
     let(:params) { Hash.new }
-    let(:request) { double(:get? => true) }
+    let(:request) { double(:post? => false, :patch? => false, :put? => false) }
     let(:config) { double(:options => {}) }
     let(:controller_class) { double(:_decent_configurations => Hash.new(config)) }
     let(:controller) { double(:params => params, :request => request, :class => controller_class) }
@@ -27,11 +27,6 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 1 }
         end
         let(:singular) { double("Resource") }
-        let(:request) { double("Request") }
-        before do
-          request.stub(:get?    => true)
-          request.stub(:delete? => false)
-        end
         it "ignores the attributes" do
           model.stub(:find => singular)
           singular.should_not_receive(:attributes=)
@@ -44,10 +39,8 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 2 }
         end
         let(:singular) { double("Resource") }
-        let(:request) { double("Request") }
         before do
-          request.stub(:get?    => false)
-          request.stub(:delete? => false)
+          request.stub(:post? => true)
         end
         it "sets the attributes from the request" do
           model.stub(:find => singular)
@@ -61,10 +54,8 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 2 }
         end
         let(:singular) { double("Resource") }
-        let(:request) { double("Request") }
         before do
-          request.stub(:get?    => false)
-          request.stub(:delete? => false)
+          request.stub(:put? => true)
         end
         it "sets the attributes from the request" do
           model.stub(:find => singular)
@@ -78,9 +69,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 1 }
         end
         let(:singular) { double("Resource") }
-        let(:request) { double("Request") }
         before do
-          request.stub(:get?    => false)
           request.stub(:delete? => true)
         end
         it "ignores the attributes" do

@@ -163,6 +163,11 @@ describe StrongParametersController, :type => :controller do
         get *request
         controller.assignable.beak.should_not == "droopy"
       end
+
+      it "does not assign attributes for HEAD requests" do
+        head *request
+        controller.assignable.beak.should_not == "droopy"
+      end
     end
 
     context "with no 'attributes' option set" do
