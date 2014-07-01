@@ -22,7 +22,7 @@ class ThingsController < ApplicationController
 end
 ```
 
-Now every time you call `thing` on your controller or view, it'll look for an id and try to perform `Thing.find(id)` or `Thing.new` if the id is not found. It'll also memoize the result in `@exposed_thing` instance variable.
+Now every time you call `thing` in your controller or view, it'll look for an id and try to perform `Thing.find(id)` or `Thing.new` if the id is not found. It'll also memoize the result in `@exposed_thing` instance variable.
 
 You can also provide your own logic of how `thing` should be resolved by passing a block that'll be executed in your controller context.
 
@@ -42,7 +42,7 @@ The default resolving workflow if pretty powerful and customizable. It could be 
 
 ```ruby
 def fetch(scope, id)
-  id ? decorate(find(id, scope)) : build(scope)
+  id ? decorate(find(id, scope)) : decorate(build(scope))
 end
 
 def id
