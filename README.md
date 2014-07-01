@@ -4,11 +4,11 @@ This is WIP. Please don't send pull requests yet, I'm still actively rewriting t
 
 Adequate exposure. Exposing things, adequately.
 
-Adequate exposure is a lightweight alternative to [Decent Exposure](https://github.com/voxdolo/decent_exposure).  With it's narrowly focused api you can get exactly what you need without all the extra dressing.
+Adequate exposure is a lightweight alternative to [Decent Exposure](https://github.com/voxdolo/decent_exposure). With it's narrowly focused api you can get exactly what you need without all the extra dressing.
 
-<small>(Note: It is not the intent of the author to imply that Decent Exposure is inadequate.)</small>
+*Note: It is not the intent of the author to imply that Decent Exposure is inadequate.)*
 
-Installation is as simple as: `$ gem install adequate_exposure`.  Once you have that down we can start talking about the API.
+Installation is as simple as: `$ gem install adequate_exposure`. Once you have that down we can start talking about the API.
 
 ## API
 
@@ -16,7 +16,7 @@ The whole API consists of one `expose` method.
 
 In the simplest scenario you'll just use it to expose a model in the controller:
 
-```
+```ruby
 class ThingsController < ApplicationController
   expose :thing
 end
@@ -26,7 +26,7 @@ Now every time you call `thing` on your controller or view, it'll look for an id
 
 You can also provide your own logic of how `thing` should be resolved by passing a block that'll be executed in your controller context.
 
-```
+```ruby
 class ThingsController < ApplicationController
   expose(:thing){ Thing.find(get_thing_id_somehow) }
   
@@ -40,7 +40,7 @@ end
 
 The default resolving workflow if pretty powerful and customizable. It could be expressed with the following pseudocode:
 
-```
+```ruby
 def fetch(scope, id)
   id ? decorate(find(id, scope)) : build(scope)
 end
@@ -76,7 +76,7 @@ Each step is overridable with options. The acceptable options to the `expose` ma
 
 How to perform the finding. Could be useful if you don't want to use standard Rails finder.
 
-```
+```ruby
 expose :thing, find: ->(id, scope){ scope.find_by(slug: id) }
 ```
 
@@ -84,7 +84,7 @@ expose :thing, find: ->(id, scope){ scope.find_by(slug: id) }
 
 Allows to override the build process that takes place when id is not provided.
 
-```
+```ruby
 expose :thing, build: ->(scope){ Thing.build_with_defaults }
 ```
 
@@ -92,13 +92,17 @@ expose :thing, build: ->(scope){ Thing.build_with_defaults }
 
 Allows to specify how to extract id from parameters hash.
 
-```
-expose :thing, id: ->{ params[:thing_id] || params[:thing] }
+```ruby
+# default
+expose :thing, id: ->{ params[:thing_id] || params[:id] }
 
+# id is always goona be 42
 expose :thing, id: ->{ 42 }
 
+# equivalent to id: ->{ params[:custom_thing_id] }
 expose :thing, id: :custom_thing_id
 
+# equivalent to id: ->{ params[:try_this_id] || params[:or_maybe_that_id] }
 expose :thing, id: %i[try_this_id or_maybe_that_id]
 ```
 
@@ -106,16 +110,26 @@ expose :thing, id: %i[try_this_id or_maybe_that_id]
 
 Defines the scope that's used in `find` and `build` steps.
 
-```
+```ruby
 expose :thing, scope: ->{ current_user.things }
-expose :thing, scope: :current_user
+expose :thing, scope: :current_user # the same as above
+```
+
+**model**
+
+Specify the model to use.
+
+```ruby
+expose :thing, model: ->{ AnotherThing }
+expose :thing, model: AnotherThing
+expose :thing, model: :another_thing
 ```
 
 **fetch**
 
 Allows to override the `fetch` logic that's happening when you first call exposed helper.
 
-```
+```ruby
 expose :thing, fetch: ->{ get_thing_some_way_or_another }
 expose(:thing){ get_thing_some_way_or_another }
 ```
@@ -124,8 +138,8 @@ expose(:thing){ get_thing_some_way_or_another }
 
 Allows to define a block that wraps and instance before it's returned. Useful for decorators.
 
-```
-expose :thing, decorate: ->(thing){ ThingsDecoratore.new(thing) }
+```ruby
+expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }
 ```
 
 ## Contributing
