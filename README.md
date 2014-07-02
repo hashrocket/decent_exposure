@@ -132,7 +132,7 @@ expose :thing, model: :another_thing
 
 **decorate**
 
-Allows to define a block that wraps and instance before it's returned. Useful for decorators.
+Allows to define a block that wraps an instance before it's returned. Useful for decorators.
 
 ```ruby
 expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }

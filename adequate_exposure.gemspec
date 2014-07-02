@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version      = AdequateExposure::VERSION
   spec.authors      = ["Pavel Pravosud"]
   spec.email        = ["pavel@pravosud.com"]
-  spec.summary      = "More adequate than decent"
+  spec.summary      = "Exposing things, adequately"
   spec.homepage     = "https://github.com/rwz/adequate_exposure"
   spec.license      = "MIT"
   spec.files        = `git ls-files -z`.split("\x0")
