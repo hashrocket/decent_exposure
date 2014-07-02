@@ -1,5 +1,3 @@
-require "active_support/core_ext/module/delegation"
-
 module AdequateExposure
   class Context
     attr_reader :context, :attribute

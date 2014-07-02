@@ -1,7 +1,3 @@
-require "active_support/hash_with_indifferent_access"
-require "active_support/core_ext/array/wrap"
-require "active_support/core_ext/string/inflections"
-
 module AdequateExposure
   class Flow
     attr_reader :controller, :options

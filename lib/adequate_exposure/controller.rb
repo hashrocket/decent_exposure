@@ -1,5 +1,3 @@
-require "active_support/core_ext/hash/reverse_merge"
-
 module AdequateExposure
   module Controller
     def expose(name, **options, &block)

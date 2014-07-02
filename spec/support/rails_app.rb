@@ -1,5 +1,4 @@
 require "active_support/all"
-require "active_support/dependencies/autoload"
 require "action_controller"
 require "action_dispatch"
 require "rails"
