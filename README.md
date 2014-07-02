@@ -2,19 +2,24 @@
 
 This is WIP. Please don't send pull requests yet, I'm still actively rewriting things.
 
-Adequate exposure. Exposing things, adequately.
+Exposing things, adequately.
 
-Adequate exposure is a lightweight alternative to [Decent Exposure](https://github.com/voxdolo/decent_exposure). With it's narrowly focused api you can get exactly what you need without all the extra dressing.
+Adequate exposure is a lightweight alternative to [Decent
+Exposure](https://github.com/voxdolo/decent_exposure). With it's narrowly
+focused api you can get exactly what you need without all the extra dressing.
 
-*Note: It is not the intent of the author to imply that Decent Exposure is inadequate.)*
+*Note: It is not the intent of the author to imply that Decent Exposure is
+inadequate.)*
 
-Installation is as simple as: `$ gem install adequate_exposure`. Once you have that down we can start talking about the API.
+Installation is as simple as: `$ gem install adequate_exposure`. Once you have
+that down we can start talking about the API.
 
 ## API
 
 The whole API consists of one `expose` method.
 
-In the simplest scenario you'll just use it to expose a model in the controller:
+In the simplest scenario you'll just use it to expose a model in the
+controller:
 
 ```ruby
 class ThingsController < ApplicationController
@@ -22,23 +27,12 @@ class ThingsController < ApplicationController
 end
 ```
 
-Now every time you call `thing` in your controller or view, it'll look for an id and try to perform `Thing.find(id)` or `Thing.new` if the id is not found. It'll also memoize the result in `@exposed_thing` instance variable.
+Now every time you call `thing` in your controller or view, it'll look for an
+id and try to perform `Thing.find(id)` or `Thing.new` if the id is not found.
+It'll also memoize the result in `@exposed_thing` instance variable.
 
-You can also provide your own logic of how `thing` should be resolved by passing a block that'll be executed in your controller context.
-
-```ruby
-class ThingsController < ApplicationController
-  expose(:thing){ Thing.find(get_thing_id_somehow) }
-  
-  private
-  
-  def get_thing_id_somehow
-    42
-  end
-end
-```
-
-The default resolving workflow if pretty powerful and customizable. It could be expressed with the following pseudocode:
+The default resolving workflow if pretty powerful and customizable. It could be
+expressed with the following pseudocode:
 
 ```ruby
 def fetch(scope, id)
@@ -70,11 +64,22 @@ def decorate(thing)
 end
 ```
 
-Each step is overridable with options. The acceptable options to the `expose` macro are:
+Each step could be overrided with options. The acceptable options to the
+`expose` macro are:
+
+**fetch**
+
+This is the entry point. Fetch proc defines how to resolve your exposure in the
+first place.
+
+```ruby
+expose :thing, fetch: ->{ get_thing_some_way_or_another }
+```
 
 **find**
 
-How to perform the finding. Could be useful if you don't want to use standard Rails finder.
+Defines how to perform the finding. Could be useful if you don't want to use standard
+Rails finder.
 
 ```ruby
 expose :thing, find: ->(id, scope){ scope.find_by(slug: id) }
@@ -90,7 +95,7 @@ expose :thing, build: ->(scope){ Thing.build_with_defaults }
 
 **id**
 
-Allows to specify how to extract id from parameters hash.
+Specifies how to extract id from parameters hash.
 
 ```ruby
 # default
@@ -112,12 +117,11 @@ Defines the scope that's used in `find` and `build` steps.
 
 ```ruby
 expose :thing, scope: ->{ current_user.things }
-expose :thing, scope: :current_user # the same as above
 ```
 
 **model**
 
-Specify the model to use.
+Specify the model class to use.
 
 ```ruby
 expose :thing, model: ->{ AnotherThing }
@@ -125,14 +129,6 @@ expose :thing, model: AnotherThing
 expose :thing, model: :another_thing
 ```
 
-**fetch**
-
-Allows to override the `fetch` logic that's happening when you first call exposed helper.
-
-```ruby
-expose :thing, fetch: ->{ get_thing_some_way_or_another }
-expose(:thing){ get_thing_some_way_or_another }
-```
 
 **decorate**
 
