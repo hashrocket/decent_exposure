@@ -57,11 +57,6 @@ module AdequateExposure
       Class === value ? value : symbol_to_class(value)
     end
 
-    def handle_custom_scope(value)
-      scope_parent = controller.instance_exec{ send value }
-      scope_parent.send(name.to_s.pluralize)
-    end
-
     def handle_custom_id(value)
       fetch_first_defined_param value
     end

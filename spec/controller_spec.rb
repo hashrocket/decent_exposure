@@ -120,19 +120,6 @@ describe AdequateExposure::Controller do
       expect(scope).to receive(:new).and_return(42)
       expect(controller.thing).to eq(42)
     end
-
-    it "allows overriding with symbol" do
-      current_user = double("User")
-      scope = double("Scope")
-      scoped_thing = double("Thing")
-
-      expect(controller).to receive(:current_user).and_return(current_user)
-      expect(current_user).to receive(:things).and_return(scope)
-      expect(scope).to receive(:new).and_return(scoped_thing)
-      expose :thing, scope: :current_user
-
-      expect(controller.thing).to eq(scoped_thing)
-    end
   end
 
   context "override id" do
