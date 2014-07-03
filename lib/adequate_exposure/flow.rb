@@ -22,14 +22,15 @@ module AdequateExposure
     protected
 
     def default_fetch
-      id ? decorate(find(id, scope)) : decorate(build(scope))
+      computed_scope = scope(model)
+      id ? decorate(find(id, computed_scope)) : decorate(build(computed_scope))
     end
 
     def default_id
       params["#{name}_id"] || params[:id]
     end
 
-    def default_scope
+    def default_scope(model)
       model
     end
 
@@ -63,6 +64,7 @@ module AdequateExposure
       value = options[name]
 
       if Proc === value
+        args = args.first(value.parameters.length)
         controller.instance_exec(*args, &value)
       else
         fail ArgumentError, "Can't handle #{name.inspect} => #{value.inspect} option"
