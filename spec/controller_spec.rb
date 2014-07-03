@@ -111,6 +111,10 @@ describe AdequateExposure::Controller do
     it "allows overriding model class with symbol" do
       expose :thing, model: :different_thing
     end
+
+    it "allows overriding model class with string" do
+      expose :thing, model: "DifferentThing"
+    end
   end
 
   context "override scope" do

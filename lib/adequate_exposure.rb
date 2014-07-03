@@ -1,4 +1,4 @@
-require "active_support/core_ext"
+require "active_support/all"
 
 module AdequateExposure
   autoload :Controller, "adequate_exposure/controller"

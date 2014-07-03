@@ -3,8 +3,8 @@ module AdequateExposure
     attr_reader :controller, :options
     delegate :params, to: :controller
 
-    def initialize(controller, **options)
-      @controller, @options = controller, HashWithIndifferentAccess.new(options)
+    def initialize(controller, options)
+      @controller, @options = controller, options.with_indifferent_access
     end
 
     def name
@@ -26,7 +26,7 @@ module AdequateExposure
     end
 
     def default_id
-      fetch_first_defined_param %I[#{name}_id id]
+      params["#{name}_id"] || params[:id]
     end
 
     def default_scope
@@ -34,7 +34,7 @@ module AdequateExposure
     end
 
     def default_model
-      symbol_to_class(name)
+      name.to_s.classify.constantize
     end
 
     def default_find(id, scope)
@@ -49,19 +49,7 @@ module AdequateExposure
       instance
     end
 
-    def handle_custom_model(value)
-      Class === value ? value : symbol_to_class(value)
-    end
-
-    def handle_custom_id(value)
-      fetch_first_defined_param value
-    end
-
     private
-
-    def id_attribute_name
-      Array.wrap(possible_id_keys).detect{ |key| params.key?(key) }
-    end
 
     def handle_action(name, *args)
       if options.key?(name)
@@ -77,20 +65,8 @@ module AdequateExposure
       if Proc === value
         controller.instance_exec(*args, &value)
       else
-        send("handle_custom_#{name}", value, *args)
+        fail ArgumentError, "Can't handle #{name.inspect} => #{value.inspect} option"
       end
-    end
-
-    def symbol_to_class(symbol)
-      symbol.to_s.classify.constantize
-    end
-
-    def fetch_first_defined_param(keys)
-      Array.wrap(keys).each do |key|
-        return params[key] if params.key?(key)
-      end
-
-      nil
     end
   end
 end
