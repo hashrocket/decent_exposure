@@ -8,17 +8,15 @@ module AdequateExposure
 
     def initialize(controller, name, fetch_block=nil, **options, &block)
       @controller = controller
-      @options = options.with_indifferent_access
+      @options = options.with_indifferent_access.merge(name: name)
 
-      if block_given?
-        fail ArgumentError, "Passing block and lambda-argument doesn't make sense" if fetch_block
-        fail ArgumentError, "Providing options with a block doesn't make sense." if options.any?
-        @options.merge! fetch: block
-      elsif fetch_block
-        @options.merge! fetch: fetch_block
-      end
+      merge_lambda_option :fetch, fetch_block if fetch_block
+      merge_lambda_option :fetch, block if block_given?
 
-      @options.merge! name: name
+      assert_singleton_option :fetch
+      assert_singleton_option :from
+      assert_incompatible_options_pair :parent, :model
+      assert_incompatible_options_pair :parent, :scope
 
       normalize_options
     end
@@ -42,18 +40,6 @@ module AdequateExposure
     def normalize_options
       exposure_name = options.fetch(:name)
 
-      if parent = options.delete(:parent)
-        if options.key?(:scope) || options.key?(:model)
-          fail ArgumentError, "Using :parent with scope/model doesn't make sense"
-        end
-
-        options[:scope] = ->{ send(parent).send(exposure_name.to_s.pluralize) }
-      end
-
-      if from = options.delete(:from)
-        options.merge! fetch: ->{ send(from).send(exposure_name) }
-      end
-
       normalize_non_proc_option :id do |ids|
         ->{ Array.wrap(ids).map{ |id| params[id] }.find(&:present?) }
       end
@@ -75,12 +61,30 @@ module AdequateExposure
       normalize_non_proc_option :scope do |custom_scope|
         ->(model){ model.send(custom_scope) }
       end
+
+      if parent = options.delete(:parent)
+        merge_lambda_option :scope, ->{ send(parent).send(exposure_name.to_s.pluralize) }
+      end
+
+      if from = options.delete(:from)
+        merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
+      end
     end
 
     def normalize_non_proc_option(name)
       option_value = options[name]
       return if Proc === option_value
-      options[name] = yield(option_value) if option_value.present?
+      if option_value.present?
+        merge_lambda_option name, yield(option_value)
+      end
+    end
+
+    def merge_lambda_option(name, body)
+      if previous_value = options[name] and Proc === previous_value
+        fail ArgumentError, "#{name.to_s.titleize} block is already defined"
+      end
+
+      options[name] = body
     end
 
     def attribute
@@ -96,6 +100,18 @@ module AdequateExposure
           ivar_name: ivar_name,
           fetch: fetch
         )
+      end
+    end
+
+    def assert_incompatible_options_pair(key1, key2)
+      if options.key?(key1) && options.key?(key2)
+        fail ArgumentError, "Using #{key1.inspect} option with #{key2.inspect} doesn't make sense"
+      end
+    end
+
+    def assert_singleton_option(name)
+      if options.except(name, :name).any? && options.key?(name)
+        fail ArgumentError, "Using #{name.inspect} option with other options doesn't make sense"
       end
     end
   end

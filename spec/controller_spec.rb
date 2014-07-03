@@ -71,7 +71,7 @@ describe AdequateExposure::Controller do
 
     it "throws and error when providing options with block" do
       action = ->{ expose(:thing, id: :some_id){ some_code } }
-      expect(&action).to raise_error(ArgumentError, "Providing options with a block doesn't make sense.")
+      expect(&action).to raise_error(ArgumentError, "Using :fetch option with other options doesn't make sense")
     end
   end
 
@@ -84,7 +84,7 @@ describe AdequateExposure::Controller do
 
     it "throws an error when passing both block and block-argument" do
       action = ->{ expose(:thing, ->{}){} }
-      expect(&action).to raise_error(ArgumentError, "Passing block and lambda-argument doesn't make sense")
+      expect(&action).to raise_error(ArgumentError, "Fetch block is already defined")
     end
   end
 
@@ -146,12 +146,12 @@ describe AdequateExposure::Controller do
     context "with scope/model options" do
       it "throws an error when used with scope option" do
         action = ->{ expose :thing, scope: :foo, parent: :something }
-        expect(&action).to raise_error(ArgumentError, "Using :parent with scope/model doesn't make sense")
+        expect(&action).to raise_error(ArgumentError, "Using :parent option with :scope doesn't make sense")
       end
 
       it "throws an error when used with model option" do
         action = ->{ expose :thing, model: :foo, parent: :something }
-        expect(&action).to raise_error(ArgumentError, "Using :parent with scope/model doesn't make sense")
+        expect(&action).to raise_error(ArgumentError, "Using :parent option with :model doesn't make sense")
       end
     end
 
@@ -260,5 +260,9 @@ describe AdequateExposure::Controller do
       expect(controller.comments).to eq(comments)
     end
 
+    it "should throw error when used with other options" do
+      action = ->{ expose :thing, from: :foo, parent: :bar }
+      expect(&action).to raise_error(ArgumentError, "Using :from option with other options doesn't make sense")
+    end
   end
 end
