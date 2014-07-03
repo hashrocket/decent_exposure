@@ -63,6 +63,11 @@ describe AdequateExposure::Controller do
       controller.thing = :foobar
       expect(controller.thing).to eq(:foobar)
     end
+
+    it "throws and error when providing options with block" do
+      action = ->{ expose(:thing, id: :some_id){ some_code } }
+      expect(&action).to raise_error(ArgumentError, "Providing options with a block doesn't make sense.")
+    end
   end
 
   context "redefine fetch" do

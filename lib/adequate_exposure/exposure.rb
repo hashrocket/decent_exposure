@@ -8,11 +8,14 @@ module AdequateExposure
 
     def initialize(controller, name, **options, &block)
       @controller = controller
-      @options = options.merge(name: name).with_indifferent_access
+      @options = options.with_indifferent_access
 
       if block_given?
+        fail ArgumentError, "Providing options with a block doesn't make sense." if options.any?
         @options.merge! fetch: block
       end
+
+      @options.merge! name: name
 
       normalize_options
     end
