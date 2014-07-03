@@ -43,6 +43,13 @@ describe AdequateExposure::Controller do
     end
   end
 
+  context ".expose!" do
+    it "supports eager expose" do
+      expect(controller_klass).to receive(:before_action).with(:thing)
+      controller_klass.expose! :thing
+    end
+  end
+
   context "with block" do
     before do
       expose(:thing){ compute_thing }
