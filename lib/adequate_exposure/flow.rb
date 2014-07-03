@@ -43,11 +43,21 @@ module AdequateExposure
     end
 
     def default_build(scope)
-      scope.new
+      scope.new(exposure_params)
     end
 
     def default_decorate(instance)
       instance
+    end
+
+    def exposure_params
+      params_method_name = "#{name}_params"
+
+      if controller.respond_to?(params_method_name, true)
+        controller.send(params_method_name)
+      else
+        {}
+      end
     end
 
     private

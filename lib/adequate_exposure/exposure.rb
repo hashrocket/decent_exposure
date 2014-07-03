@@ -56,6 +56,10 @@ module AdequateExposure
         ->{ model }
       end
 
+      normalize_non_proc_option :build do |params_method_name|
+        ->(scope){ scope.new(send(params_method_name)) }
+      end
+
       normalize_non_proc_option :scope do |custom_scope|
         ->(model){ model.send(custom_scope) }
       end

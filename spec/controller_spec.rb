@@ -89,14 +89,36 @@ describe AdequateExposure::Controller do
   end
 
   context "default behaviour" do
-    before{ expose :thing }
 
-    it "builds a new instance when id is not provided" do
-      expect(controller.thing).to be_instance_of(Thing)
+    context "build" do
+      let(:thing){ double("Thing") }
+
+      after{ expect(controller.thing).to eq(thing) }
+
+      it "builds a new instance with empty hash when strong parameters method is not available" do
+        expose :thing
+        expect(Thing).to receive(:new).with({}).and_return(thing)
+      end
+
+      it "builds a new instance with attributes when strong parameters method is available" do
+        expose :thing
+        expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+        expect(controller).to receive(:thing_params).and_return(foo: :bar)
+      end
+
+      it "allows to specify strong parameters method name with a symbol passed to build option" do
+        expose :thing, build: :custom_params_method_name
+        expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+        expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
+      end
     end
 
     context "find" do
-      before{ expect(Thing).to receive(:find).with(10) }
+      before do
+        expose :thing
+        expect(Thing).to receive(:find).with(10)
+      end
+
       after{ controller.thing }
 
       it "finds Thing if thing_id param is provided" do
@@ -110,7 +132,9 @@ describe AdequateExposure::Controller do
   end
 
   context "override model" do
-    after{ expect(controller.thing).to be_instance_of(DifferentThing) }
+    let(:different_thing){ double("DifferentThing") }
+    before{ expect(DifferentThing).to receive(:new).with({}).and_return(different_thing) }
+    after{ expect(controller.thing).to eq(different_thing) }
 
     it "allows overriding model class with proc" do
       expose :thing, model: ->{ DifferentThing }
@@ -171,7 +195,9 @@ describe AdequateExposure::Controller do
   context "override decorator" do
     it "allows specify decorator" do
       expose :thing, decorate: ->(thing){ decorate(thing) }
-      expect(controller).to receive(:decorate).with(an_instance_of(Thing))
+      thing = double("Thing")
+      expect(Thing).to receive(:new).with({}).and_return(thing)
+      expect(controller).to receive(:decorate).with(thing)
       controller.thing
     end
   end
