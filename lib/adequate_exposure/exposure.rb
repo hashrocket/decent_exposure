@@ -37,6 +37,11 @@ module AdequateExposure
     end
 
     def normalize_options
+      if from = options.delete(:from)
+        exposure_name = options.fetch(:name)
+        options.merge! fetch: ->{ send(from).send(exposure_name) }
+      end
+
       normalize_non_proc_option :id do |ids|
         ->{ Array.wrap(ids).map{ |id| params[id] }.find(&:present?) }
       end

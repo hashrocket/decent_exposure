@@ -167,4 +167,17 @@ describe AdequateExposure::Controller do
       controller.thing
     end
   end
+
+  context "from option" do
+    it "allows scope to be called from method" do
+      post = double("Post")
+      comments = double("Comments")
+      allow(controller).to receive(:post).and_return(post)
+      expect(post).to receive(:comments).and_return(comments)
+      expose :comments, from: :post
+
+      expect(controller.comments).to eq(comments)
+    end
+
+  end
 end
