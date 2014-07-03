@@ -51,9 +51,7 @@ describe AdequateExposure::Controller do
   end
 
   context "with block" do
-    before do
-      expose(:thing){ compute_thing }
-    end
+    before{ expose(:thing){ compute_thing } }
 
     it "executes block to calculate the value" do
       allow(controller).to receive(:compute_thing).and_return(42)
@@ -74,6 +72,19 @@ describe AdequateExposure::Controller do
     it "throws and error when providing options with block" do
       action = ->{ expose(:thing, id: :some_id){ some_code } }
       expect(&action).to raise_error(ArgumentError, "Providing options with a block doesn't make sense.")
+    end
+  end
+
+  context "passing fetch block as an argument instead of block" do
+    it "is equivalent to passing block" do
+      expose :thing, ->{ compute_thing }
+      expect(controller).to receive(:compute_thing).and_return(42)
+      expect(controller.thing).to eq(42)
+    end
+
+    it "throws an error when passing both block and block-argument" do
+      action = ->{ expose(:thing, ->{}){} }
+      expect(&action).to raise_error(ArgumentError, "Passing block and lambda-argument doesn't make sense")
     end
   end
 

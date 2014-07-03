@@ -6,13 +6,16 @@ module AdequateExposure
       new(*args, &block).expose!
     end
 
-    def initialize(controller, name, **options, &block)
+    def initialize(controller, name, fetch_block=nil, **options, &block)
       @controller = controller
       @options = options.with_indifferent_access
 
       if block_given?
+        fail ArgumentError, "Passing block and lambda-argument doesn't make sense" if fetch_block
         fail ArgumentError, "Providing options with a block doesn't make sense." if options.any?
         @options.merge! fetch: block
+      elsif fetch_block
+        @options.merge! fetch: fetch_block
       end
 
       @options.merge! name: name
