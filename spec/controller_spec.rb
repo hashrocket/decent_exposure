@@ -131,6 +131,42 @@ describe AdequateExposure::Controller do
     end
   end
 
+  context "parent option" do
+    context "with scope/model options" do
+      it "throws an error when used with scope option" do
+        action = ->{ expose :thing, scope: :foo, parent: :something }
+        expect(&action).to raise_error(ArgumentError, "Using :parent with scope/model doesn't make sense")
+      end
+
+      it "throws an error when used with model option" do
+        action = ->{ expose :thing, model: :foo, parent: :something }
+        expect(&action).to raise_error(ArgumentError, "Using :parent with scope/model doesn't make sense")
+      end
+    end
+
+    context "build/find" do
+      let(:current_user){ double("User") }
+      let(:scope){ double("Scope") }
+
+      before do
+        expect(controller).to receive(:current_user).and_return(current_user)
+        expect(current_user).to receive(:things).and_return(scope)
+        expose :thing, parent: :current_user
+      end
+
+      after{ expect(controller.thing).to eq(42) }
+
+      it "sets the scope to belong to parent defined by controller method" do
+        expect(scope).to receive(:new).with({}).and_return(42)
+      end
+
+      it "scopes the find to proper scope" do
+        controller.params.merge! thing_id: 10
+        expect(scope).to receive(:find).with(10).and_return(42)
+      end
+    end
+  end
+
   context "override model" do
     let(:different_thing){ double("DifferentThing") }
     before{ expect(DifferentThing).to receive(:new).with({}).and_return(different_thing) }

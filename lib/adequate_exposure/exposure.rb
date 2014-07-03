@@ -37,8 +37,17 @@ module AdequateExposure
     end
 
     def normalize_options
+      exposure_name = options.fetch(:name)
+
+      if parent = options.delete(:parent)
+        if options.key?(:scope) || options.key?(:model)
+          fail ArgumentError, "Using :parent with scope/model doesn't make sense"
+        end
+
+        options[:scope] = ->{ send(parent).send(exposure_name.to_s.pluralize) }
+      end
+
       if from = options.delete(:from)
-        exposure_name = options.fetch(:name)
         options.merge! fetch: ->{ send(from).send(exposure_name) }
       end
 
