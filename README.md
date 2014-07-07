@@ -36,11 +36,12 @@ expressed with the following pseudocode:
 
 ```ruby
 def fetch(scope, id)
-  id ? decorate(find(id, scope)) : decorate(build(scope))
+  instance = id ? find(id, scope) : build(scope)
+  decorate(instance)
 end
 
 def id
-  params[:thing_id] || params[:id]
+  params[:id] || params[:thing_id]
 end
 
 def find(id, scope)
@@ -48,7 +49,7 @@ def find(id, scope)
 end
 
 def build(scope)
-  scope.new # Thing.new
+  scope.new(build_params) # Thing.new(thing_params)
 end
 
 def scope
@@ -57,6 +58,14 @@ end
 
 def model
   exposure_name.classify.constantize # :thing -> Thing
+end
+
+def build_params
+  if respond_to?(:thing_params, true) && !request.get?
+    thing_params
+  else
+    {}
+  end
 end
 
 def decorate(thing)
