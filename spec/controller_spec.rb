@@ -156,6 +156,10 @@ describe AdequateExposure::Controller do
       it "finds Thing if id param if provided" do
         controller.params.merge! id: 10
       end
+
+      it "prefers :thing_id to :id" do
+        controller.params.merge! id: 15, thing_id: 10
+      end
     end
   end
 
