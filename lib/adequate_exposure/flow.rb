@@ -11,7 +11,7 @@ module AdequateExposure
       options.fetch(:name)
     end
 
-    %i[fetch find build scope model id decorate].each do |method_name|
+    %i[fetch find build build_params scope model id decorate].each do |method_name|
       define_method method_name do |*args|
         ivar_name = "@#{method_name}"
         return instance_variable_get(ivar_name) if instance_variable_defined?(ivar_name)
@@ -43,17 +43,15 @@ module AdequateExposure
     end
 
     def default_build(scope)
-      scope.new(exposure_params)
+      scope.new(build_params)
     end
 
     def default_decorate(instance)
       instance
     end
 
-    def exposure_params
-      params_method_name = "#{name}_params"
-
-      if controller.respond_to?(params_method_name, true)
+    def default_build_params
+      if controller.respond_to?(params_method_name, true) && !get_request?
         controller.send(params_method_name)
       else
         {}
@@ -61,6 +59,14 @@ module AdequateExposure
     end
 
     private
+
+    def get_request?
+      controller.request.get?
+    end
+
+    def params_method_name
+      options.fetch(:build_params_method){ "#{name}_params" }
+    end
 
     def handle_action(name, *args)
       if options.key?(name)

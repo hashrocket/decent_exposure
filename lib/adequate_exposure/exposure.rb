@@ -54,8 +54,9 @@ module AdequateExposure
         ->{ model }
       end
 
-      normalize_non_proc_option :build do |params_method_name|
-        ->(scope){ scope.new(send(params_method_name)) }
+      normalize_non_proc_option :build_params do |value|
+        options[:build_params_method] = value
+        nil
       end
 
       normalize_non_proc_option :scope do |custom_scope|
@@ -75,7 +76,12 @@ module AdequateExposure
       option_value = options[name]
       return if Proc === option_value
       if option_value.present?
-        merge_lambda_option name, yield(option_value)
+        normalized_value = yield(option_value)
+        if normalized_value
+          merge_lambda_option name, normalized_value
+        else
+          options.delete name
+        end
       end
     end
 

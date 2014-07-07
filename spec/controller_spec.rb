@@ -18,10 +18,14 @@ describe AdequateExposure::Controller do
     end
   end
 
+  let(:request){ double("Request") }
   let(:controller){ controller_klass.new }
+  before{ allow(controller).to receive(:request){ request } }
 
-  def expose(*args, &block)
-    controller_klass.expose(*args, &block)
+  %i[expose expose!].each do |method_name|
+    define_method method_name do |*args, &block|
+      controller_klass.send method_name, *args, &block
+    end
   end
 
   context "getter/setter methods" do
@@ -46,7 +50,7 @@ describe AdequateExposure::Controller do
   context ".expose!" do
     it "supports eager expose" do
       expect(controller_klass).to receive(:before_action).with(:thing)
-      controller_klass.expose! :thing
+      expose! :thing
     end
   end
 
@@ -106,21 +110,34 @@ describe AdequateExposure::Controller do
 
       after{ expect(controller.thing).to eq(thing) }
 
-      it "builds a new instance with empty hash when strong parameters method is not available" do
-        expose :thing
-        expect(Thing).to receive(:new).with({}).and_return(thing)
+      context "params method is not available" do
+        it "builds a new instance with empty hash" do
+          expose :thing
+          expect(Thing).to receive(:new).with({}).and_return(thing)
+        end
       end
 
-      it "builds a new instance with attributes when strong parameters method is available" do
-        expose :thing
-        expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
-        expect(controller).to receive(:thing_params).and_return(foo: :bar)
-      end
+      context "params method is available" do
+        it "ignores params on get request" do
+          expose :thing
+          expect(request).to receive(:get?).and_return(true)
+          expect(controller).not_to receive(:thing_params)
+          expect(Thing).to receive(:new).with({}).and_return(thing)
+        end
 
-      it "allows to specify strong parameters method name with a symbol passed to build option" do
-        expose :thing, build: :custom_params_method_name
-        expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
-        expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
+        it "uses params method on non-get request" do
+          expose :thing
+          expect(request).to receive(:get?).and_return(false)
+          expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+          expect(controller).to receive(:thing_params).and_return(foo: :bar)
+        end
+
+        it "can use custom params method name" do
+          expose :thing, build_params: :custom_params_method_name
+          expect(request).to receive(:get?).and_return(false)
+          expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+          expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
+        end
       end
     end
 
