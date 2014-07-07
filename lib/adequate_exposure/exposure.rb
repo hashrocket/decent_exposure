@@ -17,6 +17,7 @@ module AdequateExposure
       assert_singleton_option :from
       assert_incompatible_options_pair :parent, :model
       assert_incompatible_options_pair :parent, :scope
+      assert_incompatible_options_pair :find_by, :find
 
       normalize_options
     end
@@ -69,6 +70,10 @@ module AdequateExposure
 
       if from = options.delete(:from)
         merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
+      end
+
+      if find_by = options.delete(:find_by)
+        merge_lambda_option :find, ->(id, scope){ scope.find_by!(find_by => id) }
       end
     end
 

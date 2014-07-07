@@ -104,7 +104,6 @@ describe AdequateExposure::Controller do
   end
 
   context "default behaviour" do
-
     context "build" do
       let(:thing){ double("Thing") }
 
@@ -138,6 +137,12 @@ describe AdequateExposure::Controller do
           expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
           expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
         end
+
+        it "can use custom build params" do
+          expose :thing, build_params: ->{ foobar }
+          expect(controller).to receive(:foobar).and_return(42)
+          expect(Thing).to receive(:new).with(42).and_return(thing)
+        end
       end
     end
 
@@ -160,6 +165,20 @@ describe AdequateExposure::Controller do
       it "prefers :thing_id to :id" do
         controller.params.merge! id: 15, thing_id: 10
       end
+    end
+  end
+
+  context "find_by" do
+    it "throws and error when using with :find" do
+      action = ->{ expose :thing, find: :foo, find_by: :bar }
+      expect(&action).to raise_error(ArgumentError, "Using :find_by option with :find doesn't make sense")
+    end
+
+    it "allows to specify what attribute to use for find" do
+      expect(Thing).to receive(:find_by!).with(foo: 10).and_return(42)
+      expose :thing, find_by: :foo
+      controller.params.merge! id: 10
+      expect(controller.thing).to eq(42)
     end
   end
 
