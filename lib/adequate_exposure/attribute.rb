@@ -2,8 +2,10 @@ module AdequateExposure
   class Attribute
     attr_reader :name, :fetch, :ivar_name
 
-    def initialize(name:, fetch:, ivar_name:)
-      @name, @fetch, @ivar_name = name, fetch, ivar_name
+    def initialize(options)
+      @name = options.fetch(:name)
+      @fetch = options.fetch(:fetch)
+      @ivar_name = options.fetch(:ivar_name)
     end
 
     def getter_method_name
