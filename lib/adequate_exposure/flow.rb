@@ -23,7 +23,7 @@ module AdequateExposure
 
     def default_fetch
       computed_scope = scope(model)
-      instance = id ? find(id, computed_scope) : build(computed_scope)
+      instance = id ? find(id, computed_scope) : build(build_params, computed_scope)
       decorate(instance)
     end
 
@@ -43,8 +43,8 @@ module AdequateExposure
       scope.find(id)
     end
 
-    def default_build(scope)
-      scope.new(build_params)
+    def default_build(params, scope)
+      scope.new(params)
     end
 
     def default_decorate(instance)
