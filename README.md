@@ -182,6 +182,27 @@ default, it behaves like this:
 expose :thing, build: ->(thing_params, scope){ scope.new(thing_params) }
 ```
 
+### `build_params`
+
+This options is responsible for calulating params before passing it to the
+build step. The default behavior was modeled with Strong Parameters in mind and
+is somewhat smart: it calls `thing_params` controller method if it's available
+and request method it not `GET`. In all other cases it produces an empty hash.
+
+You can easily specify which controller method you want it to call instead of
+`thing_params`, or just provide your own logic:
+
+```ruby
+expose :thing, build_params: :custom_thing_params
+expose :other_thing, build_params: ->{ { foo: "bar" } }
+
+private
+
+def custom_thing_params
+  # strong parameters stuff goes here
+end
+```
+
 ### `scope`
 
 Defines the scope that's used in `find` and `build` steps.
