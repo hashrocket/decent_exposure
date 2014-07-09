@@ -41,7 +41,10 @@ module AdequateExposure
     end
 
     def normalize_options
-      normalize_non_proc_options
+      normalize_id_option
+      normalize_model_option
+      normalize_build_params_option
+      normalize_scope_options
       normalize_parent_option
       normalize_from_option
       normalize_find_by_option
@@ -69,11 +72,13 @@ module AdequateExposure
       end
     end
 
-    def normalize_non_proc_options
+    def normalize_id_option
       normalize_non_proc_option :id do |ids|
         ->{ Array.wrap(ids).map{ |id| params[id] }.find(&:present?) }
       end
+    end
 
+    def normalize_model_option
       normalize_non_proc_option :model do |value|
         model = if [String, Symbol].include?(value.class)
           value.to_s.classify.constantize
@@ -83,12 +88,16 @@ module AdequateExposure
 
         ->{ model }
       end
+    end
 
+    def normalize_build_params_option
       normalize_non_proc_option :build_params do |value|
         options[:build_params_method] = value
         nil
       end
+    end
 
+    def normalize_scope_options
       normalize_non_proc_option :scope do |custom_scope|
         ->(model){ model.send(custom_scope) }
       end
