@@ -140,11 +140,13 @@ Passing lambdas might not always be fun, so here are couple shortcuts that could
 help making life easier.
 
 ```ruby
-# equivalent to id: ->{ params[:custom_thing_id] }
 expose :thing, id: :custom_thing_id
+# equivalent to
+expose :thing, id: ->{ params[:custom_thing_id] }
 
-# equivalent to id: ->{ params[:try_this_id] || params[:or_maybe_that_id] }
 expose :thing, id: [:try_this_id, :or_maybe_that_id]
+# equivalent to
+expose :thing, id: ->{ params[:try_this_id] || params[:or_maybe_that_id] }
 ```
 
 ### `find`
@@ -217,7 +219,7 @@ Like before, shortcuts are there to make you happier:
 
 ```ruby
 expose :post, scope: :published
-# fully equivalent to
+# equivalent to
 expose :post, scope: ->{ Post.published }
 ```
 
@@ -225,7 +227,7 @@ and
 
 ```ruby
 expose :thing, parent: :current_user
-# fully equivalent to:
+# equivalent to:
 expose :thing, scope: ->{ current_user.things }
 ```
 
