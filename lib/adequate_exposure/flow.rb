@@ -11,7 +11,7 @@ module AdequateExposure
       options.fetch(:name)
     end
 
-    %i[fetch find build build_params scope model id decorate].each do |method_name|
+    %w[fetch find build build_params scope model id decorate].each do |method_name|
       define_method method_name do |*args|
         ivar_name = "@#{method_name}"
         return instance_variable_get(ivar_name) if instance_variable_defined?(ivar_name)

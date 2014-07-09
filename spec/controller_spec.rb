@@ -22,7 +22,7 @@ describe AdequateExposure::Controller do
   let(:controller){ controller_klass.new }
   before{ allow(controller).to receive(:request){ request } }
 
-  %i[expose expose!].each do |method_name|
+  %w[expose expose!].each do |method_name|
     define_method method_name do |*args, &block|
       controller_klass.send method_name, *args, &block
     end
@@ -274,7 +274,7 @@ describe AdequateExposure::Controller do
     end
 
     it "allows overriding id with an array of symbols" do
-      expose :thing, id: %i[non-existent-id lolwut another_id_param]
+      expose :thing, id: %w[non-existent-id lolwut another_id_param]
       controller.params.merge! another_id_param: 42
     end
   end
