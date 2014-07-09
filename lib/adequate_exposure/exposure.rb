@@ -41,8 +41,35 @@ module AdequateExposure
     end
 
     def normalize_options
+      normalize_non_proc_options
+      normalize_parent_option
+      normalize_from_option
+      normalize_find_by_option
+    end
+
+    def normalize_find_by_option
+      if find_by = options.delete(:find_by)
+        merge_lambda_option :find, ->(id, scope){ scope.find_by!(find_by => id) }
+      end
+    end
+
+    def normalize_parent_option
       exposure_name = options.fetch(:name)
 
+      if parent = options.delete(:parent)
+        merge_lambda_option :scope, ->{ send(parent).send(exposure_name.to_s.pluralize) }
+      end
+    end
+
+    def normalize_from_option
+      exposure_name = options.fetch(:name)
+
+      if from = options.delete(:from)
+        merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
+      end
+    end
+
+    def normalize_non_proc_options
       normalize_non_proc_option :id do |ids|
         ->{ Array.wrap(ids).map{ |id| params[id] }.find(&:present?) }
       end
@@ -64,18 +91,6 @@ module AdequateExposure
 
       normalize_non_proc_option :scope do |custom_scope|
         ->(model){ model.send(custom_scope) }
-      end
-
-      if parent = options.delete(:parent)
-        merge_lambda_option :scope, ->{ send(parent).send(exposure_name.to_s.pluralize) }
-      end
-
-      if from = options.delete(:from)
-        merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
-      end
-
-      if find_by = options.delete(:find_by)
-        merge_lambda_option :find, ->(id, scope){ scope.find_by!(find_by => id) }
       end
     end
 
