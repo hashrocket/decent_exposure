@@ -33,7 +33,7 @@ ID and try to perform `Thing.find(id)`. If the ID isn't found, it'll call
 `Thing.new(things_params)`. The result will be memoized in an `@exposed_thing`
 instance variable.
 
-The default resolving workflow if pretty powerful and customizable. It could be
+The default resolving workflow is pretty powerful and customizable. It could be
 expressed with the following pseudocode:
 
 ```ruby
@@ -108,7 +108,7 @@ Or if you (like me) absolutely hate parens in side-effect methods:
 expose :thing, ->{ get_thing_some_way_or_another }
 ```
 
-There is another shortcut that allows you to redefine entire fetch block with
+There is another shortcut that allows you to redefine the entire fetch block with
 less code:
 
 ```ruby
@@ -120,7 +120,7 @@ expose :comments, ->{ post.comments }
 ### `id`
 
 The default fetch logic relies on the presence of an ID. And of course Adequate
-Exposure allows to to specify how exactly you want the ID to be extracted.
+Exposure allows you to specify how exactly you want the ID to be extracted.
 
 Default behavior could be expressed using following code:
 
@@ -136,8 +136,8 @@ But nothing is stopping you from throwing in any arbitrary code:
 expose :thing, id: ->{ 42 }
 ```
 
-Passing lambdas might not always be fun, so here are couple shortcuts that could
-help making life easier.
+Passing lambdas might not always be fun, so here are a couple of shortcuts that could
+help make life easier.
 
 ```ruby
 expose :thing, id: :custom_thing_id
@@ -162,7 +162,7 @@ Where `scope` is a model scope, like `Thing` or `User.active` or
 `Post.published`.
 
 Now, if you're using FriendlyId or Stringex or something similar, you'd have to
-customize your finding logic. You code might look somewhat like this:
+customize your finding logic. Your code might look somewhat like this:
 
 ```ruby
 expose :thing, find: ->(id, scope){ scope.find_by!(slug: id) }
@@ -186,10 +186,10 @@ expose :thing, build: ->(thing_params, scope){ scope.new(thing_params) }
 
 ### `build_params`
 
-This options is responsible for calulating params before passing it to the
+These options are responsible for calulating params before passing them to the
 build step. The default behavior was modeled with Strong Parameters in mind and
-is somewhat smart: it calls `thing_params` controller method if it's available
-and request method it not `GET`. In all other cases it produces an empty hash.
+is somewhat smart: it calls the `thing_params` controller method if it's available
+and the request method it not `GET`. In all other cases it produces an empty hash.
 
 You can easily specify which controller method you want it to call instead of
 `thing_params`, or just provide your own logic:
@@ -233,7 +233,7 @@ expose :thing, scope: ->{ current_user.things }
 
 ### `model`
 
-Allows to specify the model class to use. Pretty straightforward.
+Allows you to specify the model class to use. Pretty straightforward.
 
 ```ruby
 expose :thing, model: ->{ AnotherThing }
