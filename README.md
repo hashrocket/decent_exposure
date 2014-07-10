@@ -17,7 +17,8 @@ that down we can start talking about the API.
 
 ## API
 
-The whole API consists of two methods so far: `expose` and `expose!`.
+The whole API consists of three methods so far: `expose`, `expose!`, and
+`exposure_config`.
 
 In the simplest scenario you'll just use it to expose a model in the
 controller:
@@ -251,6 +252,20 @@ that:
 ```ruby
 expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }
 ```
+
+## `exposure_config`
+
+You can pre-save some configuration using `exposure_config` method reuse it
+later.
+
+```ruby
+exposure_config :cool_find, find: ->{ very_cool_find_code }
+exposure_config :cool_build, build: ->{ very_cool_build_code }
+
+expose :thing, with: [:cool_find, :cool_build]
+expose :another_thing, with: :cool_build
+```
+
 
 ## Contributing
 

@@ -8,6 +8,6 @@ module AdequateExposure
   autoload :Flow,       "adequate_exposure/flow"
 
   ActiveSupport.on_load :action_controller do
-    extend Controller
+    include Controller
   end
 end

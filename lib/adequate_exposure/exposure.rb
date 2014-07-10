@@ -41,6 +41,7 @@ module AdequateExposure
     end
 
     def normalize_options
+      normalize_with_option
       normalize_id_option
       normalize_model_option
       normalize_build_params_option
@@ -69,6 +70,12 @@ module AdequateExposure
 
       if from = options.delete(:from)
         merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
+      end
+    end
+
+    def normalize_with_option
+      if configs = options.delete(:with)
+        Array.wrap(configs).each{ |config| reverse_merge_config! config }
       end
     end
 
@@ -150,6 +157,11 @@ module AdequateExposure
       if options.except(name, :name).any? && options.key?(name)
         fail ArgumentError, "Using #{name.inspect} option with other options doesn't make sense"
       end
+    end
+
+    def reverse_merge_config!(name)
+      config = controller.exposure_configuration.fetch(name)
+      options.reverse_merge! config
     end
   end
 end

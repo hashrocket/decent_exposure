@@ -14,7 +14,7 @@ describe AdequateExposure::Controller do
 
   let(:controller_klass) do
     Class.new(BaseController) do
-      extend AdequateExposure::Controller
+      include AdequateExposure::Controller
     end
   end
 
@@ -22,7 +22,7 @@ describe AdequateExposure::Controller do
   let(:controller){ controller_klass.new }
   before{ allow(controller).to receive(:request){ request } }
 
-  %w[expose expose!].each do |method_name|
+  %w[expose expose! exposure_config].each do |method_name|
     define_method method_name do |*args, &block|
       controller_klass.send method_name, *args, &block
     end
@@ -51,6 +51,45 @@ describe AdequateExposure::Controller do
     it "supports eager expose" do
       expect(controller_klass).to receive(:before_action).with(:thing)
       expose! :thing
+    end
+  end
+
+  context ".exposure_config" do
+    it "subclass configration doesn't propagate to superclass" do
+      controller_subklass = Class.new(controller_klass)
+      controller_klass.exposure_config :foo, :bar
+      controller_subklass.exposure_config :foo, :lol
+      controller_subklass.exposure_config :fizz, :buzz
+      expect(controller_subklass.exposure_configuration).to eq(foo: :lol, fizz: :buzz)
+      expect(controller_klass.exposure_configuration).to eq(foo: :bar)
+    end
+
+    context "applying" do
+      let(:thing){ double("Thing") }
+
+      before do
+        exposure_config :sluggable, find_by: :slug
+        exposure_config :weird_id_name, id: :check_this_out
+        exposure_config :another_id_name, id: :whee
+        controller.params.merge! check_this_out: "foo", whee: "wut"
+      end
+
+      after{ expect(controller.thing).to eq(thing) }
+
+      it "can be reused later" do
+        expose :thing, with: :weird_id_name
+        expect(Thing).to receive(:find).with("foo").and_return(thing)
+      end
+
+      it "can apply multple configs at once" do
+        expose :thing, with: [:weird_id_name, :sluggable]
+        expect(Thing).to receive(:find_by!).with(slug: "foo").and_return(thing)
+      end
+
+      it "applies multiple configs in a correct order" do
+        expose :thing, with: [:another_id_name, :weird_id_name]
+        expect(Thing).to receive(:find).with("wut").and_return(thing)
+      end
     end
   end
 
