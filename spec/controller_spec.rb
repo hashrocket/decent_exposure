@@ -71,6 +71,7 @@ describe AdequateExposure::Controller do
         exposure_config :sluggable, find_by: :slug
         exposure_config :weird_id_name, id: :check_this_out
         exposure_config :another_id_name, id: :whee
+        exposure_config :multi, find_by: :slug, id: :check_this_out
         controller.params.merge! check_this_out: "foo", whee: "wut"
       end
 
@@ -89,6 +90,16 @@ describe AdequateExposure::Controller do
       it "applies multiple configs in a correct order" do
         expose :thing, with: [:another_id_name, :weird_id_name]
         expect(Thing).to receive(:find).with("wut").and_return(thing)
+      end
+
+      it "can apply multiple options in a config" do
+        expose :thing, with: :multi
+        expect(Thing).to receive(:find_by!).with(slug: "foo").and_return(thing)
+      end
+
+      it "applies multiple configs in a correct order with multiple options in a config" do
+        expose :thing, with: [:another_id_name, :multi]
+        expect(Thing).to receive(:find_by!).with(slug: "wut").and_return(thing)
       end
     end
   end
