@@ -24,11 +24,11 @@ end
 class Bird
 end
 
-class ApplicationConroller < ActionController::Base
+class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers
 end
 
-class BirdsController < ApplicationConroller
+class BirdsController < ApplicationController
   expose :bird
 
   def show
