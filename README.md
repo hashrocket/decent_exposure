@@ -109,8 +109,8 @@ Or if you (like me) absolutely hate parens in side-effect methods:
 expose :thing, ->{ get_thing_some_way_or_another }
 ```
 
-There is another shortcut that allows you to redefine the entire fetch block with
-less code:
+There is another shortcut that allows you to redefine the entire fetch block
+with less code:
 
 ```ruby
 expose :comments, from: :post
@@ -137,8 +137,8 @@ But nothing is stopping you from throwing in any arbitrary code:
 expose :thing, id: ->{ 42 }
 ```
 
-Passing lambdas might not always be fun, so here are a couple of shortcuts that could
-help make life easier.
+Passing lambdas might not always be fun, so here are a couple of shortcuts that
+could help make life easier.
 
 ```ruby
 expose :thing, id: :custom_thing_id
@@ -178,8 +178,8 @@ expose :thing, find_by: :slug
 
 ### `build`
 
-When an ID is not present, Adequate Exposure tries to build an object for you. By
-default, it behaves like this:
+When an ID is not present, Adequate Exposure tries to build an object for you.
+By default, it behaves like this:
 
 ```ruby
 expose :thing, build: ->(thing_params, scope){ scope.new(thing_params) }
@@ -189,8 +189,9 @@ expose :thing, build: ->(thing_params, scope){ scope.new(thing_params) }
 
 These options are responsible for calulating params before passing them to the
 build step. The default behavior was modeled with Strong Parameters in mind and
-is somewhat smart: it calls the `thing_params` controller method if it's available
-and the request method it not `GET`. In all other cases it produces an empty hash.
+is somewhat smart: it calls the `thing_params` controller method if it's
+available and the request method is not `GET`. In all other cases it produces
+an empty hash.
 
 You can easily specify which controller method you want it to call instead of
 `thing_params`, or just provide your own logic:
@@ -255,7 +256,7 @@ expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }
 
 ## `exposure_config`
 
-You can pre-save some configuration using `exposure_config` method reuse it
+You can pre-save some configuration with `exposure_config` method to reuse it
 later.
 
 ```ruby
