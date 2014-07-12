@@ -97,7 +97,7 @@ describe AdequateExposure::Controller do
         expect(Thing).to receive(:find_by!).with(slug: "foo").and_return(thing)
       end
 
-      it "applies multiple configs in a correct order with multiple options in a config" do
+      it "applies multiple configs with multiple options in a correct order" do
         expose :thing, with: [:another_id_name, :multi]
         expect(Thing).to receive(:find_by!).with(slug: "wut").and_return(thing)
       end
