@@ -1,14 +1,11 @@
 module AdequateExposure
   class Flow
-    attr_reader :controller, :options
-    delegate :params, to: :controller
+    attr_reader :controller, :options, :name
 
     def initialize(controller, options)
-      @controller, @options = controller, options.with_indifferent_access
-    end
-
-    def name
-      options.fetch(:name)
+      @controller = controller
+      @options = options
+      @name = options.fetch(:name)
     end
 
     %w[fetch find build build_params scope model id decorate].each do |method_name|
@@ -60,6 +57,8 @@ module AdequateExposure
     end
 
     private
+
+    delegate :params, to: :controller
 
     def get_request?
       controller.request.get?
