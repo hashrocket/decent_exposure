@@ -109,6 +109,12 @@ Or if you (like me) absolutely hate parens in side-effect methods:
 expose :thing, ->{ get_thing_some_way_or_another }
 ```
 
+or even shorter
+
+```ruby
+expose :thing, :get_thing_some_way_or_another
+```
+
 There is another shortcut that allows you to redefine the entire fetch block
 with less code:
 
