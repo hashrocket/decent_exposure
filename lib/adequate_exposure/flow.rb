@@ -25,7 +25,12 @@ module AdequateExposure
     end
 
     def default_id
-      params["#{name}_id"] || params[:id]
+      params_id_key_candidates.each do |key|
+        value = params[key]
+        return value if value.present?
+      end
+
+      nil
     end
 
     def default_scope(model)
@@ -85,6 +90,14 @@ module AdequateExposure
       else
         fail ArgumentError, "Can't handle #{name.inspect} => #{value.inspect} option"
       end
+    end
+
+    def params_id_key_candidates
+      [ "#{model.name.underscore}_id", "#{name}_id", "id" ].uniq
+    end
+
+    def model_param_key
+      model.name.underscore
     end
   end
 end

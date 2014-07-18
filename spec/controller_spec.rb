@@ -206,22 +206,21 @@ describe AdequateExposure::Controller do
 
     context "find" do
       before do
-        expose :thing
-        expect(Thing).to receive(:find).with(10)
+        expose :thing, model: :different_thing
+        expect(DifferentThing).to receive(:find).with(10)
       end
 
       after{ controller.thing }
 
-      it "finds Thing if thing_id param is provided" do
-        controller.params.merge! thing_id: 10
+      it "checks params[:different_thing_id] first" do
+        controller.params.merge! different_thing_id: 10, thing_id: 11, id: 12
+      end
+      it "checks params[:thing_id] second" do
+        controller.params.merge! thing_id: 10, id: 11
       end
 
-      it "finds Thing if id param if provided" do
+      it "checks params[:id] in the end" do
         controller.params.merge! id: 10
-      end
-
-      it "prefers :thing_id to :id" do
-        controller.params.merge! id: 15, thing_id: 10
       end
     end
   end
