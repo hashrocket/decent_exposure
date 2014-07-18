@@ -142,6 +142,14 @@ describe AdequateExposure::Controller do
     end
   end
 
+  context "passing fetch block as a symbol" do
+    it "is equivalent to passing a block alling controller method" do
+      expose :thing, :calculate_thing_in_controller
+      expect(controller).to receive(:calculate_thing_in_controller).and_return(42)
+      expect(controller.thing).to eq(42)
+    end
+  end
+
   context "redefine fetch" do
     before do
       expose :thing, fetch: ->{ compute_thing }

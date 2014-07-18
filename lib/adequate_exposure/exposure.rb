@@ -41,6 +41,7 @@ module AdequateExposure
     end
 
     def normalize_options
+      normalize_fetch_option
       normalize_with_option
       normalize_id_option
       normalize_model_option
@@ -49,6 +50,12 @@ module AdequateExposure
       normalize_parent_option
       normalize_from_option
       normalize_find_by_option
+    end
+
+    def normalize_fetch_option
+      normalize_non_proc_option :fetch do |method_name|
+        ->{ send(method_name) }
+      end
     end
 
     def normalize_find_by_option
