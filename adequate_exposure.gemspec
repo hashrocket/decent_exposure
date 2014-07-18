@@ -1,5 +1,4 @@
-$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
-require "adequate_exposure/version"
+require File.expand_path("../lib/adequate_exposure/version", __FILE__)
 
 Gem::Specification.new do |spec|
   spec.name         = "adequate_exposure"
