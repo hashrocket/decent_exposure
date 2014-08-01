@@ -1,3 +1,4 @@
+require "adequate_exposure/version"
 require "active_support/all"
 
 module AdequateExposure
