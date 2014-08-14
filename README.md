@@ -6,7 +6,7 @@
 Exposing things, adequately.
 
 Adequate exposure is a lightweight alternative to [Decent
-Exposure](https://github.com/voxdolo/decent_exposure). With its narrowly
+Exposure](https://github.com/hashrocket/decent_exposure). With its narrowly
 focused api you can get exactly what you need without all the extra dressing.
 
 *Note: It is not the intent of the author to imply that Decent Exposure is
