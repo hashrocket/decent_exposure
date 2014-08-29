@@ -6,10 +6,8 @@ module AdequateExposure
       new(*args, &block).expose!
     end
 
-    def initialize(controller, name, *args, &block)
+    def initialize(controller, name, fetch_block=nil, **options, &block)
       @controller = controller
-      options = args.extract_options!
-      fetch_block = args.pop
       @options = options.with_indifferent_access.merge(name: name)
 
       merge_lambda_option :fetch, fetch_block if fetch_block

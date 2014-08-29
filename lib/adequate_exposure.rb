@@ -6,6 +6,7 @@ module AdequateExposure
   autoload :Exposure,   "adequate_exposure/exposure"
   autoload :Attribute,  "adequate_exposure/attribute"
   autoload :Context,    "adequate_exposure/context"
+  autoload :Behavior,   "adequate_exposure/behavior"
   autoload :Flow,       "adequate_exposure/flow"
 
   ActiveSupport.on_load :action_controller do

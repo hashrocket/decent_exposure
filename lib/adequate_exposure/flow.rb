@@ -8,57 +8,16 @@ module AdequateExposure
       @name = options.fetch(:name)
     end
 
-    %w[fetch find build build_params scope model id decorate].each do |method_name|
-      define_method method_name do |*args|
-        ivar_name = "@#{method_name}"
-        return instance_variable_get(ivar_name) if instance_variable_defined?(ivar_name)
-        instance_variable_set(ivar_name, handle_action(method_name, *args))
-      end
-    end
-
-    protected
-
-    def default_fetch
-      computed_scope = scope(model)
-      instance = id ? find(id, computed_scope) : build(build_params, computed_scope)
-      decorate(instance)
-    end
-
-    def default_id
-      params_id_key_candidates.each do |key|
-        value = params[key]
-        return value if value.present?
-      end
-
-      nil
-    end
-
-    def default_scope(model)
-      model
-    end
-
-    def default_model
-      name.to_s.classify.constantize
-    end
-
-    def default_find(id, scope)
-      scope.find(id)
-    end
-
-    def default_build(params, scope)
-      scope.new(params)
-    end
-
-    def default_decorate(instance)
-      instance
-    end
-
-    def default_build_params
-      if controller.respond_to?(params_method_name, true) && !get_request?
-        controller.send(params_method_name)
+    def method_missing(name, *args, &block)
+      if respond_to_missing?(name)
+        handle_flow_method(name, *args, &block)
       else
-        {}
+        super
       end
+    end
+
+    def respond_to_missing?(method_name, include_private = false)
+      Behavior.method_defined?(method_name) || super
     end
 
     private
@@ -73,15 +32,17 @@ module AdequateExposure
       options.fetch(:build_params_method){ "#{name}_params" }
     end
 
-    def handle_action(name, *args)
-      if options.key?(name)
-        handle_custom_action(name, *args)
-      else
-        send("default_#{name}", *args)
+    def handle_flow_method(name, *args, &block)
+      fetch_ivar name do
+        if options.key?(name)
+          handle_options_override(name, *args, &block)
+        else
+          handle_default_flow_method(name, *args, &block)
+        end
       end
     end
 
-    def handle_custom_action(name, *args)
+    def handle_options_override(name, *args)
       value = options[name]
 
       if Proc === value
@@ -92,12 +53,20 @@ module AdequateExposure
       end
     end
 
-    def params_id_key_candidates
-      [ "#{model.name.underscore}_id", "#{name}_id", "id" ].uniq
+    def handle_default_flow_method(name, *args, &block)
+      method = Behavior.instance_method(name)
+      method.bind(self).call(*args, &block)
     end
 
-    def model_param_key
-      model.name.underscore
+
+    def fetch_ivar(name)
+      ivar_name = "@#{name}"
+
+      if instance_variable_defined?(ivar_name)
+        instance_variable_get(ivar_name)
+      else
+        instance_variable_set(ivar_name, yield)
+      end
     end
   end
 end
