@@ -34,6 +34,48 @@ ID and try to perform `Thing.find(id)`. If the ID isn't found, it'll call
 `Thing.new(things_params)`. The result will be memoized in an `@exposed_thing`
 instance variable.
 
+## Example Controller
+
+Here's what a standard Rails 4 CRUD controller using Adequate Exposure might look like:
+
+```ruby
+class ThingsController < ApplicationController
+
+  expose :things, -> { Thing.all }
+  expose :thing
+
+  def create
+    if thing.save
+      redirect_to thing_path(thing)
+    else
+      render :new
+    end
+  end
+
+  def update
+    if thing.update(thing_params)
+      redirect_to thing_path(thing)
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    thing.destroy
+    redirect_to things_path
+  end
+
+  private
+
+  def thing_params
+    params.require(:thing).permit(:foo, :bar)
+  end
+
+end
+```
+
+## Under the Hood
+
 The default resolving workflow is pretty powerful and customizable. It could be
 expressed with the following pseudocode:
 
@@ -272,7 +314,6 @@ exposure_config :cool_build, build: ->{ very_cool_build_code }
 expose :thing, with: [:cool_find, :cool_build]
 expose :another_thing, with: :cool_build
 ```
-
 
 ## Contributing
 
