@@ -40,8 +40,7 @@ Here's what a standard Rails 4 CRUD controller using Adequate Exposure might loo
 
 ```ruby
 class ThingsController < ApplicationController
-
-  expose :things, -> { Thing.all }
+  expose :things, ->{ Thing.all }
   expose :thing
 
   def create
@@ -70,7 +69,6 @@ class ThingsController < ApplicationController
   def thing_params
     params.require(:thing).permit(:foo, :bar)
   end
-
 end
 ```
 
