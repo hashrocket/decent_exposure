@@ -1,7 +1,6 @@
 module AdequateExposure
   module Behavior
     def fetch
-      computed_scope = scope(model)
       instance = id ? find(id, computed_scope) : build(build_params, computed_scope)
       decorate(instance)
     end
@@ -51,6 +50,10 @@ module AdequateExposure
 
     def model_param_key
       model.name.underscore
+    end
+
+    def computed_scope
+      scope(model)
     end
   end
 end

@@ -74,7 +74,9 @@ module AdequateExposure
       exposure_name = options.fetch(:name)
 
       if from = options.delete(:from)
-        merge_lambda_option :fetch, ->{ send(from).send(exposure_name) }
+        merge_lambda_option :build, ->{ send(from).send(exposure_name) }
+        merge_lambda_option :model, ->{ nil }
+        merge_lambda_option :id, ->{ nil }
       end
     end
 
@@ -159,7 +161,7 @@ module AdequateExposure
     end
 
     def assert_singleton_option(name)
-      if options.except(name, :name).any? && options.key?(name)
+      if options.except(name, :name, :decorate).any? && options.key?(name)
         fail ArgumentError, "Using #{name.inspect} option with other options doesn't make sense"
       end
     end

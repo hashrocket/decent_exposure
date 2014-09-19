@@ -348,10 +348,9 @@ describe AdequateExposure::Controller do
 
   context "from option" do
     it "allows scope to be called from method" do
-      post = double("Post")
       comments = double("Comments")
+      post = double("Post", comments: comments)
       allow(controller).to receive(:post).and_return(post)
-      expect(post).to receive(:comments).and_return(comments)
       expose :comments, from: :post
 
       expect(controller.comments).to eq(comments)
@@ -360,6 +359,16 @@ describe AdequateExposure::Controller do
     it "should throw error when used with other options" do
       action = ->{ expose :thing, from: :foo, parent: :bar }
       expect(&action).to raise_error(ArgumentError, "Using :from option with other options doesn't make sense")
+    end
+
+    it "should still work with decorate option" do
+      decorated_thing = double("DecoratedThing")
+      thing = double("Thing")
+      foo = double("Foo", thing: thing)
+      expect(controller).to receive(:foo).and_return(foo)
+      expect(controller).to receive(:decorate).with(thing).and_return(decorated_thing)
+      expose :thing, from: :foo, decorate: ->(thing){ decorate(thing) }
+      expect(controller.thing).to eq(decorated_thing)
     end
   end
 end
