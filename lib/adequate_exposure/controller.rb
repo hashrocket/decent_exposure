@@ -2,7 +2,10 @@ module AdequateExposure
   module Controller
     extend ActiveSupport::Concern
 
-    included{ class_attribute :exposure_configuration }
+    included do
+      class_attribute :exposure_configuration,
+        instance_accessor: false, instance_predicate: false
+    end
 
     module ClassMethods
       def expose(*args, &block)
