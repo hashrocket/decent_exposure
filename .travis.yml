@@ -9,6 +9,7 @@ rvm:
 gemfile:
   - ".gemfiles/Gemfile.rails-3.2.x"
   - ".gemfiles/Gemfile.rails-4.0.x"
+  - ".gemfiles/Gemfile.rails-4.1.x"
 
 matrix:
   include:
