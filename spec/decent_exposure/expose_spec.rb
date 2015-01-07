@@ -32,7 +32,7 @@ describe DecentExposure::Expose do
     end
 
     it 'blacklists the @_resources instance variable' do
-      controller.protected_instance_variables.should include("@_resources")
+      controller.class.protected_instance_variables.should include("@_resources")
     end
   end
 
