@@ -46,9 +46,9 @@ module DecentExposure
       @exposure, @controller = exposure, controller
     end
 
-    def method_missing(*args)
+    def method_missing(*args, &blk)
       @target ||= @exposure.call(@controller)
-      @target.send(*args)
+      @target.send(*args, &blk)
     end
   end
 end
