@@ -460,14 +460,14 @@ describe CompaniesController do
     it "assigns @companies" do
       company = Company.create
       get :index
-      assigns(:companies).should eq([company])
+      expect(assigns(:companies)).to eq([company])
     end
 
     # becomes this
     it "exposes companies" do
       company = Company.create
       get :index
-      controller.companies.should eq([company])
+      expect(controller.companies).to eq([company])
     end
   end
 end
@@ -482,14 +482,14 @@ describe "people/index.html.erb" do
   it "lists people" do
     assign(:people, [ mock_model(Person, name: 'John Doe') ])
     render
-    rendered.should have_content('John Doe')
+    expect(rendered).to have_content('John Doe')
   end
 
   # becomes this
   it "lists people" do
     view.stub(people: [ mock_model(Person, name: 'John Doe') ])
     render
-    rendered.should have_content('John Doe')
+    expect(rendered).to have_content('John Doe')
   end
 
 end
