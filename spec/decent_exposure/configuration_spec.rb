@@ -1,19 +1,28 @@
 require 'decent_exposure/configuration'
 
-describe DecentExposure::Configuration do
+RSpec.describe DecentExposure::Configuration do
   context "with a configuration block" do
-    subject do
+    let(:config) do
       DecentExposure::Configuration.new do
         foo :bar
         baz :quuz
       end
     end
 
-    its(:options) { should == { :foo => :bar, :baz => :quuz } }
+    describe "#options" do
+      it "returns hash of set attributes" do
+        expect(config.options).to eq({ :foo => :bar, :baz => :quuz })
+      end
+    end
   end
 
   context "without a configuration block" do
-    subject { DecentExposure::Configuration.new }
-    its(:options) { should == { } }
+    let(:config) { DecentExposure::Configuration.new }
+
+    describe "#options" do
+      it "returns empty hash" do
+        expect(config.options).to eq({})
+      end
+    end
   end
 end

@@ -1,4 +1,4 @@
 require 'decent_exposure'
 
-describe DecentExposure do
+RSpec.describe DecentExposure do
 end
