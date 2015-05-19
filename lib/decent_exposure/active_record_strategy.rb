@@ -1,10 +1,11 @@
 require 'decent_exposure/strategy'
-require 'active_support/core_ext/module/delegation'
+require 'forwardable'
 
 module DecentExposure
   class ActiveRecordStrategy < Strategy
-    delegate :plural?, :parameter, :to => :inflector
-    delegate :get?, :delete?, :post?, :put?, :patch?, :to => :request
+    extend Forwardable
+    delegate [:plural?, :parameter] => :inflector
+    delegate [:get?, :delete?, :post?, :put?, :patch?] => :request
 
     def singular?
       !plural?
