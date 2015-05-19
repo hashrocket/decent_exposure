@@ -3,7 +3,7 @@ require 'decent_exposure/inflector'
 class Car; end
 class Fox; end
 
-describe DecentExposure::Inflector do
+RSpec.describe DecentExposure::Inflector do
   let(:model) { Object }
 
   describe "#parameter" do
@@ -11,7 +11,7 @@ describe DecentExposure::Inflector do
     let(:model) { Fox }
     let(:inflector) { DecentExposure::Inflector.new(name, model) }
     it "returns a string of the form 'word_id'" do
-      inflector.parameter.should == "fox_id"
+      expect(inflector.parameter).to eq("fox_id")
     end
   end
 
@@ -21,23 +21,23 @@ describe DecentExposure::Inflector do
 
     context "with a plural word" do
       let(:name) { "cars" }
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
 
     context "with a singular word" do
       let(:name) { "car" }
-      it { should be_false }
+      it { is_expected.to eq(false)}
     end
 
     context "with an uncountable word" do
       let(:name) { "sheep" }
-      it { should be_false }
+      it { is_expected.to eq(false) }
     end
 
     context "with a plural word and model option" do
       before { class Auto; end }
       let(:inflector) { DecentExposure::Inflector.new("cars", Auto) }
-      it { should be_true }
+      it { is_expected.to eq(true) }
     end
   end
 
@@ -45,7 +45,7 @@ describe DecentExposure::Inflector do
     let(:inflector) { DecentExposure::Inflector.new(name, Car) }
     let(:name) { "car" }
     it "pluralizes the passed-in string" do
-      inflector.plural.should == "cars"
+      expect(inflector.plural).to eq("cars")
     end
   end
 
@@ -60,7 +60,7 @@ describe DecentExposure::Inflector do
       let(:model) { Content::Page }
       let(:name) { "Content::Page" }
       it "returns a parameterized string" do
-        inflector.param_key.should == "content_page"
+        expect(inflector.param_key).to eq("content_page")
       end
     end
   end
@@ -72,7 +72,7 @@ describe DecentExposure::Inflector do
       let(:name) { "car" }
       let(:model) { Car }
       it "returns the string" do
-        inflector.singular.should == "car"
+        expect(inflector.singular).to eq("car")
       end
     end
 
@@ -80,7 +80,7 @@ describe DecentExposure::Inflector do
       let(:name) { "cars" }
       let(:model) { Car }
       it "returns the string in singular form" do
-        inflector.singular.should == "car"
+        expect(inflector.singular).to eq("car")
       end
     end
 
@@ -89,7 +89,7 @@ describe DecentExposure::Inflector do
       let(:name) { "sheep" }
       let(:model) { Sheep }
       it "returns the string" do
-        inflector.singular.should == "sheep"
+        expect(inflector.singular).to eq("sheep")
       end
     end
   end
