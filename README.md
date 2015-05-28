@@ -496,4 +496,4 @@ end
 ```
 
 
-[1]: http://blog.voxdolo.me/a-diatribe-on-maintaining-state.html
+[1]: http://stephencaudill.com/blog/2010/a-diatribe-on-maintaining-state.html
