@@ -1,6 +1,6 @@
 require 'decent_exposure/active_record_with_eager_attributes_strategy'
 
-describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
+RSpec.describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
   describe "#resource" do
     let(:inflector) do
       double("Inflector", :parameter => "model_id", :plural? => plural, :plural => 'models', :singular => 'model', :param_key => 'model')
@@ -28,9 +28,9 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
         end
         let(:singular) { double("Resource") }
         it "ignores the attributes" do
-          model.stub(:find => singular)
-          singular.should_not_receive(:attributes=)
-          should == singular
+          allow(model).to receive(:find).and_return(singular)
+          expect(singular).to_not receive(:attributes=)
+          is_expected.to eq(singular)
         end
       end
 
@@ -39,13 +39,15 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 2 }
         end
         let(:singular) { double("Resource") }
+
         before do
-          request.stub(:post? => true)
+          allow(request).to receive(:post?).and_return(true)
         end
+
         it "sets the attributes from the request" do
-          model.stub(:find => singular)
-          singular.should_receive(:attributes=).with({"name" => "Timmy"})
-          should == singular
+          allow(model).to receive(:find).and_return(singular)
+          expect(singular).to receive(:attributes=).with({"name" => "Timmy"})
+          is_expected.to eq(singular)
         end
       end
 
@@ -54,13 +56,15 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 2 }
         end
         let(:singular) { double("Resource") }
+
         before do
-          request.stub(:put? => true)
+          allow(request).to receive(:put?).and_return(true)
         end
+
         it "sets the attributes from the request" do
-          model.stub(:find => singular)
-          singular.should_receive(:attributes=).with({"name" => "Timmy"})
-          should == singular
+          allow(model).to receive(:find).and_return(singular)
+          expect(singular).to receive(:attributes=).with({"name" => "Timmy"})
+          is_expected.to eq(singular)
         end
       end
 
@@ -69,13 +73,15 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
           { "model" => { "name" => "Timmy" }, :id => 1 }
         end
         let(:singular) { double("Resource") }
+
         before do
-          request.stub(:delete? => true)
+          allow(request).to receive(:delete?).and_return(true)
         end
+
         it "ignores the attributes" do
-          model.stub(:find => singular)
-          singular.should_not_receive(:attributes=)
-          should == singular
+          allow(model).to receive(:find).and_return(singular)
+          expect(singular).to_not receive(:attributes=)
+          is_expected.to eq(singular)
         end
       end
     end
@@ -86,9 +92,9 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       let(:plural) { false }
 
       it "sends a empty hash to attributes=" do
-        model.should_receive(:new).and_return(instance)
-        instance.should_receive(:attributes=).with({})
-        should == instance
+        expect(model).to receive(:new).and_return(instance)
+        expect(instance).to receive(:attributes=).with({})
+        is_expected.to eq(instance)
       end
     end
 
@@ -98,23 +104,25 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       end
       let(:plural) { false }
       let(:instance) { double }
+
       it "it builds a new instance of the resource" do
-        model.should_receive(:new).and_return(instance)
-        instance.should_receive(:attributes=)
-        should == instance
+        expect(model).to receive(:new).and_return(instance)
+        expect(instance).to receive(:attributes=)
+        is_expected.to eq(instance)
       end
     end
 
     context "with a collection resource" do
       let(:plural) { true }
+
       before { stub_const("ActiveRecord::VERSION::MAJOR", 3) }
+
       it "does not attempt to assign attributes" do
         scoped = double
-        model.should_receive(:scoped).and_return(scoped)
-        scoped.should_not_receive(:attributes=)
-        should == scoped
+        expect(model).to receive(:scoped).and_return(scoped)
+        expect(scoped).to_not receive(:attributes=)
+        is_expected.to eq(scoped)
       end
     end
   end
 end
-

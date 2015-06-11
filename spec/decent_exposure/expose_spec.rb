@@ -8,31 +8,31 @@ class MyController < ActionController::Base
   def params; end
 end
 
-describe DecentExposure::Expose do
+RSpec.describe DecentExposure::Expose do
 
   describe ".expose" do
     let(:controller) { MyController.new }
     it "defines a getter and setter with the given name" do
-      controller.should respond_to(:bird)
-      controller.should respond_to(:"bird=")
+      expect(controller).to respond_to(:bird)
+      expect(controller).to respond_to(:"bird=")
     end
 
     it "exposes the getter to the view layer as a helper" do
-      controller._helper_methods.should include(:bird)
+      expect(controller._helper_methods).to include(:bird)
     end
 
     it "prevents the getter and setter methods from being routable" do
-      controller.hidden_actions.should include("bird")
-      controller.hidden_actions.should include("bird=")
+      expect(controller.hidden_actions).to include("bird")
+      expect(controller.hidden_actions).to include("bird=")
     end
 
     it "caches the value, only loading once" do
-      controller.class._exposures[:bird].should_receive(:call).once
+      expect(controller.class._exposures[:bird]).to receive(:call).once
       2.times { controller.bird }
     end
 
     it 'blacklists the @_resources instance variable' do
-      controller.protected_instance_variables.should include("@_resources")
+      expect(controller.protected_instance_variables).to include("@_resources")
     end
   end
 
@@ -40,12 +40,12 @@ describe DecentExposure::Expose do
     let(:controller) { MyController.new }
     let(:block) { lambda { "I'm a block" } }
     it "delegates to .expose" do
-      MyController.should_receive(:expose).once
+      expect(MyController).to receive(:expose).once
       MyController.expose!(:worm)
     end
 
     it "sets up a callback to evaluate the method in-controller" do
-      MyController.should_receive(:set_callback).with(:process_action, :before, :worm)
+      expect(MyController).to receive(:set_callback).with(:process_action, :before, :worm)
       MyController.expose!(:worm)
     end
   end
@@ -68,11 +68,11 @@ describe DecentExposure::Expose do
     end
 
     it "inherits from superclasses" do
-      ParentContoller._decent_configurations[:default].options.should == NonOverridingController._decent_configurations[:default].options
+      expect(ParentContoller._decent_configurations[:default].options).to eq(NonOverridingController._decent_configurations[:default].options)
     end
 
     it "does not override config for sibling classes" do
-      OverridingController._decent_configurations[:default].options.should_not == NonOverridingController._decent_configurations[:default].options
+      expect(OverridingController._decent_configurations[:default].options).to_not eq(NonOverridingController._decent_configurations[:default].options)
     end
   end
 end
