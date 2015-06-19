@@ -44,6 +44,14 @@ describe DecentExposure::Strategizer do
           end
         end
 
+        context 'operates on proxy' do
+          let(:block) { lambda{|default| default } }
+
+          it 'proxies arguments and block' do
+            strategy.call(controller).gsub(/fault/) {|m| m.reverse}.should == 'detluaf'
+          end
+        end
+
         after do
           strategy.call(controller)
         end
