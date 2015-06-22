@@ -2,10 +2,38 @@ module AdequateExposure
   class Exposure
     attr_reader :controller, :options
 
+    # Public: Initializes an Exposure and makes it accessible to a controller.
+    # For each Exposure, a getter and setter is defined.
+    # Those getters and setters are made available to
+    # the controller as helper methods.
+    #
+    # *args  - An Array of all parameters for the new Exposure. See
+    #          #initialize.
+    # block  - If supplied, the exposed attribute method executes
+    #          the Proc when called.
+    #
+    # Returns a collection of exposed helper methods.
     def self.expose!(*args, &block)
       new(*args, &block).expose!
     end
 
+    # Public: Initalize an Exposure with a hash of options.
+    #
+    # If a block is given, the Proc is assigned to value
+    # of options[name].
+    #
+    # The `asserts_*` section raise errors if the controller
+    # was initialized with an unacceptable options Hash.
+    #
+    # controller  - The Controller class where methods will be exposed.
+    # name        - The String name of the Exposure instance.
+    # fetch_block - Proc that will be executed if the exposed
+    #               attribute has no value (default: nil).
+    # options     - Hash of options for the Behavior of the exposed methods.
+    # block       - If supplied, the exposed attribute method executes
+    #               the Proc.
+    #
+    # Returns a normalized options Hash.
     def initialize(controller, name, fetch_block=nil, **options, &block)
       @controller = controller
       @options = options.with_indifferent_access.merge(name: name)
@@ -22,6 +50,11 @@ module AdequateExposure
       normalize_options
     end
 
+    # Public: Creates a getter and setter methods for the attribute.
+    # Those methods are made avaiable to the controller as
+    # helper methods.
+    #
+    # Returns a collection of exposed helper methods.
     def expose!
       expose_attribute!
       expose_helper_methods!
