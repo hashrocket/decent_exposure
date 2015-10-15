@@ -2,11 +2,7 @@
 [![Build Status](https://api.travis-ci.org/hashrocket/decent_exposure.svg?branch=master)](https://travis-ci.org/hashrocket/decent_exposure) 
 [![Code Climate](https://codeclimate.com/github/hashrocket/decent_exposure/badges/gpa.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
 
-**Note**: Version 2.3.x will be the last series of releases that support
-Rails 3.x and Ruby 1.8/1.9. Starting with version 3.0, Decent Exposure
-will only support Rails 4.0 and above, and Ruby 2.0 and above.
-
-## Mad Decent
+## Decent Exposure
 
 Rails controllers are the sweaty armpit of every rails app. This is due, in
 large part, to the fact that they expose their instance variables directly to
