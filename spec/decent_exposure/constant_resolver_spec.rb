@@ -15,22 +15,22 @@ describe DecentExposure::ConstantResolver do
       let(:name) { "fox" }
       it "looks up sibling constants" do
         resolver = described_class.new(name, Dogs::Wolf)
-        resolver.constant.should == Dogs::Fox
+        expect(resolver.constant).to eq(Dogs::Fox)
       end
 
       it "looks up child constants" do
         resolver = described_class.new(name, Dogs)
-        resolver.constant.should == Dogs::Fox
+        expect(resolver.constant).to eq(Dogs::Fox)
       end
 
       it "returns a constant from that word without a context" do
         resolver = described_class.new(name)
-        resolver.constant.should == Fox
+        expect(resolver.constant).to eq(Fox)
       end
 
       it "returns a siblings without a context (top-level constants)" do
         resolver = described_class.new(name, Wolf)
-        resolver.constant.should == Fox
+        expect(resolver.constant).to eq(Fox)
       end
     end
 
@@ -38,7 +38,7 @@ describe DecentExposure::ConstantResolver do
       let(:name) { "Fox" }
       it "looks up sibling constants" do
         resolver = described_class.new(name, Dogs::Wolf)
-        resolver.constant.should == Dogs::Fox
+        expect(resolver.constant).to eq(Dogs::Fox)
       end
     end
 

@@ -9,11 +9,18 @@ describe DecentExposure::Configuration do
       end
     end
 
-    its(:options) { should == { :foo => :bar, :baz => :quuz } }
+    describe '#options' do
+      subject { super().options }
+      it { is_expected.to eq({ :foo => :bar, :baz => :quuz }) }
+    end
   end
 
   context "without a configuration block" do
     subject { DecentExposure::Configuration.new }
-    its(:options) { should == { } }
+
+    describe '#options' do
+      subject { super().options }
+      it { is_expected.to eq({ }) }
+    end
   end
 end

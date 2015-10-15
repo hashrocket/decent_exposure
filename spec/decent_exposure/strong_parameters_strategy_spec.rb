@@ -20,17 +20,17 @@ describe DecentExposure::StrongParametersStrategy do
 
     context "when the resource is a collection (plural)" do
       let(:plural) { true }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "for a get request" do
       let(:request) { double('request', :post? => false, :put? => false, :patch? => false) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "for a delete request" do
       let(:request) { double('request', :post? => false, :put? => false, :patch? => false) }
-      it { should be_false }
+      it { is_expected.to be_falsey }
     end
 
     context "for a post/put/patch request" do
@@ -39,22 +39,22 @@ describe DecentExposure::StrongParametersStrategy do
       context "and the :attributes option is set" do
         let(:options) { { :attributes => :my_attributes } }
         before do
-          controller.stub(:my_attributes).and_return(results)
+          allow(controller).to receive(:my_attributes).and_return(results)
         end
 
         context "and sending the attributes method returns a non-blank value" do
           let(:results) { { :hello => "there" } }
-          it { should be_true }
+          it { is_expected.to be_truthy }
         end
 
         context "and sending the attributes method returns a blank value" do
           let(:results) { {} }
-          it { should be_false }
+          it { is_expected.to be_falsey }
         end
       end
 
       context "and the :attributes option is not set" do
-        it { should be_false }
+        it { is_expected.to be_falsey }
       end
     end
   end
