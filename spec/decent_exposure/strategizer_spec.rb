@@ -8,7 +8,7 @@ describe DecentExposure::Strategizer do
       let(:block) { lambda { "foo" } }
       let(:exposure) { DecentExposure::Strategizer.new("foobar", &block) }
       it "saves the proc as the strategy" do
-        subject.block.should == block
+        expect(subject.block).to eq(block)
       end
 
       context "with a default object" do
@@ -17,18 +17,18 @@ describe DecentExposure::Strategizer do
         let(:controller) { double("Controller") }
 
         before do
-          exposure.stub(:exposure_strategy) { exposure_strategy }
+          allow(exposure).to receive(:exposure_strategy) { exposure_strategy }
         end
 
         context "that doesn't get used" do
           let(:block) { lambda{|default| "foo" } }
 
           it "doesn't call the exposure_strategy" do
-            exposure_strategy.should_not_receive(:call)
+            expect(exposure_strategy).not_to receive(:call)
           end
 
           it "returns the block value" do
-            strategy.call(controller).should == "foo"
+            expect(strategy.call(controller)).to eq("foo")
           end
         end
 
@@ -36,11 +36,11 @@ describe DecentExposure::Strategizer do
           let(:block) { lambda{|default| default.upcase } }
 
           it "calls the exposure strategy" do
-            exposure_strategy.should_receive(:call).with(controller).and_call_original
+            expect(exposure_strategy).to receive(:call).with(controller).and_call_original
           end
 
           it "returns the default value" do
-            strategy.call(controller).should == "DEFAULT"
+            expect(strategy.call(controller)).to eq("DEFAULT")
           end
         end
 
@@ -58,8 +58,8 @@ describe DecentExposure::Strategizer do
         let(:name) { "exposed" }
 
         it "initializes a provided class" do
-          DecentExposure::Exposure.should_receive(:new).with(name, strategy,{:name => name}).and_return(instance)
-          should == instance
+          expect(DecentExposure::Exposure).to receive(:new).with(name, strategy,{:name => name}).and_return(instance)
+          is_expected.to eq(instance)
         end
       end
 
@@ -70,10 +70,10 @@ describe DecentExposure::Strategizer do
         let(:model_option) { :other }
 
         it "sets the strategy to Active Record" do
-          DecentExposure::Exposure.should_receive(:new).
+          expect(DecentExposure::Exposure).to receive(:new).
             with(name, DecentExposure::ActiveRecordWithEagerAttributesStrategy, {:model => :other, :name => name}).
             and_return(strategy)
-          should == strategy
+          is_expected.to eq(strategy)
         end
       end
     end
