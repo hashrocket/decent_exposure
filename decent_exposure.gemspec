@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.summary = "A helper for creating declarative interfaces in controllers"
 
-  s.required_rubygems_version = ">= 1.3.6"
+  s.required_ruby_version = "~> 2.0"
 
   s.files = Dir.glob("lib/**/*.rb") + %w(README.md)
 
