@@ -15,9 +15,7 @@ module DecentExposure
       end
 
       def resource
-        r = super
-        r.attributes = attributes if assign_attributes?
-        r
+        assign_attributes? ? super(attributes) : super
       end
     end
   end
