@@ -86,8 +86,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       let(:plural) { false }
 
       it "sends a empty hash to attributes=" do
-        model.should_receive(:new).and_return(instance)
-        instance.should_receive(:attributes=).with({})
+        model.should_receive(:new).with({}).and_return(instance)
         should == instance
       end
     end
@@ -99,8 +98,7 @@ describe DecentExposure::ActiveRecordWithEagerAttributesStrategy do
       let(:plural) { false }
       let(:instance) { double }
       it "it builds a new instance of the resource" do
-        model.should_receive(:new).and_return(instance)
-        instance.should_receive(:attributes=)
+        model.should_receive(:new).with({ "name" => "Timmy" }).and_return(instance)
         should == instance
       end
     end

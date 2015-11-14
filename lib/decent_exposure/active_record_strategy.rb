@@ -55,19 +55,21 @@ module DecentExposure
       end
     end
 
-    def singular_resource
+    def singular_resource(attrs)
       if id
-        scope.send(finder, id)
+        scope.send(finder, id).tap do |resource|
+          resource.attributes = attrs if attrs
+        end
       else
-        scope.new
+        attrs ? scope.new(attrs) : scope.new
       end
     end
 
-    def resource
+    def resource(attrs = nil)
       if plural?
         collection_resource
       else
-        singular_resource
+        singular_resource(attrs)
       end
     end
 
