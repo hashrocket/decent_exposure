@@ -21,11 +21,6 @@ describe DecentExposure::Expose do
       controller._helper_methods.should include(:bird)
     end
 
-    it "prevents the getter and setter methods from being routable" do
-      controller.hidden_actions.should include("bird")
-      controller.hidden_actions.should include("bird=")
-    end
-
     it "caches the value, only loading once" do
       controller.class._exposures[:bird].should_receive(:call).once
       2.times { controller.bird }

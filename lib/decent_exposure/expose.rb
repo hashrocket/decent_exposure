@@ -11,7 +11,6 @@ module DecentExposure
         def _resources
           @_resources ||= {}
         end
-        private_class_method :_resources
 
         protected_instance_variables << "@_resources"
       end
@@ -54,12 +53,10 @@ module DecentExposure
         _resources[name] = exposure.call(self)
       end
       helper_method name
-      private name
 
       define_method("#{name}=") do |value|
         _resources[name] = value
       end
-      private "#{name}="
     end
   end
 end
