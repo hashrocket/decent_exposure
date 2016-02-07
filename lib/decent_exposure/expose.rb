@@ -12,7 +12,7 @@ module DecentExposure
           @_resources ||= {}
         end
 
-        protected_instance_variables << "@_resources"
+        protected_instance_methods << "@_resources"
       end
     end
 
