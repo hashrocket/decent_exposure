@@ -27,7 +27,7 @@ RSpec.describe DecentExposure::Expose do
     end
 
     it 'blacklists the @_resources instance variable' do
-      expect(controller.protected_instance_variables).to include("@_resources")
+      expect(controller.protected_instance_methods).to include("@_resources")
     end
   end
 
