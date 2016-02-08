@@ -192,6 +192,23 @@ RSpec.describe DecentExposure::ActiveRecordStrategy do
         end
 
       end
+
+      context 'and a call to inspect' do
+        let(:association_scope) { double('AssociationScope') }
+        let(:association) { double("Association", scoped: association_scope, all: association_scope) }
+        let(:collection) { double("Collection", models: association) }
+        let(:strategy) do
+          DecentExposure::ActiveRecordStrategy.new(controller, inflector, ancestor: :ancestor_collection)
+        end
+
+        before do
+          allow(controller).to receive(:ancestor_collection).and_return(collection)
+        end
+
+        it 'intercepts call to inspect' do
+          expect(strategy.collection_resource.inspect).to eq "#<ActiveRecord::Relation>"
+        end
+      end
     end
   end
 end
