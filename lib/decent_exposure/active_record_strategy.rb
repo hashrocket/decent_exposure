@@ -1,4 +1,5 @@
 require 'decent_exposure/strategy'
+require 'decent_exposure/resource_wrapper'
 require 'active_support/core_ext/module/delegation'
 
 module DecentExposure
@@ -44,7 +45,8 @@ module DecentExposure
 
     def collection_resource
       return scope if scope.respond_to?(:proxy_association) || scope.respond_to?(:each)
-      scope.send(scope_method)
+      res = scope.send(scope_method)
+      ResourceWrapper.new(res)
     end
 
     def id
