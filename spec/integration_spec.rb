@@ -9,11 +9,11 @@ describe BirdsController, type: :controller do
     after{ expect(controller.bird).to eq(mockingbird) }
 
     it "finds model by id" do
-      get :show, id: "mockingbird"
+      get :show, params: { id: "mockingbird" }
     end
 
     it "finds model by bird_id" do
-      get :show, bird_id: "mockingbird"
+      get :show, params: { bird_id: "mockingbird" }
     end
   end
 
