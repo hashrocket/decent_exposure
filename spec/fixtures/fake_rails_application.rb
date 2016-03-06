@@ -2,7 +2,7 @@ require 'active_support/all'
 require 'action_controller'
 require 'action_dispatch'
 require 'active_model'
-require 'active_record'
+
 require 'rails'
 require 'decent_exposure'
 
