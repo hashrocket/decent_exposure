@@ -1,6 +1,5 @@
 require 'decent_exposure/strategizer'
 require 'decent_exposure/configuration'
-require 'pry'
 
 module DecentExposure
   module Expose
