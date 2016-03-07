@@ -12,7 +12,12 @@ module DecentExposure
           @_resources ||= {}
         end
 
-        protected_instance_variables << "@_resources"
+        #backwards compatibility for rails 4.0.x
+        if self.const_defined? "PROTECTED_IVARS"
+          self::PROTECTED_IVARS << :@_resources
+        else
+          protected_instance_variables << "@_resources"
+        end
       end
     end
 

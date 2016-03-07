@@ -2,9 +2,13 @@ require 'active_support/all'
 require 'action_controller'
 require 'action_dispatch'
 require 'active_model'
-require 'active_record'
+
 require 'rails'
 require 'decent_exposure'
+
+# Uncomment this if you are working on rails 5 fixes
+# It will mute deprecation warnings (we need to refactor rails_integration_spec.rb to get rid of them)
+# ActiveSupport::Deprecation.silenced = true
 
 # Boilerplate
 module Rails
@@ -26,6 +30,11 @@ module Rails
       @routes
     end
   end
+
+  def self.rails5?
+    Rails.version.start_with?('5')
+  end
+
   def self.application
     @app ||= App.new
   end
