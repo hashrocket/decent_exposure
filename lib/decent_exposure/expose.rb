@@ -1,6 +1,6 @@
 require 'decent_exposure/strategizer'
 require 'decent_exposure/configuration'
-
+require 'pry'
 module DecentExposure
   module Expose
     def self.extended(base)
@@ -12,7 +12,12 @@ module DecentExposure
           @_resources ||= {}
         end
 
-        self::PROTECTED_IVARS << :@_resources
+        #backwards compatibility for rails 4.0.x
+        if self.const_defined? "PROTECTED_IVARS"
+          self::PROTECTED_IVARS << :@_resources
+        else
+          protected_instance_variables << "@_resources"
+        end
       end
     end
 

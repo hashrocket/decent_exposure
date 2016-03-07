@@ -26,6 +26,11 @@ module Rails
       @routes
     end
   end
+
+  def self.rails5?
+    Rails.version.start_with?('5')
+  end
+
   def self.application
     @app ||= App.new
   end
