@@ -11,12 +11,12 @@ RSpec.describe BirdController, type: :controller do
 
   describe "default model strategy" do
     it "finds the instance with params[:id]" do
-      get :show, params: { id: "something" }
+      get :show, { id: "something" }
       expect(controller.parrot).to be_a(Parrot)
     end
 
     it "finds the instance with params[:model_id]" do
-      get :show, params: {parrot_id: "something"}
+      get :show, {parrot_id: "something"}
       expect(controller.parrot).to be_a(Parrot)
     end
 
@@ -27,26 +27,26 @@ RSpec.describe BirdController, type: :controller do
 
     context "with a named model" do
       it "finds an instance" do
-        get :show, params: { id: "something" }
+        get :show, { id: "something" }
         expect(controller.albert).to be_a(Parrot)
       end
     end
 
     context "with a namespaced model class" do
       it "finds an instance" do
-        get :show, params: { id: "something" }
+        get :show, { id: "something" }
         expect(controller.bernard.beak).to eq("admin")
       end
 
       it "assigns based on model's param key" do
-        post :show, params: { admin_parrot: { beak: "bent" } }
+        post :show, { admin_parrot: { beak: "bent" } }
         expect(controller.bernard.beak).to eq("bent")
       end
     end
   end
 
   describe "attribute setting" do
-    let(:request) { [:show, params: { id: 2, parrot: { beak: "droopy" } }] }
+    let(:request) { [:show, { id: 2, parrot: { beak: "droopy" } }] }
     it "attributes are set for post requests" do
       post *request
       expect(controller.parrot.beak).to eq("droopy")
@@ -64,7 +64,7 @@ RSpec.describe BirdController, type: :controller do
 
     context "with no finding parameter" do
       it "builds a new model instance with the provided attributes" do
-        get :new, params: { parrot: { beak: "smallish" } }
+        get :new, { parrot: { beak: "smallish" } }
         expect(controller.parrot.beak).to eq("smallish")
       end
 
@@ -123,7 +123,7 @@ RSpec.describe DuckController, type: :controller do
 
   describe "collection scope" do
     it "scopes a resource to its collection exposure" do
-      get :show, params: { id: "burp" }
+      get :show, { id: "burp" }
       expect(controller.duck.id).to eq("burp")
     end
   end
@@ -142,7 +142,7 @@ end
 RSpec.describe StrongParametersController, type: :controller do
   describe "attribute setting" do
     context "with an 'attributes' option set" do
-      let(:request) { [:show, params: { id: 2, assignable: { beak: "droopy" } }] }
+      let(:request) { [:show, { id: 2, assignable: { beak: "droopy" } }] }
       it "assigns attributes for post requests, using the method from 'attributes'" do
         post *request
         expect(controller.assignable.beak).to eq("droopy")
@@ -165,7 +165,7 @@ RSpec.describe StrongParametersController, type: :controller do
     end
 
     context "with no 'attributes' option set" do
-      let(:request) { [:show, params: { id: 2, unassignable: { beak: "droopy" } }] }
+      let(:request) { [:show, { id: 2, unassignable: { beak: "droopy" } }] }
       it "does not assign attributes" do
         post *request
         expect(controller.assignable.beak).to_not eq("droopy")
@@ -177,14 +177,14 @@ end
 RSpec.describe TaxonomiesController, type: :controller do
   describe 'default configration' do
     it 'uses the configured finder' do
-      get :show, params: { id: "something" }
+      get :show, { id: "something" }
       expect(controller.organism).to be_a(Organism)
     end
   end
 
   describe 'named configration' do
     it "uses the named configuration's options" do
-      get :show, params: { id: "something" }
+      get :show, { id: "something" }
       expect(controller.owl.species).to eq("Striginae")
     end
   end
@@ -192,7 +192,7 @@ end
 
 RSpec.describe Namespace::ModelController, type: :controller do
   it "finds the instance of the namespaced model" do
-    get :show, params: { id: "foo" }
+    get :show, { id: "foo" }
     expect(controller.model.name).to eq("inner")
   end
 end

@@ -6,6 +6,10 @@ require 'active_model'
 require 'rails'
 require 'decent_exposure'
 
+# Uncomment this if you are working on rails 5 fixes
+# It will mute deprecation warnings (we need to refactor rails_integration_spec.rb to get rid of them)
+# ActiveSupport::Deprecation.silenced = true
+
 # Boilerplate
 module Rails
   class App

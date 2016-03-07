@@ -95,16 +95,16 @@ class BirdController < ActionController::Base
   expose(:custom_from_config, :config => :custom)
 
   def show
-    render :plain => "Foo"
+    render (Rails.rails5? ? :plain : :text) => "Foo"
   end
 
   def index
     self.bird = Parrot.new(:beak => "custom")
-    render :plain => "index"
+    render (Rails.rails5? ? :plain : :text) => "index"
   end
 
   def new
-    render :plain => "new"
+    render (Rails.rails5? ? :plain : :text) => "new"
   end
 end
 
@@ -129,7 +129,7 @@ class StrongParametersController < ActionController::Base
   expose(:unassignable, :model => Parrot)
 
   def show
-    render :plain => "show"
+    render (Rails.rails5? ? :plain : :text) => "show"
   end
 
   def assignable_attributes
@@ -151,7 +151,7 @@ module ::Namespace
   class ModelController < ActionController::Base
     include Rails.application.routes.url_helpers
     expose(:model)
-    def show; render :plain => ""; end
+    def show; render (Rails.rails5? ? :plain : :text) => ""; end
   end
 end
 
@@ -170,6 +170,6 @@ class TaxonomiesController < ActionController::Base
   expose(:owl, :config => :owl_find, :model => :organism)
 
   def show
-    render :plain => 'show'
+    render (Rails.rails5? ? :plain : :text) => 'show'
   end
 end
