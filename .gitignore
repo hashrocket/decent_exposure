@@ -1,9 +1,0 @@
-pkg
-README.html
-.rvmrc
-.bundle
-Gemfile.lock
-*.gem
-.ruby-version
-.ruby-gemset
-.rspec-local
