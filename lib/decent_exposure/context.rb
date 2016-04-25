@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   class Context
     attr_reader :context, :attribute
 

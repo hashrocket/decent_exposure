@@ -1,1 +1,1 @@
-require "adequate_exposure"
+require "decent_exposure"

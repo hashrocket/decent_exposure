@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   class Exposure
     attr_reader :controller, :options
 

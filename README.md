@@ -1,19 +1,19 @@
-# Adequate Exposure
-[![Gem Version](https://img.shields.io/gem/v/adequate_exposure.svg)](https://rubygems.org/gems/adequate_exposure)
-[![Build Status](https://img.shields.io/travis/hashrocket/adequate_exposure.svg)](http://travis-ci.org/hashrocket/adequate_exposure)
-[![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/adequate_exposure.svg)](https://codeclimate.com/github/hashrocket/adequate_exposure)
-[![Inline docs](http://inch-ci.org/github/hashrocket/adequate_exposure.svg?branch=master&style=shields)](http://inch-ci.org/github/hashrocket/adequate_exposure)
+# Decent Exposure
+[![Gem Version](https://img.shields.io/gem/v/decent_exposure.svg)](https://rubygems.org/gems/decent_exposure)
+[![Build Status](https://img.shields.io/travis/hashrocket/decent_exposure.svg)](http://travis-ci.org/hashrocket/decent_exposure)
+[![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/decent_exposure.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
+[![Inline docs](http://inch-ci.org/github/hashrocket/decent_exposure.svg?branch=master&style=shields)](http://inch-ci.org/github/hashrocket/decent_exposure)
 
 Exposing things, adequately.
 
-Adequate exposure is a lightweight alternative to [Decent
+DecentExposure is a lightweight alternative to [Decent
 Exposure](https://github.com/hashrocket/decent_exposure). With its narrowly
 focused api you can get exactly what you need without all the extra dressing.
 
 *Note: It is not the intent of the author to imply that Decent Exposure is
 inadequate.*
 
-Installation is as simple as: `$ gem install adequate_exposure`. Once you have
+Installation is as simple as: `$ gem install decent_exposure`. Once you have
 that down we can start talking about the API.
 
 ## API
@@ -316,7 +316,7 @@ expose :another_thing, with: :cool_build
 
 ## Contributing
 
-1. Fork it (https://github.com/rwz/adequate_exposure/fork)
+1. Fork it (https://github.com/hashrocket/decent_exposure/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

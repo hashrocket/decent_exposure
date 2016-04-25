@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   module Behavior
     # Public: Fetches a scope.
     #

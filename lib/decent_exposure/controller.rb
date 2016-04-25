@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   module Controller
     extend ActiveSupport::Concern
 

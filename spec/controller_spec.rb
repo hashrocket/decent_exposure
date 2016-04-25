@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe AdequateExposure::Controller do
+describe DecentExposure::Controller do
   class Thing; end
   class DifferentThing; end
 
@@ -14,7 +14,7 @@ describe AdequateExposure::Controller do
 
   let(:controller_klass) do
     Class.new(BaseController) do
-      include AdequateExposure::Controller
+      include DecentExposure::Controller
     end
   end
 

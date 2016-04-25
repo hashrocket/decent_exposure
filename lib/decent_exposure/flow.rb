@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   class Flow
     attr_reader :controller, :options, :name
 

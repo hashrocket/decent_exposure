@@ -1,4 +1,4 @@
-module AdequateExposure
+module DecentExposure
   class Attribute
     attr_reader :name, :fetch, :ivar_name
 
