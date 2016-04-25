@@ -4,19 +4,23 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/decent_exposure.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
 [![Inline docs](http://inch-ci.org/github/hashrocket/decent_exposure.svg?branch=master&style=shields)](http://inch-ci.org/github/hashrocket/decent_exposure)
 
-Exposing things, adequately.
+### Installation
 
-DecentExposure is a lightweight alternative to [Decent
-Exposure](https://github.com/hashrocket/decent_exposure). With its narrowly
-focused api you can get exactly what you need without all the extra dressing.
+Add this line to your application's Gemfile:
 
-*Note: It is not the intent of the author to imply that Decent Exposure is
-inadequate.*
+```ruby
+gem 'decent_exposure'
+```
 
-Installation is as simple as: `$ gem install decent_exposure`. Once you have
-that down we can start talking about the API.
+And then execute:
 
-## API
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install decent_exposure
+
+### API
 
 The whole API consists of three methods so far: `expose`, `expose!`, and
 `exposure_config`.
@@ -30,14 +34,14 @@ class ThingsController < ApplicationController
 end
 ```
 
-Now every time you call `thing` in your controller or view, it'll look for an
-ID and try to perform `Thing.find(id)`. If the ID isn't found, it'll call
+Now every time you call `thing` in your controller or view, it will look for an
+ID and try to perform `Thing.find(id)`. If the ID isn't found, it will call
 `Thing.new(things_params)`. The result will be memoized in an `@exposed_thing`
 instance variable.
 
-## Example Controller
+#### Example Controller
 
-Here's what a standard Rails 4 CRUD controller using Adequate Exposure might look like:
+Here's what a standard Rails 4 CRUD controller using Decent Exposure might look like:
 
 ```ruby
 class ThingsController < ApplicationController
@@ -73,7 +77,7 @@ class ThingsController < ApplicationController
 end
 ```
 
-## Under the Hood
+### Under the Hood
 
 The default resolving workflow is pretty powerful and customizable. It could be
 expressed with the following pseudocode:
@@ -118,10 +122,10 @@ end
 ```
 
 The exposure is also lazy, which means that it won't do anything until you call
-the method. To eliminate this lazyness you can use `expose!` macro instead,
+the method. To eliminate this laziness you can use the `expose!` macro instead,
 which will try to resolve the exposure in a before filter.
 
-Each step could be overrided with options. The acceptable options to the
+It is possible to override each step with options. The acceptable options to the
 `expose` macro are:
 
 ### `fetch`
@@ -134,7 +138,7 @@ expose :thing, fetch: ->{ get_thing_some_way_or_another }
 ```
 
 Because the above behavior overrides the normal workflow, all other options
-would be ignored. However, Adequate Exposure is decent enough to actually blow
+would be ignored. However, Decent Exposure is decent enough to actually blow
 up with an error so you don't accidentally do this.
 
 There are other less verbose ways to pass the `fetch` block, since you'll
@@ -144,13 +148,13 @@ probably be using it often:
 expose(:thing){ get_thing_some_way_or_another }
 ```
 
-Or if you (like me) absolutely hate parens in side-effect methods:
+Or
 
 ```ruby
 expose :thing, ->{ get_thing_some_way_or_another }
 ```
 
-or even shorter
+Or even shorter
 
 ```ruby
 expose :thing, :get_thing_some_way_or_another
@@ -167,7 +171,7 @@ expose :comments, ->{ post.comments }
 
 ### `id`
 
-The default fetch logic relies on the presence of an ID. And of course Adequate
+The default fetch logic relies on the presence of an ID. And of course Decent
 Exposure allows you to specify how exactly you want the ID to be extracted.
 
 Default behavior could be expressed using following code:
@@ -179,8 +183,6 @@ expose :thing, id: ->{ params[:thing_id] || params[:id] }
 But nothing is stopping you from throwing in any arbitrary code:
 
 ```ruby
-# id is always gonna be the answer to ultimate question of life, the universe,
-# and everyting
 expose :thing, id: ->{ 42 }
 ```
 
@@ -199,7 +201,7 @@ expose :thing, id: ->{ params[:try_this_id] || params[:or_maybe_that_id] }
 
 ### `find`
 
-If an ID was provided, Adequate Exposure will try to find the model using it.
+If an ID was provided, Decent Exposure will try to find the model using it.
 Default behavior could be expressed with this configuration: 
 
 ```ruby
@@ -216,7 +218,7 @@ customize your finding logic. Your code might look somewhat like this:
 expose :thing, find: ->(id, scope){ scope.find_by!(slug: id) }
 ```
 
-Again, because this is likely to happen a lot, Adequate Exposure gives you a
+Again, because this is likely to happen a lot, Decent Exposure gives you a
 decent shortcut so you can get more done by typing less.
 
 ```ruby
@@ -225,7 +227,7 @@ expose :thing, find_by: :slug
 
 ### `build`
 
-When an ID is not present, Adequate Exposure tries to build an object for you.
+When an ID is not present, Decent Exposure tries to build an object for you.
 By default, it behaves like this:
 
 ```ruby
@@ -293,7 +295,7 @@ expose :thing, model: :another_thing
 
 ### `decorate`
 
-Before returning the thing, Adequate Exposure will run it through the
+Before returning the thing, Decent Exposure will run it through the
 decoration process. Initially, this does nothing, but you can obviously change
 that:
 
