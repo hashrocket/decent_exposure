@@ -1,0 +1,1 @@
+require "adequate_exposure"
