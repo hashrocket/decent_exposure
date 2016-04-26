@@ -24,4 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "railties",      "~> 5.x"
   spec.add_dependency "activesupport", "~> 5.x"
+  spec.add_development_dependency "rspec-rails", "~> 3.0"
+  spec.add_development_dependency "rake", "~> 10.3"
+  spec.add_development_dependency "pry"
 end
