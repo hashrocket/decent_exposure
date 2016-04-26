@@ -3,7 +3,7 @@ require File.expand_path("../lib/decent_exposure/version", __FILE__)
 Gem::Specification.new do |spec|
   spec.name         = "decent_exposure"
   spec.version      = DecentExposure::VERSION
-  spec.authors      = ["Pavel Pravosud"]
+  spec.authors      = ["Pavel Pravosud", "Stephen Caudill"]
   spec.email        = ["info@hashrocket.com"]
   spec.summary      = "A helper for creating declarative interfaces in controllers"
   spec.description = %q{
