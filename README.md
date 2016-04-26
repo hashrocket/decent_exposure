@@ -326,6 +326,6 @@ expose :another_thing, with: :cool_build
 
 ## About
 
-![Hashrocket logo](https://hashrocket.com/hashrocket_logo.png)
+[![Hashrocket logo](https://hashrocket.com/hashrocket_logo.svg)](https://hashrocket.com)
 
 Decent Exposure is supported by the team at [Hashrocket](https://hashrocket.com), a multidisciplinary design & development consultancy. If you'd like to [work with us](https://hashrocket.com/contact-us/hire-us) or [join our team](https://hashrocket.com/contact-us/jobs), don't hesitate to get in touch.
