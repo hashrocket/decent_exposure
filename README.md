@@ -1,4 +1,5 @@
-# Decent Exposure
+![Decent Exposure](./decent_exposure.png)
+
 [![Gem Version](https://img.shields.io/gem/v/decent_exposure.svg)](https://rubygems.org/gems/decent_exposure)
 [![Build Status](https://img.shields.io/travis/hashrocket/decent_exposure.svg)](http://travis-ci.org/hashrocket/decent_exposure)
 [![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/decent_exposure.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
