@@ -5,6 +5,12 @@
 [![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/decent_exposure.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
 [![Inline docs](http://inch-ci.org/github/hashrocket/decent_exposure.svg?branch=master&style=shields)](http://inch-ci.org/github/hashrocket/decent_exposure)
 
+### Notice
+
+DecentExposure `3.0` is a major change from `< 3.0`. If you are using `rails <= 4.2.x` please look at `decent_exposure < 3.0`.
+
+**Be aware... mild API changes ahead.**
+
 ### Installation
 
 Add this line to your application's Gemfile:
