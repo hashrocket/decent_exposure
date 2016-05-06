@@ -1,4 +1,4 @@
-Copyright (c) 2014 Hashrocket
+Copyright (c) 2016 Hashrocket
 
 MIT License
 
