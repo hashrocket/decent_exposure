@@ -48,7 +48,7 @@ instance variable.
 
 #### Example Controller
 
-Here's what a standard Rails 4 CRUD controller using Decent Exposure might look like:
+Here's what a standard Rails 5 CRUD controller using Decent Exposure might look like:
 
 ```ruby
 class ThingsController < ApplicationController
