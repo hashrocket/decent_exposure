@@ -1,0 +1,8 @@
+Description:
+    Generate DecentExposure scaffold template files
+
+Example:
+    rails generate decent_exposure:scaffold_templates
+
+    This will create:
+        lib/templates/rails/scaffold_controller/controller.rb
