@@ -7,7 +7,9 @@
 
 ### Notice
 
-DecentExposure `3.0` is a major change from `< 3.0`. If you are using `rails <= 4.2.x` please look at `decent_exposure < 3.0`.
+DecentExposure `3.0` is a major change from `< 3.0`.
+
+Version `3.0` will support Rails 4 and 5.
 
 **Be aware... mild API changes ahead.**
 
