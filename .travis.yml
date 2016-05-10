@@ -1,3 +1,9 @@
 rvm:
   - 2.2.2
   - 2.3.0
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: Ch/Euv0+g1BQawHLVXzT9R/eoFxQWBf95SQzufpA19tlwz+7OsGlaOH4YfxVbnanH33XL06AEB1arsDUwlv0lx/I2Cs1LRh4WHAJ7T5hahusF2W3/+RgCDf2eifk1MRswkDpvhxH/sAS6INc4gOKc52q4gAdzU2uytVsdaaCjCY=
