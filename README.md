@@ -16,7 +16,7 @@ DecentExposure `3.0` is a major change from `< 3.0`. If you are using `rails <= 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'decent_exposure'
+gem 'decent_exposure', '3.0.0.beta1'
 ```
 
 And then execute:
