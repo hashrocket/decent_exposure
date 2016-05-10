@@ -1,6 +1,12 @@
+language: ruby
 rvm:
   - 2.2.2
   - 2.3.0
+gemfile:
+  - Gemfile
+  - gemfiles/Gemfile.rails-5.0.0.rc1
+  - gemfiles/Gemfile.rails-4.2.6
+  - gemfiles/Gemfile.rails-4.2.0
 notifications:
   slack:
     on_success: change
