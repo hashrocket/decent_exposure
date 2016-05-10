@@ -2,7 +2,7 @@ Description:
     Generate DecentExposure scaffold template files
 
 Example:
-    rails generate decent_exposure:scaffold_templates
+    rails generate decent_exposure:scaffold_templates [--template_engine erb|haml]
 
     This will create:
         lib/templates/rails/scaffold_controller/controller.rb
