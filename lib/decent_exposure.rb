@@ -1,5 +1,6 @@
 require "decent_exposure/version"
 require "active_support/all"
+require "generators/decent_exposure/scaffold_templates_generator"
 
 module DecentExposure
   autoload :Controller, "decent_exposure/controller"

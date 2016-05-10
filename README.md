@@ -323,6 +323,20 @@ expose :thing, with: [:cool_find, :cool_build]
 expose :another_thing, with: :cool_build
 ```
 
+## Rails Scaffold Templates
+
+If you want to generate rails scaffold templates prepared for `decent_exposure` run:
+
+```bash
+rails generate decent_exposure:scaffold_templates
+```
+
+This will create the templates in your `lib/templates` folder. Now you can run scaffold like:
+
+```bash
+rails generate scaffold post title description:text
+```
+
 ## Contributing
 
 1. Fork it (https://github.com/hashrocket/decent_exposure/fork)
