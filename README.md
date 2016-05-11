@@ -330,7 +330,7 @@ expose :another_thing, with: :cool_build
 If you want to generate rails scaffold templates prepared for `decent_exposure` run:
 
 ```bash
-rails generate decent_exposure:scaffold_templates
+rails generate decent_exposure:scaffold_templates [--template_engine erb|haml]
 ```
 
 This will create the templates in your `lib/templates` folder. Now you can run scaffold like:
