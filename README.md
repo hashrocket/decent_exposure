@@ -349,6 +349,6 @@ rails generate scaffold post title description:text
 
 ## About
 
-[![Hashrocket logo](hashrocket_logo.png)](https://hashrocket.com)
+[![Hashrocket logo](https://hashrocket.com/hashrocket_logo.png)](https://hashrocket.com)
 
 Decent Exposure is supported by the team at [Hashrocket](https://hashrocket.com), a multidisciplinary design & development consultancy. If you'd like to [work with us](https://hashrocket.com/contact-us/hire-us) or [join our team](https://hashrocket.com/contact-us/jobs), don't hesitate to get in touch.
