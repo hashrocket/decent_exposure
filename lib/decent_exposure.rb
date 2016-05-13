@@ -13,4 +13,8 @@ module DecentExposure
   ActiveSupport.on_load :action_controller do
     include Controller
   end
+
+  ActiveSupport.on_load :action_mailer do
+    include Controller
+  end
 end
