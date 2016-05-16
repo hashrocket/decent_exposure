@@ -325,6 +325,32 @@ expose :thing, with: [:cool_find, :cool_build]
 expose :another_thing, with: :cool_build
 ```
 
+## Rails Mailers
+
+Mailers and Controllers use the save decent_exposure dsl.
+
+### Example Mailer
+
+```ruby
+class PostMailer < ApplicationMailer
+  attr_accessor :post_id
+
+  expose(:posts, -> { Post.last(10) })
+  expose(:post, id: -> { post_id })
+
+  def top_posts
+    @greeting = "Top Posts"
+    mail to: "to@example.org"
+  end
+
+  def featured_post(post_id = nil)
+    self.post_id = post_id
+    @greeting = "Featured Post"
+    mail to: "to@example.org"
+  end
+end
+```
+
 ## Rails Scaffold Templates
 
 If you want to generate rails scaffold templates prepared for `decent_exposure` run:
