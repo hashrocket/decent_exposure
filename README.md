@@ -309,6 +309,7 @@ decoration process. Initially, this does nothing, but you can obviously change
 that:
 
 ```ruby
+expose :things, ->{ Thing.all.map{ |thing| ThingDecorator.new(thing) } }
 expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }
 ```
 
