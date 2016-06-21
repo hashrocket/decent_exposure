@@ -309,6 +309,7 @@ decoration process. Initially, this does nothing, but you can obviously change
 that:
 
 ```ruby
+expose :things, ->{ Thing.all.map{ |thing| ThingDecorator.new(thing) } }
 expose :thing, decorate: ->(thing){ ThingDecorator.new(thing) }
 ```
 
@@ -359,7 +360,18 @@ If you want to generate rails scaffold templates prepared for `decent_exposure` 
 rails generate decent_exposure:scaffold_templates [--template_engine erb|haml]
 ```
 
-This will create the templates in your `lib/templates` folder. Now you can run scaffold like:
+This will create the templates in your `lib/templates` folder.
+
+Make sure you have configured your templates engine for generators in `config/application.rb`:
+
+```ruby
+# config/application.rb
+config.generators do |g|
+  g.template_engine :erb
+end
+```
+
+Now you can run scaffold like:
 
 ```bash
 rails generate scaffold post title description:text
