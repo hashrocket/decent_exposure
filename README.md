@@ -18,7 +18,7 @@ Version `3.0` will support Rails 4 and 5.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'decent_exposure', '3.0.0.beta2'
+gem 'decent_exposure', '3.0.0'
 ```
 
 And then execute:
