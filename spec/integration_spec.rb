@@ -5,15 +5,17 @@ require "rspec/rails"
 describe BirdsController, type: :controller do
   context "finds bird by id" do
     let(:mockingbird){ double("Bird") }
-    before{ expect(Bird).to receive(:find).with("mockingbird").once.and_return(mockingbird) }
-    after{ expect(controller.bird).to eq(mockingbird) }
 
     it "finds model by id" do
-      get :show, { id: "mockingbird" }
+      expect(Bird).to receive(:find).with("mockingbird").once.and_return(mockingbird)
+      get :show, id: "mockingbird"
+      expect(controller.bird).to eq(mockingbird)
     end
 
     it "finds model by bird_id" do
-      get :show, { bird_id: "mockingbird" }
+      expect(Bird).to receive(:find).with("mockingbird").once.and_return(mockingbird)
+      get :show, bird_id: "mockingbird"
+      expect(controller.bird).to eq(mockingbird)
     end
   end
 
