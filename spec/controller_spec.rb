@@ -41,8 +41,13 @@ describe DecentExposure::Controller do
   end
 
   context "helper methods" do
-    it "exposes getter and setter as controller helper methods" do
-      expect(controller_klass).to receive(:helper_method).with(:thing, :thing=)
+    it "exposes getter as controller helper methods" do
+      expect(controller_klass).to receive(:helper_method).with(:thing)
+      expose :thing
+    end
+
+    it "does not expose setter as controller helper methods" do
+      expect(controller_klass).to_not receive(:helper_method).with(:thing=)
       expose :thing
     end
   end
