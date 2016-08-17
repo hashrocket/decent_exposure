@@ -51,7 +51,7 @@ module DecentExposure
     end
 
     def ivar_name
-      "@#{attribute.ivar_name}"
+      "@#{attribute.ivar_name.gsub('?', '_question_mark_')}"
     end
 
     def fetch_value

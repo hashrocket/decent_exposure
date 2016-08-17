@@ -30,6 +30,7 @@ end
 
 class BirdsController < ApplicationController
   expose :bird
+  expose :bird?, -> { bird.present? }
 
   def show
     head :ok

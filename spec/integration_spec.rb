@@ -17,6 +17,12 @@ describe BirdsController, type: :controller do
       get :show, bird_id: "mockingbird"
       expect(controller.bird).to eq(mockingbird)
     end
+
+    it "exposes bird?" do
+      expect(Bird).to receive(:find).with("mockingbird").once.and_return(mockingbird)
+      get :show, { bird_id: "mockingbird" }
+      expect(controller.bird?).to be true
+    end
   end
 
   it "builds bird if id is not provided" do
