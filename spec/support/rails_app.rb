@@ -26,18 +26,6 @@ module Rails
   end
 end
 
-class Bird
-end
-
 class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers
-end
-
-class BirdsController < ApplicationController
-  expose :bird
-  expose :bird?, -> { bird.present? }
-
-  def show
-    head :ok
-  end
 end
