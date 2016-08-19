@@ -3,6 +3,11 @@ require "action_controller"
 require "action_dispatch"
 require "rails"
 
+def request_params(params)
+  return params if Rails::VERSION::MAJOR < 5
+  { params: params }
+end
+
 module Rails
   class App
     def env_config; {} end
