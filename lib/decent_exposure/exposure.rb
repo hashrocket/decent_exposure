@@ -67,8 +67,7 @@ module DecentExposure
     end
 
     def expose_helper_methods!
-      helper_methods = [ attribute.getter_method_name, attribute.setter_method_name ]
-      controller.helper_method *helper_methods
+      controller.helper_method attribute.getter_method_name
     end
 
     def normalize_options
