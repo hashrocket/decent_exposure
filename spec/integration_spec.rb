@@ -3,13 +3,19 @@ require "support/rails_app"
 require "rspec/rails"
 
 class Bird
+  attr_accessor :name
+  def initialize(options = {})
+    options.each do |k,v|
+      self.public_send("#{k}=", v)
+    end
+  end
 end
 
 class BirdsController < ApplicationController
 end
 
 describe BirdsController, type: :controller do
-  let(:bird){ double("Bird") }
+  let(:bird){ Bird.new }
 
   context 'when a bird is exposed' do
     class BirdsController < ApplicationController
@@ -33,9 +39,8 @@ describe BirdsController, type: :controller do
     end
 
     it "builds bird if id is not provided" do
-      expect(Bird).to receive(:new).with({}).once.and_return(bird)
       get :show
-      expect(controller.bird).to eq(bird)
+      expect(controller.bird).to be_a(Bird)
     end
   end
 
