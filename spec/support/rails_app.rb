@@ -16,6 +16,10 @@ module Rails
       @routes ||= ActionDispatch::Routing::RouteSet.new.tap do |routes|
         routes.draw do
           resources :birds
+
+          namespace :api do
+            resources :birds
+          end
         end
       end
     end
@@ -40,4 +44,16 @@ class ApplicationController < ActionController::Base
 end
 
 class BirdsController < ApplicationController
+end
+
+module Api
+end
+
+API_SUPER_CLASS = if Rails::VERSION::MAJOR < 5
+                    ApplicationController
+                  else
+                    ActionController::API
+                  end
+
+class Api::BirdsController < API_SUPER_CLASS
 end

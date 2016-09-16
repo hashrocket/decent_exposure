@@ -67,6 +67,8 @@ module DecentExposure
     end
 
     def expose_helper_methods!
+      return unless controller.respond_to?(:helper_method)
+
       controller.helper_method attribute.getter_method_name
     end
 
