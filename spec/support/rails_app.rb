@@ -15,7 +15,11 @@ module Rails
     def routes
       @routes ||= ActionDispatch::Routing::RouteSet.new.tap do |routes|
         routes.draw do
-          resource :birds
+          resources :birds
+
+          namespace :api do
+            resources :birds
+          end
         end
       end
     end
@@ -26,6 +30,30 @@ module Rails
   end
 end
 
+class Bird
+  attr_accessor :name
+  def initialize(options = {})
+    options.each do |k, v|
+      self.public_send("#{k}=", v)
+    end
+  end
+end
+
 class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers
+end
+
+class BirdsController < ApplicationController
+end
+
+module Api
+end
+
+API_SUPER_CLASS = if Rails::VERSION::MAJOR < 5
+                    ApplicationController
+                  else
+                    ActionController::API
+                  end
+
+class Api::BirdsController < API_SUPER_CLASS
 end
