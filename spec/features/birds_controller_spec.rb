@@ -6,7 +6,7 @@ RSpec.describe BirdsController, type: :controller do
   let(:bird){ Bird.new }
 
   context 'when birds relation is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :birds, ->{ Bird.all }
 
       def index
@@ -22,7 +22,7 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context 'when a bird is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
 
       def show
@@ -53,7 +53,7 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context "when bird_params is defined" do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
 
       def create
@@ -72,7 +72,7 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context 'when a bird? with a question mark is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
       expose :bird?, -> { bird.present? }
 

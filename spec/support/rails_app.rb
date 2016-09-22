@@ -1,6 +1,4 @@
-require "active_support/all"
 require "action_controller"
-require "action_dispatch"
 require "rails"
 
 def request_params(params)
@@ -43,17 +41,21 @@ class ApplicationController < ActionController::Base
   include Rails.application.routes.url_helpers
 end
 
+def base_api_class
+  return ApplicationController if Rails::VERSION::MAJOR < 5
+  ActionController::API
+end
+
 class BirdsController < ApplicationController
+  %i(index show edit new create update).each do |action|
+    define_method action do
+      head :ok
+    end
+  end
 end
 
 module Api
 end
 
-API_SUPER_CLASS = if Rails::VERSION::MAJOR < 5
-                    ApplicationController
-                  else
-                    ActionController::API
-                  end
-
-class Api::BirdsController < API_SUPER_CLASS
+class Api::BirdsController < ApplicationAPIController
 end
