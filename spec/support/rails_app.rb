@@ -23,6 +23,10 @@ module Rails
     end
   end
 
+  def self.root
+    ''
+  end
+
   def self.application
     @app ||= App.new
   end
