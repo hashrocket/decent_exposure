@@ -334,18 +334,15 @@ Mailers and Controllers use the save decent_exposure dsl.
 
 ```ruby
 class PostMailer < ApplicationMailer
-  attr_accessor :post_id
-
   expose(:posts, -> { Post.last(10) })
-  expose(:post, id: -> { post_id })
+  expose(:post)
 
   def top_posts
     @greeting = "Top Posts"
     mail to: "to@example.org"
   end
 
-  def featured_post(post_id = nil)
-    self.post_id = post_id
+  def featured_post(id:)
     @greeting = "Featured Post"
     mail to: "to@example.org"
   end

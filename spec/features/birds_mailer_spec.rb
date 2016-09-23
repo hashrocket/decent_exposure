@@ -28,18 +28,16 @@ RSpec.describe BirdsMailer, type: :mailer do
 
   context "when bird is exposed" do
     class BirdsMailer
-      attr_accessor :bird_id
-      expose(:bird, id: -> { bird_id })
+      expose(:bird)
 
-      def hello_bird(id)
-        self.bird_id = id
+      def hello_bird(id:)
         mail { |format| format.text { render plain: "Hello #{bird}" } }
       end
     end
 
     it "sends the email with exposed bird" do
       expect(Bird).to receive(:find).with('some-id').and_return(bird)
-      expect(described_class.hello_bird('some-id').body.to_s)
+      expect(described_class.hello_bird(id: 'some-id').body.to_s)
         .to include("Hello #{bird}")
     end
   end
