@@ -31,9 +31,7 @@ end
 class Bird
   attr_accessor :name
   def initialize(options = {})
-    options.each do |k, v|
-      self.public_send("#{k}=", v)
-    end
+    options.each { |k, v| self.public_send("#{k}=", v) }
   end
 end
 
@@ -55,7 +53,11 @@ class BirdsController < ApplicationController
 end
 
 module Api
-end
-
-class Api::BirdsController < ApplicationAPIController
+  class BirdsController < base_api_class
+    %i(index show edit new create update).each do |action|
+      define_method action do
+        head :ok
+      end
+    end
+  end
 end
