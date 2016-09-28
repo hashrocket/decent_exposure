@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport", ">= 4.0"
   spec.add_development_dependency "railties", ">= 4.0"
+  spec.add_development_dependency "actionmailer"
   spec.add_development_dependency "rspec-rails", "~> 3.0"
 end

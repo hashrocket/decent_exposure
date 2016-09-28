@@ -6,12 +6,8 @@ RSpec.describe BirdsController, type: :controller do
   let(:bird){ Bird.new }
 
   context 'when birds relation is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :birds, ->{ Bird.all }
-
-      def index
-        head :ok
-      end
     end
 
     it "fetches all birds" do
@@ -22,16 +18,8 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context 'when a bird is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
-
-      def show
-        head :ok
-      end
-
-      def new
-        head :ok
-      end
     end
 
     it "finds model by id" do
@@ -53,12 +41,8 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context "when bird_params is defined" do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
-
-      def create
-        head :ok
-      end
 
       def bird_params
         params.require(:bird).permit(:name)
@@ -72,13 +56,9 @@ RSpec.describe BirdsController, type: :controller do
   end
 
   context 'when a bird? with a question mark is exposed' do
-    class BirdsController < ApplicationController
+    class BirdsController
       expose :bird
       expose :bird?, -> { bird.present? }
-
-      def show
-        head :ok
-      end
     end
 
     it "exposes bird?" do

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe DecentExposure::Controller do
+RSpec.describe DecentExposure::Controller do
   class Thing; end
   class DifferentThing; end
 
