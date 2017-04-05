@@ -41,6 +41,8 @@ module DecentExposure
       merge_lambda_option :fetch, fetch_block if fetch_block
       merge_lambda_option :fetch, block if block_given?
 
+      normalize_with_option
+      
       assert_singleton_option :fetch
       assert_singleton_option :from
       assert_incompatible_options_pair :parent, :model
@@ -74,7 +76,6 @@ module DecentExposure
 
     def normalize_options
       normalize_fetch_option
-      normalize_with_option
       normalize_id_option
       normalize_model_option
       normalize_build_params_option
