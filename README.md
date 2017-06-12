@@ -328,7 +328,7 @@ expose :another_thing, with: :cool_build
 
 ## Rails Mailers
 
-Mailers and Controllers use the save decent_exposure dsl.
+Mailers and Controllers use the same decent_exposure dsl.
 
 ### Example Mailer
 
