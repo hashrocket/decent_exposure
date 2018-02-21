@@ -376,4 +376,22 @@ RSpec.describe DecentExposure::Controller do
       expect(controller.thing).to eq(decorated_thing)
     end
   end
+
+  context "overwrite existing helper" do
+    let(:controller_klass) do
+      Class.new(BaseController) do
+        include ActionView::Helpers::TagHelper
+        include DecentExposure::Controller
+      end
+    end
+
+    let(:controller) { controller_klass.new }
+
+    it "throws an error when overwriting an existing helper" do
+      expect(controller).to respond_to(:tag)
+      expect(controller.tag.p("test")).to eq("<p>test</p>")
+
+      expect { expose :tag }.to raise_error(ArgumentError, "Helper method 'tag' is already defined")
+    end
+  end
 end
