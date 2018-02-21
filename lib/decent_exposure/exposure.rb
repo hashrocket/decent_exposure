@@ -35,6 +35,12 @@ module DecentExposure
     #
     # Returns a normalized options Hash.
     def initialize(controller, name, fetch_block=nil, **options, &block)
+      # Check if the Exposure getter would overwrite an existing helper
+      if ActionView::Helpers.instance_methods.include?(name.to_sym)
+        message = "Helper method '#{name}' is already defined"
+        raise ArgumentError, message
+      end
+
       @controller = controller
       @options = options.with_indifferent_access.merge(name: name)
 

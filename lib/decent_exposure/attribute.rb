@@ -41,13 +41,6 @@ module DecentExposure
     def expose!(klass)
       attribute = self
 
-      # Check if attribute getter is overwriting an existing helper
-      getter = attribute.getter_method_name
-      if ActionView::Helpers.instance_methods.include?(getter)
-        message = "Helper method '#{getter}' is already defined"
-        raise ArgumentError, message
-      end
-
       klass.instance_eval do
         define_method attribute.getter_method_name do
           Context.new(self, attribute).get
