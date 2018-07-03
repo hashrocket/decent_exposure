@@ -45,6 +45,7 @@ module DecentExposure
       assert_singleton_option :from
       assert_incompatible_options_pair :parent, :model
       assert_incompatible_options_pair :parent, :scope
+      assert_incompatible_options_pair :shallow_parent, :scope
       assert_incompatible_options_pair :find_by, :find
 
       normalize_options
@@ -58,6 +59,7 @@ module DecentExposure
     def expose!
       expose_attribute!
       expose_helper_methods!
+      register_exposure
     end
 
     private
@@ -72,6 +74,11 @@ module DecentExposure
       controller.helper_method attribute.getter_method_name
     end
 
+    def register_exposure
+      local_options = options
+      controller.add_exposure(options.fetch(:name), -> { Flow.new(self, local_options) })
+    end
+
     def normalize_options
       normalize_fetch_option
       normalize_with_option
@@ -82,6 +89,8 @@ module DecentExposure
       normalize_parent_option
       normalize_from_option
       normalize_find_by_option
+      normalize_shallow_child_option
+      normalize_shallow_parent_option
     end
 
     def normalize_fetch_option
@@ -93,6 +102,19 @@ module DecentExposure
     def normalize_find_by_option
       if find_by = options.delete(:find_by)
         merge_lambda_option :find, ->(id, scope){ scope.find_by!(find_by => id) }
+      end
+    end
+
+    def normalize_shallow_child_option
+      if shallow_child = options.delete(:shallow_child)
+        options[:shallow_child] = -> { shallow_child }
+      end
+    end
+
+    def normalize_shallow_parent_option
+      if shallow_parent = options.delete(:shallow_parent)
+        options[:shallow_parent] = -> { shallow_parent }
+        options[:shallow_parent_exposure] = -> { get_exposure(shallow_parent) }
       end
     end
 
