@@ -3,8 +3,12 @@ module DecentExposure
     extend ActiveSupport::Concern
 
     included do
-      class_attribute :exposure_configuration,
+      class_attribute :exposure_configuration, :exposures,
         instance_accessor: false, instance_predicate: false
+    end
+
+    def get_exposure(name)
+      instance_exec &self.class.exposures[name]
     end
 
     module ClassMethods
@@ -47,6 +51,11 @@ module DecentExposure
       def exposure_config(name, options)
         store = self.exposure_configuration ||= {}
         self.exposure_configuration = store.merge(name => options)
+      end
+
+      def add_exposure(name, exposure)
+        store = self.exposures ||= {}
+        self.exposures = store.merge(name => exposure)
       end
     end
   end

@@ -6,7 +6,12 @@ module DecentExposure
     #
     # Returns the decorated object.
     def fetch
-      instance = id ? find(id, computed_scope) : build(build_params, computed_scope)
+      instance = if id
+        find(id, computed_scope)
+      else
+        shallow_child ? controller.send(shallow_child).send(name) : build(build_params, computed_scope)
+      end
+
       decorate(instance)
     end
 
@@ -31,7 +36,11 @@ module DecentExposure
     #
     # Returns the object scope.
     def scope(model)
-      model
+      if shallow_parent
+        shallow_parent_exposure.id ? controller.send(shallow_parent).send(name.to_s.pluralize) : model
+      else
+        model
+      end
     end
 
     # Public: Converts a name into a standard Class name.
@@ -83,10 +92,23 @@ module DecentExposure
       end
     end
 
+    # Public: Set the shallow routes parent from which to derive the child
+    #
+    # Returns the shallow routes parent exposure symbol
+    def shallow_parent; end
+
+    # Public: Set the shallow routes child from which to derive the parent
+    #
+    # Returns the shallow routes child exposure symbol
+    def shallow_child; end
+
     protected
 
     def params_id_key_candidates
-      [ "#{model_param_key}_id", "#{name}_id", "id" ].uniq
+      [].tap do |array|
+        array.concat([ "#{model_param_key}_id", "#{name}_id" ].uniq) unless shallow_parent
+        array << "id" unless shallow_child
+      end
     end
 
     def model_param_key
@@ -96,5 +118,8 @@ module DecentExposure
     def computed_scope
       scope(model)
     end
+
+    def shallow_parent_exposure; end
+
   end
 end
