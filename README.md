@@ -45,7 +45,7 @@ end
 
 Now every time you call `thing` in your controller or view, it will look for an
 ID and try to perform `Thing.find(id)`. If the ID isn't found, it will call
-`Thing.new(things_params)`. The result will be memoized in an `@exposed_thing`
+`Thing.new(thing_params)`. The result will be memoized in an `@exposed_thing`
 instance variable.
 
 #### Example Controller
