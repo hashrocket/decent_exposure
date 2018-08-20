@@ -34,8 +34,44 @@ end
 
 class Bird
   attr_accessor :name
-  def initialize(options = {})
+
+  def attributes=(options)
     options.each { |k, v| self.public_send("#{k}=", v) }
+  end
+
+  def species
+    'Kiwi'
+  end
+
+  def eggs
+    EggsRelation.new(self)
+  end
+end
+
+class EggsRelation
+  def initialize(bird)
+    @bird = bird
+  end
+
+  def new
+    egg = Egg.new
+    egg.bird = @bird
+
+    egg
+  end
+end
+
+class Egg
+  attr_reader :name
+  attr_accessor :bird
+  delegate :species, to: :bird
+
+  def attributes=(options)
+    options.each { |k, v| self.public_send("#{k}=", v) }
+  end
+
+  def name=(value)
+    @name = "#{value} (#{species})"
   end
 end
 

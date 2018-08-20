@@ -61,7 +61,10 @@ module DecentExposure
     #
     # Returns the new object.
     def build(params, scope)
-      scope.new(params)
+      instance = scope.new
+      instance.attributes = params
+
+      instance
     end
 
     # Public: Returns a decorated object. This method is designed to be

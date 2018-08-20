@@ -67,4 +67,20 @@ RSpec.describe BirdsController, type: :controller do
       expect(controller.bird?).to be true
     end
   end
+
+  context "when egg depends on bird being linked" do
+    class BirdsController
+      expose :bird
+      expose :egg, parent: :bird
+
+      def egg_params
+        params.require(:egg).permit(:name)
+      end
+    end
+
+    it "builds egg through bird with a name that depends on bird's species" do
+      post :create, request_params(bird: { name: 'Bob' }, egg: { name: 'Bill' })
+      expect(controller.egg.name).to eq("Bill (Kiwi)")
+    end
+  end
 end

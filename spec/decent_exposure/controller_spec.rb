@@ -175,7 +175,8 @@ RSpec.describe DecentExposure::Controller do
       context "params method is not available" do
         it "builds a new instance with empty hash" do
           expose :thing
-          expect(Thing).to receive(:new).with({}).and_return(thing)
+          expect(Thing).to receive(:new).and_return(thing)
+          expect(thing).to receive(:attributes=).with({})
         end
       end
 
@@ -184,27 +185,31 @@ RSpec.describe DecentExposure::Controller do
           expose :thing
           expect(request).to receive(:get?).and_return(true)
           expect(controller).not_to receive(:thing_params)
-          expect(Thing).to receive(:new).with({}).and_return(thing)
+          expect(Thing).to receive(:new).and_return(thing)
+          expect(thing).to receive(:attributes=).with({})
         end
 
         it "uses params method on non-get request" do
           expose :thing
           expect(request).to receive(:get?).and_return(false)
-          expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+          expect(Thing).to receive(:new).and_return(thing)
+          expect(thing).to receive(:attributes=).with(foo: :bar)
           expect(controller).to receive(:thing_params).and_return(foo: :bar)
         end
 
         it "can use custom params method name" do
           expose :thing, build_params: :custom_params_method_name
           expect(request).to receive(:get?).and_return(false)
-          expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
+          expect(Thing).to receive(:new).and_return(thing)
+          expect(thing).to receive(:attributes=).with(foo: :bar)
           expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
         end
 
         it "can use custom build params" do
           expose :thing, build_params: ->{ foobar }
           expect(controller).to receive(:foobar).and_return(42)
-          expect(Thing).to receive(:new).with(42).and_return(thing)
+          expect(Thing).to receive(:new).and_return(thing)
+          expect(thing).to receive(:attributes=).with(42)
         end
       end
     end
@@ -260,6 +265,7 @@ RSpec.describe DecentExposure::Controller do
     context "build/find" do
       let(:current_user){ double("User") }
       let(:scope){ double("Scope") }
+      let(:thing){ double("Thing") }
 
       before do
         expect(controller).to receive(:current_user).and_return(current_user)
@@ -267,22 +273,28 @@ RSpec.describe DecentExposure::Controller do
         expose :thing, parent: :current_user
       end
 
-      after{ expect(controller.thing).to eq(42) }
+      after{ expect(controller.thing).to eq(thing) }
 
       it "sets the scope to belong to parent defined by controller method" do
-        expect(scope).to receive(:new).with({}).and_return(42)
+        expect(scope).to receive(:new).and_return(thing)
+        expect(thing).to receive(:attributes=).with({})
       end
 
       it "scopes the find to proper scope" do
         controller.params.merge! thing_id: 10
-        expect(scope).to receive(:find).with(10).and_return(42)
+        expect(scope).to receive(:find).with(10).and_return(thing)
       end
     end
   end
 
   context "override model" do
     let(:different_thing){ double("DifferentThing") }
-    before{ expect(DifferentThing).to receive(:new).with({}).and_return(different_thing) }
+
+    before do
+      expect(DifferentThing).to receive(:new).and_return(different_thing)
+      expect(different_thing).to receive(:attributes=).with({})
+    end
+
     after{ expect(controller.thing).to eq(different_thing) }
 
     it "allows overriding model class with proc" do
@@ -305,17 +317,21 @@ RSpec.describe DecentExposure::Controller do
   context "override scope" do
     it "allows overriding scope with proc" do
       scope = double("Scope")
+      thing = double("Thing")
       expose :thing, scope: ->{ scope }
-      expect(scope).to receive(:new).and_return(42)
-      expect(controller.thing).to eq(42)
+      expect(scope).to receive(:new).and_return(thing)
+      expect(thing).to receive(:attributes=).with({})
+      expect(controller.thing).to eq(thing)
     end
 
     it "allows overriding model scope using symbol" do
       scope = double("Scope")
+      thing = double("Thing")
       expect(Thing).to receive(:custom_scope).and_return(scope)
-      expect(scope).to receive(:new).and_return(42)
+      expect(scope).to receive(:new).and_return(thing)
+      expect(thing).to receive(:attributes=).with({})
       expose :thing, scope: :custom_scope
-      expect(controller.thing).to eq(42)
+      expect(controller.thing).to eq(thing)
     end
   end
 
@@ -345,7 +361,8 @@ RSpec.describe DecentExposure::Controller do
     it "allows specify decorator" do
       expose :thing, decorate: ->(thing){ decorate(thing) }
       thing = double("Thing")
-      expect(Thing).to receive(:new).with({}).and_return(thing)
+      expect(Thing).to receive(:new).and_return(thing)
+      expect(thing).to receive(:attributes=).with({})
       expect(controller).to receive(:decorate).with(thing)
       controller.thing
     end
