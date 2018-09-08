@@ -61,8 +61,12 @@ module DecentExposure
     #
     # Returns the new object.
     def build(params, scope)
-      instance = scope.new
-      instance.attributes = params
+      if scope.is_a?(ActiveRecord::Relation) || scope.is_a?(Class) && scope < ActiveRecord::Base
+        instance = scope.new
+        instance.attributes = params
+      else
+        instance = scope.new params
+      end
 
       instance
     end

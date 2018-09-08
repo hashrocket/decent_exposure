@@ -14,6 +14,7 @@ module Rails
       @routes ||= ActionDispatch::Routing::RouteSet.new.tap do |routes|
         routes.draw do
           resources :birds
+          resources :eggs
 
           namespace :api do
             resources :birds
@@ -32,10 +33,18 @@ module Rails
   end
 end
 
+module ActiveRecord
+  class Relation
+  end
+
+  class Base
+  end
+end
+
 class Bird
   attr_accessor :name
 
-  def attributes=(options)
+  def initialize(options = {})
     options.each { |k, v| self.public_send("#{k}=", v) }
   end
 
@@ -48,7 +57,7 @@ class Bird
   end
 end
 
-class EggsRelation
+class EggsRelation < ActiveRecord::Relation
   def initialize(bird)
     @bird = bird
   end
@@ -61,7 +70,7 @@ class EggsRelation
   end
 end
 
-class Egg
+class Egg < ActiveRecord::Base
   attr_reader :name
   attr_accessor :bird
   delegate :species, to: :bird
@@ -71,7 +80,7 @@ class Egg
   end
 
   def name=(value)
-    @name = "#{value} (#{species})"
+    @name = "#{value} (#{bird ? species : 'Fantail'})"
   end
 end
 
@@ -89,6 +98,12 @@ class BirdsController < ApplicationController
     define_method action do
       head :ok
     end
+  end
+end
+
+class EggsController < ApplicationController
+  define_method 'create' do
+    head :ok
   end
 end
 

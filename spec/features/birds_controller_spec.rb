@@ -84,3 +84,20 @@ RSpec.describe BirdsController, type: :controller do
     end
   end
 end
+
+RSpec.describe EggsController, type: :controller do
+  context "when egg is loaded standalone" do
+    class EggsController
+      expose :egg
+
+      def egg_params
+        params.require(:egg).permit(:name)
+      end
+    end
+
+    it "builds egg with name that includes default type" do
+      post :create, request_params(egg: { name: 'Barry' })
+      expect(controller.egg.name).to eq("Barry (Fantail)")
+    end
+  end
+end
