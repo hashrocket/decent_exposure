@@ -189,13 +189,13 @@ module DecentExposure
     end
 
     def assert_incompatible_options_pair(key1, key2)
-      if options.key?(key1) && options.key?(key2)
+      if options.symbolize_keys.key?(key1) && options.symbolize_keys.key?(key2)
         fail ArgumentError, "Using #{key1.inspect} option with #{key2.inspect} doesn't make sense"
       end
     end
 
     def assert_singleton_option(name)
-      if options.except(name, :name, :decorate).any? && options.key?(name)
+      if options.symbolize_keys.except(name, :name, :decorate).any? && options.symbolize_keys.key?(name)
         fail ArgumentError, "Using #{name.inspect} option with other options doesn't make sense"
       end
     end
