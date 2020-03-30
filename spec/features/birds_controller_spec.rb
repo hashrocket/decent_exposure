@@ -3,11 +3,11 @@ require "support/rails_app"
 require "rspec/rails"
 
 RSpec.describe BirdsController, type: :controller do
-  let(:bird){ Bird.new }
+  let(:bird) { Bird.new }
 
-  context 'when birds relation is exposed' do
+  context "when birds relation is exposed" do
     class BirdsController
-      expose :birds, ->{ Bird.all }
+      expose :birds, -> { Bird.all }
     end
 
     it "fetches all birds" do
@@ -17,7 +17,7 @@ RSpec.describe BirdsController, type: :controller do
     end
   end
 
-  context 'when a bird is exposed' do
+  context "when a bird is exposed" do
     class BirdsController
       expose :bird
     end
@@ -50,12 +50,12 @@ RSpec.describe BirdsController, type: :controller do
     end
 
     it "bird is build with params set" do
-      post :create, request_params(bird: { name: "crow" })
+      post :create, request_params(bird: {name: "crow"})
       expect(controller.bird.name).to eq("crow")
     end
   end
 
-  context 'when a bird? with a question mark is exposed' do
+  context "when a bird? with a question mark is exposed" do
     class BirdsController
       expose :bird
       expose :bird?, -> { bird.present? }

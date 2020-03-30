@@ -1,14 +1,14 @@
-require 'rails/generators'
+require "rails/generators"
 
 module DecentExposure
   module Generators
     class ScaffoldTemplatesGenerator < Rails::Generators::Base
-      desc 'Generate DecentExposure scaffold template files'
-      source_root File.expand_path('../templates', __FILE__)
-      class_option :template_engine, desc: 'Template engine to be invoked (erb).'
+      desc "Generate DecentExposure scaffold template files"
+      source_root File.expand_path("../templates", __FILE__)
+      class_option :template_engine, desc: "Template engine to be invoked (erb)."
 
-      VIEWS = %i(_form edit index new show)
-      AVAILABLE_ENGINES = %w(erb haml)
+      VIEWS = %i[_form edit index new show]
+      AVAILABLE_ENGINES = %w[erb haml]
 
       def generate
         validate_template_engine
@@ -20,7 +20,7 @@ module DecentExposure
       private
 
       def generate_controller
-        copy_template('rails/scaffold_controller', 'controller.rb')
+        copy_template("rails/scaffold_controller", "controller.rb")
       end
 
       def generate_view(view)

@@ -5,7 +5,8 @@ RSpec.describe DecentExposure::Controller do
   class DifferentThing; end
 
   class BaseController
-    def self.helper_method(*); end
+    def self.helper_method(*)
+    end
 
     def params
       @params ||= HashWithIndifferentAccess.new
@@ -18,9 +19,9 @@ RSpec.describe DecentExposure::Controller do
     end
   end
 
-  let(:request){ double("Request") }
-  let(:controller){ controller_klass.new }
-  before{ allow(controller).to receive(:request){ request } }
+  let(:request) { double("Request") }
+  let(:controller) { controller_klass.new }
+  before { allow(controller).to receive(:request) { request } }
 
   %w[expose expose! exposure_config].each do |method_name|
     define_method method_name do |*args, &block|
@@ -29,7 +30,7 @@ RSpec.describe DecentExposure::Controller do
   end
 
   context "getter/setter methods" do
-    before{ expose :thing }
+    before { expose :thing }
 
     it "defines getter method" do
       expect(controller).to respond_to(:thing)
@@ -70,7 +71,7 @@ RSpec.describe DecentExposure::Controller do
     end
 
     context "applying" do
-      let(:thing){ double("Thing") }
+      let(:thing) { double("Thing") }
 
       before do
         exposure_config :sluggable, find_by: :slug
@@ -80,7 +81,7 @@ RSpec.describe DecentExposure::Controller do
         controller.params.merge! check_this_out: "foo", whee: "wut"
       end
 
-      after{ expect(controller.thing).to eq(thing) }
+      after { expect(controller.thing).to eq(thing) }
 
       it "can be reused later" do
         expose :thing, with: :weird_id_name
@@ -110,7 +111,7 @@ RSpec.describe DecentExposure::Controller do
   end
 
   context "with block" do
-    before{ expose(:thing){ compute_thing } }
+    before { expose(:thing) { compute_thing } }
 
     it "executes block to calculate the value" do
       allow(controller).to receive(:compute_thing).and_return(42)
@@ -119,7 +120,7 @@ RSpec.describe DecentExposure::Controller do
 
     it "executes the block once and memoizes the result" do
       expect(controller).to receive(:compute_thing).once.and_return(42)
-      10.times{ controller.thing }
+      10.times { controller.thing }
     end
 
     it "allows setting value directly" do
@@ -129,20 +130,20 @@ RSpec.describe DecentExposure::Controller do
     end
 
     it "throws and error when providing options with block" do
-      action = ->{ expose(:thing, id: :some_id){ some_code } }
+      action = -> { expose(:thing, id: :some_id) { some_code } }
       expect(&action).to raise_error(ArgumentError, "Using :fetch option with other options doesn't make sense")
     end
   end
 
   context "passing fetch block as an argument instead of block" do
     it "is equivalent to passing block" do
-      expose :thing, ->{ compute_thing }
+      expose :thing, -> { compute_thing }
       expect(controller).to receive(:compute_thing).and_return(42)
       expect(controller.thing).to eq(42)
     end
 
     it "throws an error when passing both block and block-argument" do
-      action = ->{ expose(:thing, ->{}){} }
+      action = -> { expose(:thing, -> {}) {} }
       expect(&action).to raise_error(ArgumentError, "Fetch block is already defined")
     end
   end
@@ -157,7 +158,7 @@ RSpec.describe DecentExposure::Controller do
 
   context "redefine fetch" do
     before do
-      expose :thing, fetch: ->{ compute_thing }
+      expose :thing, fetch: -> { compute_thing }
       allow(controller).to receive(:compute_thing).and_return(42)
     end
 
@@ -168,9 +169,9 @@ RSpec.describe DecentExposure::Controller do
 
   context "default behaviour" do
     context "build" do
-      let(:thing){ double("Thing") }
+      let(:thing) { double("Thing") }
 
-      after{ expect(controller.thing).to eq(thing) }
+      after { expect(controller.thing).to eq(thing) }
 
       context "params method is not available" do
         it "builds a new instance with empty hash" do
@@ -202,7 +203,7 @@ RSpec.describe DecentExposure::Controller do
         end
 
         it "can use custom build params" do
-          expose :thing, build_params: ->{ foobar }
+          expose :thing, build_params: -> { foobar }
           expect(controller).to receive(:foobar).and_return(42)
           expect(Thing).to receive(:new).with(42).and_return(thing)
         end
@@ -215,7 +216,7 @@ RSpec.describe DecentExposure::Controller do
         expect(DifferentThing).to receive(:find).with(10)
       end
 
-      after{ controller.thing }
+      after { controller.thing }
 
       it "checks params[:different_thing_id] first" do
         controller.params.merge! different_thing_id: 10, thing_id: 11, id: 12
@@ -232,14 +233,14 @@ RSpec.describe DecentExposure::Controller do
 
   context "find_by" do
     it "throws and error when using with :find" do
-      action = ->{ expose :thing, find: :foo, find_by: :bar }
+      action = -> { expose :thing, find: :foo, find_by: :bar }
       expect(&action).to raise_error(ArgumentError, "Using :find_by option with :find doesn't make sense")
     end
 
     it "allows to specify what attribute to use for find" do
       expect(Thing).to receive(:find_by!).with(foo: 10).and_return(42)
       expose :thing, find_by: :foo
-      controller.params.merge! id: 10
+      controller.params[:id] = 10
       expect(controller.thing).to eq(42)
     end
   end
@@ -247,19 +248,19 @@ RSpec.describe DecentExposure::Controller do
   context "parent option" do
     context "with scope/model options" do
       it "throws an error when used with scope option" do
-        action = ->{ expose :thing, scope: :foo, parent: :something }
+        action = -> { expose :thing, scope: :foo, parent: :something }
         expect(&action).to raise_error(ArgumentError, "Using :parent option with :scope doesn't make sense")
       end
 
       it "throws an error when used with model option" do
-        action = ->{ expose :thing, model: :foo, parent: :something }
+        action = -> { expose :thing, model: :foo, parent: :something }
         expect(&action).to raise_error(ArgumentError, "Using :parent option with :model doesn't make sense")
       end
     end
 
     context "build/find" do
-      let(:current_user){ double("User") }
-      let(:scope){ double("Scope") }
+      let(:current_user) { double("User") }
+      let(:scope) { double("Scope") }
 
       before do
         expect(controller).to receive(:current_user).and_return(current_user)
@@ -267,26 +268,26 @@ RSpec.describe DecentExposure::Controller do
         expose :thing, parent: :current_user
       end
 
-      after{ expect(controller.thing).to eq(42) }
+      after { expect(controller.thing).to eq(42) }
 
       it "sets the scope to belong to parent defined by controller method" do
         expect(scope).to receive(:new).with({}).and_return(42)
       end
 
       it "scopes the find to proper scope" do
-        controller.params.merge! thing_id: 10
+        controller.params[:thing_id] = 10
         expect(scope).to receive(:find).with(10).and_return(42)
       end
     end
   end
 
   context "override model" do
-    let(:different_thing){ double("DifferentThing") }
-    before{ expect(DifferentThing).to receive(:new).with({}).and_return(different_thing) }
-    after{ expect(controller.thing).to eq(different_thing) }
+    let(:different_thing) { double("DifferentThing") }
+    before { expect(DifferentThing).to receive(:new).with({}).and_return(different_thing) }
+    after { expect(controller.thing).to eq(different_thing) }
 
     it "allows overriding model class with proc" do
-      expose :thing, model: ->{ DifferentThing }
+      expose :thing, model: -> { DifferentThing }
     end
 
     it "allows overriding model with class" do
@@ -305,7 +306,7 @@ RSpec.describe DecentExposure::Controller do
   context "override scope" do
     it "allows overriding scope with proc" do
       scope = double("Scope")
-      expose :thing, scope: ->{ scope }
+      expose :thing, scope: -> { scope }
       expect(scope).to receive(:new).and_return(42)
       expect(controller.thing).to eq(42)
     end
@@ -326,7 +327,7 @@ RSpec.describe DecentExposure::Controller do
     end
 
     it "allows overriding id with proc" do
-      expose :thing, id: ->{ get_thing_id_somehow }
+      expose :thing, id: -> { get_thing_id_somehow }
       expect(controller).to receive(:get_thing_id_somehow).and_return(42)
     end
 
@@ -343,7 +344,7 @@ RSpec.describe DecentExposure::Controller do
 
   context "override decorator" do
     it "allows specify decorator" do
-      expose :thing, decorate: ->(thing){ decorate(thing) }
+      expose :thing, decorate: ->(thing) { decorate(thing) }
       thing = double("Thing")
       expect(Thing).to receive(:new).with({}).and_return(thing)
       expect(controller).to receive(:decorate).with(thing)
@@ -362,7 +363,7 @@ RSpec.describe DecentExposure::Controller do
     end
 
     it "should throw error when used with other options" do
-      action = ->{ expose :thing, from: :foo, parent: :bar }
+      action = -> { expose :thing, from: :foo, parent: :bar }
       expect(&action).to raise_error(ArgumentError, "Using :from option with other options doesn't make sense")
     end
 
@@ -372,7 +373,7 @@ RSpec.describe DecentExposure::Controller do
       foo = double("Foo", thing: thing)
       expect(controller).to receive(:foo).and_return(foo)
       expect(controller).to receive(:decorate).with(thing).and_return(decorated_thing)
-      expose :thing, from: :foo, decorate: ->(thing){ decorate(thing) }
+      expose :thing, from: :foo, decorate: ->(thing) { decorate(thing) }
       expect(controller.thing).to eq(decorated_thing)
     end
   end

@@ -6,7 +6,7 @@ module DecentExposure
 
         def process_action(*args)
           arg = args.second
-          self.params = arg.stringify_keys() if arg && Hash === arg
+          self.params = arg.stringify_keys if arg && Hash === arg
           super
         end
       end

@@ -46,7 +46,7 @@ module DecentExposure
     end
 
     def params_method_name
-      options.fetch(:build_params_method){ "#{name}_params" }
+      options.fetch(:build_params_method) { "#{name}_params" }
     end
 
     def handle_flow_method(name, *args, &block)
@@ -74,7 +74,6 @@ module DecentExposure
       method = Behavior.instance_method(name)
       method.bind(self).call(*args, &block)
     end
-
 
     def fetch_ivar(name)
       ivar_name = "@#{name}"

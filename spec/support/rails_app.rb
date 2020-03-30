@@ -3,12 +3,14 @@ require "rails"
 
 def request_params(params)
   return params if Rails::VERSION::MAJOR < 5
-  { params: params }
+  {params: params}
 end
 
 module Rails
   class App
-    def env_config; {} end
+    def env_config
+      {}
+    end
 
     def routes
       @routes ||= ActionDispatch::Routing::RouteSet.new.tap do |routes|
@@ -24,7 +26,7 @@ module Rails
   end
 
   def self.root
-    ''
+    ""
   end
 
   def self.application
@@ -35,7 +37,7 @@ end
 class Bird
   attr_accessor :name
   def initialize(options = {})
-    options.each { |k, v| self.public_send("#{k}=", v) }
+    options.each { |k, v| public_send("#{k}=", v) }
   end
 end
 
@@ -49,7 +51,7 @@ def base_api_class
 end
 
 class BirdsController < ApplicationController
-  %i(index show edit new create update).each do |action|
+  %i[index show edit new create update].each do |action|
     define_method action do
       head :ok
     end
@@ -58,7 +60,7 @@ end
 
 module Api
   class BirdsController < base_api_class
-    %i(index show edit new create update).each do |action|
+    %i[index show edit new create update].each do |action|
       define_method action do
         head :ok
       end

@@ -32,7 +32,6 @@ module DecentExposure
       "#{name}=".to_sym
     end
 
-
     # Public: Expose a getter and setter method for the Attribute
     # on the passed in Controller class.
     #

@@ -86,7 +86,7 @@ module DecentExposure
     protected
 
     def params_id_key_candidates
-      [ "#{model_param_key}_id", "#{name}_id", "id" ].uniq
+      ["#{model_param_key}_id", "#{name}_id", "id"].uniq
     end
 
     def model_param_key

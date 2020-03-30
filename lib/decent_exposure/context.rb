@@ -20,7 +20,7 @@ module DecentExposure
     #
     # Returns the attribute's value.
     def get
-      ivar_defined?? ivar_get : set(fetch_value)
+      ivar_defined? ? ivar_get : set(fetch_value)
     end
 
     # Public: Write to an attribute on the context Class.
@@ -51,7 +51,7 @@ module DecentExposure
     end
 
     def ivar_name
-      "@#{attribute.ivar_name.gsub('?', '_question_mark_')}"
+      "@#{attribute.ivar_name.gsub("?", "_question_mark_")}"
     end
 
     def fetch_value

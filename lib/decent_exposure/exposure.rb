@@ -34,7 +34,7 @@ module DecentExposure
     #               the Proc.
     #
     # Returns a normalized options Hash.
-    def initialize(controller, name, fetch_block=nil, **options, &block)
+    def initialize(controller, name, fetch_block = nil, **options, &block)
       @controller = controller
       @options = options.with_indifferent_access.merge(name: name)
 
@@ -86,43 +86,43 @@ module DecentExposure
 
     def normalize_fetch_option
       normalize_non_proc_option :fetch do |method_name|
-        ->{ send(method_name) }
+        -> { send(method_name) }
       end
     end
 
     def normalize_find_by_option
-      if find_by = options.delete(:find_by)
-        merge_lambda_option :find, ->(id, scope){ scope.find_by!(find_by => id) }
+      if (find_by = options.delete(:find_by))
+        merge_lambda_option :find, ->(id, scope) { scope.find_by!(find_by => id) }
       end
     end
 
     def normalize_parent_option
       exposure_name = options.fetch(:name)
 
-      if parent = options.delete(:parent)
-        merge_lambda_option :scope, ->{ send(parent).send(exposure_name.to_s.pluralize) }
+      if (parent = options.delete(:parent))
+        merge_lambda_option :scope, -> { send(parent).send(exposure_name.to_s.pluralize) }
       end
     end
 
     def normalize_from_option
       exposure_name = options.fetch(:name)
 
-      if from = options.delete(:from)
-        merge_lambda_option :build, ->{ send(from).send(exposure_name) }
-        merge_lambda_option :model, ->{ nil }
-        merge_lambda_option :id, ->{ nil }
+      if (from = options.delete(:from))
+        merge_lambda_option :build, -> { send(from).send(exposure_name) }
+        merge_lambda_option :model, -> { nil }
+        merge_lambda_option :id, -> { nil }
       end
     end
 
     def normalize_with_option
-      if configs = options.delete(:with)
-        Array.wrap(configs).each{ |config| reverse_merge_config! config }
+      if (configs = options.delete(:with))
+        Array.wrap(configs).each { |config| reverse_merge_config! config }
       end
     end
 
     def normalize_id_option
       normalize_non_proc_option :id do |ids|
-        ->{ Array.wrap(ids).map{ |id| params[id] }.find(&:present?) }
+        -> { Array.wrap(ids).map { |id| params[id] }.find(&:present?) }
       end
     end
 
@@ -134,7 +134,7 @@ module DecentExposure
           value
         end
 
-        ->{ model }
+        -> { model }
       end
     end
 
@@ -147,7 +147,7 @@ module DecentExposure
 
     def normalize_scope_options
       normalize_non_proc_option :scope do |custom_scope|
-        ->(model){ model.send(custom_scope) }
+        ->(model) { model.send(custom_scope) }
       end
     end
 
@@ -165,7 +165,7 @@ module DecentExposure
     end
 
     def merge_lambda_option(name, body)
-      if previous_value = options[name] and Proc === previous_value
+      if (previous_value = options[name]) && (Proc === previous_value)
         fail ArgumentError, "#{name.to_s.titleize} block is already defined"
       end
 
@@ -178,7 +178,7 @@ module DecentExposure
 
         name = options.fetch(:name)
         ivar_name = "exposed_#{name}"
-        fetch = ->{ Flow.new(self, local_options).fetch }
+        fetch = -> { Flow.new(self, local_options).fetch }
 
         Attribute.new(
           name: name,

@@ -25,7 +25,7 @@ class BirdsMailer
 end
 
 RSpec.describe BirdsMailer, type: :mailer do
-  let(:bird){ double :bird }
+  let(:bird) { double :bird }
   let(:birds) { double :birds }
 
   context "when birds relation is exposed" do
@@ -38,16 +38,16 @@ RSpec.describe BirdsMailer, type: :mailer do
 
   context "when bird is exposed" do
     it "sends the email with exposed bird" do
-      expect(Bird).to receive(:find).with('some-id').and_return(bird)
-      expect(described_class.hello_bird(id: 'some-id').body.to_s)
+      expect(Bird).to receive(:find).with("some-id").and_return(bird)
+      expect(described_class.hello_bird(id: "some-id").body.to_s)
         .to include("Hello #{bird}")
     end
   end
 
   context "with non hash argument" do
     it "does not set params" do
-      expect(Bird).to receive(:find).with('some-id').and_return(bird)
-      expect(described_class.hello_bird_by_id('some-id').body.to_s)
+      expect(Bird).to receive(:find).with("some-id").and_return(bird)
+      expect(described_class.hello_bird_by_id("some-id").body.to_s)
         .to include("Hello #{bird}")
     end
   end
