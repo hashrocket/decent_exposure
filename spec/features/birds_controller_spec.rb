@@ -38,6 +38,13 @@ RSpec.describe BirdsController, type: :controller do
       get :new
       expect(controller.bird).to be_a(Bird)
     end
+
+    context "when request.method is HEAD" do
+      it "builds bird if id is not provided" do
+        head :new
+        expect(controller.bird).to be_a(Bird)
+      end
+    end
   end
 
   context "when bird_params is defined" do
