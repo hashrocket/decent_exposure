@@ -24,13 +24,13 @@ RSpec.describe BirdsController, type: :controller do
 
     it "finds model by id" do
       expect(Bird).to receive(:find).with("bird-id").and_return(bird)
-      get :show, request_params(id: "bird-id")
+      get :show, **request_params(id: "bird-id")
       expect(controller.bird).to eq(bird)
     end
 
     it "finds model by bird_id" do
       expect(Bird).to receive(:find).with("bird-id").and_return(bird)
-      get :new, request_params(bird_id: "bird-id")
+      get :new, **request_params(bird_id: "bird-id")
       expect(controller.bird).to eq(bird)
     end
 
@@ -50,7 +50,7 @@ RSpec.describe BirdsController, type: :controller do
     end
 
     it "bird is build with params set" do
-      post :create, request_params(bird: {name: "crow"})
+      post :create, **request_params(bird: {name: "crow"})
       expect(controller.bird.name).to eq("crow")
     end
   end
@@ -63,7 +63,7 @@ RSpec.describe BirdsController, type: :controller do
 
     it "exposes bird?" do
       expect(Bird).to receive(:find).with("bird-id").and_return(bird)
-      get :show, request_params(id: "bird-id")
+      get :show, **request_params(id: "bird-id")
       expect(controller.bird?).to be true
     end
   end

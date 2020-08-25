@@ -13,8 +13,8 @@ module DecentExposure
     #          the Proc when called.
     #
     # Returns a collection of exposed helper methods.
-    def self.expose!(*args, &block)
-      new(*args, &block).expose!
+    def self.expose!(*args, **options, &block)
+      new(*args, **options, &block).expose!
     end
 
     # Public: Initalize an Exposure with a hash of options.
