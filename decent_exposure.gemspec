@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.test_files = spec.files.grep(/\Aspec\//)
   spec.require_path = "lib"
 
-  spec.required_ruby_version = "~> 2.0"
+  spec.required_ruby_version = ">= 2.0"
 
   spec.add_dependency "activesupport", ">= 4.0"
   spec.add_development_dependency "railties", ">= 4.0"
