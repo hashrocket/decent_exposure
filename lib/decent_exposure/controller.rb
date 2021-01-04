@@ -17,8 +17,8 @@ module DecentExposure
       #
       # Returns the helper methods that are now defined on the class
       # where this method is included.
-      def expose(*args, &block)
-        Exposure.expose! self, *args, &block
+      def expose(*args, **options, &block)
+        Exposure.expose! self, *args, **options, &block
       end
 
       # Public: Exposes an attribute to a controller Class.
@@ -33,8 +33,8 @@ module DecentExposure
       #
       # Sets the exposed attribute to a before_action callback in the
       # controller.
-      def expose!(name, *args, &block)
-        expose name, *args, &block
+      def expose!(name, *args, **options, &block)
+        expose name, *args, **options, &block
         before_action name
       end
 
