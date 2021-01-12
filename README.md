@@ -1,9 +1,7 @@
 ![Decent Exposure](decent_exposure.png)
 
 [![Gem Version](https://img.shields.io/gem/v/decent_exposure.svg)](https://rubygems.org/gems/decent_exposure)
-[![Build Status](https://img.shields.io/travis/hashrocket/decent_exposure.svg)](http://travis-ci.org/hashrocket/decent_exposure)
-[![Code Climate](https://img.shields.io/codeclimate/github/hashrocket/decent_exposure.svg)](https://codeclimate.com/github/hashrocket/decent_exposure)
-[![Inline docs](http://inch-ci.org/github/hashrocket/decent_exposure.svg?branch=master&style=shields)](http://inch-ci.org/github/hashrocket/decent_exposure)
+[![Build Status](https://img.shields.io/github/workflow/status/hashrocket/decent_exposure/CI)](https://github.com/hashrocket/decent_exposure/actions?query=workflow%3ACI)
 
 ### Notice
 
