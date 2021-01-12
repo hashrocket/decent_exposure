@@ -190,14 +190,14 @@ RSpec.describe DecentExposure::Controller do
 
         it "uses params method on non-get request" do
           expose :thing
-          expect(request).to receive(:get?).and_return(false)
+          expect(request).to receive_messages(get?: false, head?: false)
           expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
           expect(controller).to receive(:thing_params).and_return(foo: :bar)
         end
 
         it "can use custom params method name" do
           expose :thing, build_params: :custom_params_method_name
-          expect(request).to receive(:get?).and_return(false)
+          expect(request).to receive_messages(get?: false, head?: false)
           expect(Thing).to receive(:new).with(foo: :bar).and_return(thing)
           expect(controller).to receive(:custom_params_method_name).and_return(foo: :bar)
         end

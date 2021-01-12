@@ -42,7 +42,7 @@ module DecentExposure
     delegate :params, to: :controller
 
     def get_request?
-      controller.request.get?
+      controller.request.get? || controller.request.head?
     end
 
     def params_method_name
