@@ -3,13 +3,13 @@ name: CI
 on:
   push:
     branches:
-      - $default_branch
+      - master
     paths-ignore:
      - 'README.md'
 
   pull_request:
     branches: 
-      - $default_branch
+      - master
     paths-ignore:
       - 'README.md'
 
