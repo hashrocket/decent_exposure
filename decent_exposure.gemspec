@@ -1,11 +1,13 @@
-require File.expand_path("../lib/decent_exposure/version", __FILE__)
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require "version"
 
 Gem::Specification.new do |spec|
   spec.name = "decent_exposure"
   spec.version = DecentExposure::VERSION
   spec.authors = ["Pavel Pravosud", "Stephen Caudill"]
   spec.email = ["info@hashrocket.com"]
-  spec.summary = "A helper for creating declarative interfaces in controllers"
+  spec.summary = "Create declarative interfaces in Ruby on Rails controllers & views"
   spec.description = '
     DecentExposure helps you program to an interface, rather than an
     implementation in your Rails controllers.  The fact of the matter is that
@@ -16,8 +18,9 @@ Gem::Specification.new do |spec|
   '
   spec.homepage = "https://github.com/hashrocket/decent_exposure"
   spec.license = "MIT"
-  spec.files = `git ls-files -z`.split("\x0")
-  spec.test_files = spec.files.grep(/\Aspec\//)
+  spec.files = Dir.chdir(File.expand_path("..", __FILE__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features|doc)/}) }
+  end
   spec.require_path = "lib"
 
   spec.required_ruby_version = ">= 2.6"
