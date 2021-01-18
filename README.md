@@ -3,20 +3,12 @@
 [![Gem Version](https://img.shields.io/gem/v/decent_exposure.svg)](https://rubygems.org/gems/decent_exposure)
 [![Build Status](https://img.shields.io/github/workflow/status/hashrocket/decent_exposure/CI)](https://github.com/hashrocket/decent_exposure/actions?query=workflow%3ACI)
 
-### Notice
-
-DecentExposure `3.0` is a major change from `< 3.0`.
-
-Version `3.0` will support Rails 4 and 5.
-
-**Be aware... mild API changes ahead.** Check this [API changes in version 3](https://github.com/hashrocket/decent_exposure/wiki/Api-changes-in-version-3)
-
 ### Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'decent_exposure', '3.0.0'
+gem 'decent_exposure', '~> 3.0'
 ```
 
 And then execute:
