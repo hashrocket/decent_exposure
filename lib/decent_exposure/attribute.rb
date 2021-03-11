@@ -32,6 +32,13 @@ module DecentExposure
       "#{name}=".to_sym
     end
 
+    # Public: The loader method for the Attribute.
+    #
+    # Returns the method name for loading the Attribute.
+    def loader_method_name
+      "load_#{name}".to_sym
+    end
+
     # Public: Expose a getter and setter method for the Attribute
     # on the passed in Controller class.
     #
@@ -47,6 +54,10 @@ module DecentExposure
 
         define_method attribute.setter_method_name do |value|
           Context.new(self, attribute).set(value)
+        end
+
+        define_method attribute.loader_method_name do
+          Context.new(self, attribute).load
         end
       end
     end

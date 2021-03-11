@@ -33,6 +33,14 @@ module DecentExposure
       ivar_set(value)
     end
 
+    # Public: Load a record or collection.
+    #
+    # This method will simply call get and lazy load in case in returns an
+    # collection.
+    def load
+      get.tap { |value| value.load if value.respond_to?(:load) }
+    end
+
     private
 
     delegate :instance_variable_set, :instance_variable_get,

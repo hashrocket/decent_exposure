@@ -29,7 +29,7 @@ RSpec.describe DecentExposure::Controller do
     end
   end
 
-  context "getter/setter methods" do
+  context "getter/setter/loader methods" do
     before { expose :thing }
 
     it "defines getter method" do
@@ -38,6 +38,10 @@ RSpec.describe DecentExposure::Controller do
 
     it "defines setter method" do
       expect(controller).to respond_to(:thing=).with(1).argument
+    end
+
+    it "defines loader method" do
+      expect(controller).to respond_to(:load_thing)
     end
   end
 

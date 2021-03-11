@@ -122,7 +122,8 @@ end
 
 The exposure is also lazy, which means that it won't do anything until you call
 the method. To eliminate this laziness you can use the `expose!` macro instead,
-which will try to resolve the exposure in a before filter.
+which will try to resolve the exposure in a before filter. You can also use
+`before_action :load_thing, only: :sort` to lazy load only on specific actions.
 
 It is possible to override each step with options. The acceptable options to the
 `expose` macro are:
