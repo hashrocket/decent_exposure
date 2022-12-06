@@ -3,13 +3,13 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
      - 'README.md'
 
   pull_request:
-    branches: 
-      - master
+    branches:
+      - main
     paths-ignore:
       - 'README.md'
 
@@ -19,13 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby-version: ['2.6', '2.7', '3.0']
+        ruby-version: ['2.7', '3.0', '3.1']
         gemfile:
-          - gemfiles/Gemfile.rails-5.0.0
           - gemfiles/Gemfile.rails-6.0.0
+          - gemfiles/Gemfile.rails-7.0.0
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Set up Ruby
 
       - uses: ruby/setup-ruby@v1
