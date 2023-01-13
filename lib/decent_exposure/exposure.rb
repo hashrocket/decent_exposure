@@ -13,8 +13,8 @@ module DecentExposure
     #          the Proc when called.
     #
     # Returns a collection of exposed helper methods.
-    def self.expose!(*args, **options, &block)
-      new(*args, **options, &block).expose!
+    def self.expose!(...)
+      new(...).expose!
     end
 
     # Public: Initalize an Exposure with a hash of options.
@@ -39,7 +39,7 @@ module DecentExposure
       @options = options.with_indifferent_access.merge(name: name)
 
       merge_lambda_option :fetch, fetch_block if fetch_block
-      merge_lambda_option :fetch, block if block_given?
+      merge_lambda_option :fetch, block if block
 
       assert_singleton_option :fetch
       assert_singleton_option :from
@@ -109,8 +109,8 @@ module DecentExposure
 
       if (from = options.delete(:from))
         merge_lambda_option :build, -> { send(from).send(exposure_name) }
-        merge_lambda_option :model, -> { nil }
-        merge_lambda_option :id, -> { nil }
+        merge_lambda_option :model, -> {}
+        merge_lambda_option :id, -> {}
       end
     end
 

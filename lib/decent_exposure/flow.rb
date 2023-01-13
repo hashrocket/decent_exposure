@@ -72,7 +72,7 @@ module DecentExposure
 
     def handle_default_flow_method(name, *args, &block)
       method = Behavior.instance_method(name)
-      method.bind(self).call(*args, &block)
+      method.bind_call(self, *args, &block)
     end
 
     def fetch_ivar(name)
