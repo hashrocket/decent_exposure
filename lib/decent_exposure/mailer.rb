@@ -9,6 +9,7 @@ module DecentExposure
           self.params = arg.stringify_keys if arg && Hash === arg
           super
         end
+        ruby2_keywords(:process_action) if respond_to?(:ruby2_keywords, true)
       end
     end
   end
